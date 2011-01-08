@@ -1,15 +1,15 @@
-// Created 8-Jan-2011 by David Kirkby <dkirkby@uci.edu>
+// Created 08-Jan-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
-#ifndef IMENGINE_IMAGE_ENGINE_H
-#define IMENGINE_IMAGE_ENGINE_H
+#ifndef IMENGINE_IMAGE_ENGINE
+#define IMENGINE_IMAGE_ENGINE
 
 namespace imengine {
-    class ImageEngine {
-    public:
-        ImageEngine();
-        virtual ~ImageEngine();
-    private:
-    };
-} // imengine::
+	class ImageEngine {
+	public:
+		ImageEngine();
+		virtual ~ImageEngine();
+	private:
+	}; // ImageEngine
+} // imengine
 
-#endif // IMENGINE_IMAGE_ENGINE_H
+#endif // IMENGINE_IMAGE_ENGINE
