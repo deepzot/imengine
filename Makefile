@@ -22,8 +22,8 @@ bin: $(BIN_NAMES)
 
 lib: $(LIB_NAME)
 
-$(BIN_NAMES) : bin/% : src/%.cc $(LIB_NAME)
-	$(CXX) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
+$(BIN_NAMES) : % : src/%.cc $(LIB_NAME)
+	$(CXX) $(CXXFLAGS) -o bin/$@ $< $(LDFLAGS)
 
 $(LIB_NAME) : $(LIB_OBJS)
 	$(AR) $(ARFLAGS) $(LIB_NAME) $(LIB_OBJS)
