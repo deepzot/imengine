@@ -16,6 +16,9 @@ namespace imengine {
 		ImageEngine(const AbsPixelFunction &source, const AbsPixelFunction &psf,
 		    int pixelsPerSide, double pixelScale = 1);
 		virtual ~ImageEngine();
+		// Read-only accessors
+        inline int getPixelsPerSide() const { return _pixelsPerSide; }
+        inline double getPixelScale() const { return _pixelScale; }
 		// Generates an image with the source function offset by (dx,dy)
         ImageData *generate(double dx = 0, double dy = 0);
     protected:
