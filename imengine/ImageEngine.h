@@ -6,6 +6,7 @@
 namespace imengine {
     class AbsPixelFunction;
     class ImageData;
+    class TransformData;
     // Generates pixelized images of a source convoluted with a psf.
 	class ImageEngine {
 	public:
@@ -16,6 +17,9 @@ namespace imengine {
 		// Generates an image at the specified pixel scale, with the source function offset by (dx,dy)
         ImageData *generate(double pixelScale = 1, double dx = 0, double dy = 0);
 	private:
+        const AbsPixelFunction &_source, &_psf;
+        int _pixelsPerSide;
+        TransformData *_sourceTransform, *_psfTransform, *_imageTransform;
 	}; // ImageEngine
 } // imengine
 
