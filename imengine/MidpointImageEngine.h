@@ -6,6 +6,8 @@
 #include "imengine/ImageEngine.h"
 
 namespace imengine {
+    // Implements an image engine that estimates the pixel data by evaluating the image
+    // function at the midpoint of each pixel. This is a fast but low accuracy method.
 	class MidpointImageEngine : public ImageEngine {
 	public:
 		MidpointImageEngine(const AbsPixelFunction &source, const AbsPixelFunction &psf,

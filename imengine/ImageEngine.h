@@ -23,7 +23,7 @@ namespace imengine {
         ImageData *generate(double dx = 0, double dy = 0);
     protected:
         int gridSize;
-        double gridSpacing;
+        double gridSpacing,gridX,gridY;
         virtual void setGridParams();
 	private:
         const AbsPixelFunction &_source, &_psf;

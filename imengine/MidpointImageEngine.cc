@@ -13,7 +13,17 @@ ImageEngine(source,psf,pixelsPerSide,pixelScale)
 local::MidpointImageEngine::~MidpointImageEngine() { }
 
 void local::ImageEngine::setGridParams() {
-    // put a grid point in the center of each pixel
+    // Put a grid point in the center of each pixel...
     gridSize = getPixelsPerSide();
     gridSpacing = getPixelScale();
+    // For an odd number of pixels, the grid is already centered on the pixel array,
+    // but an even number of pixels requires padding the top and one side of the grid
+    // and introduces a half-pixel offset.
+    if(gridSize % 2 == 0) {
+        gridSize++;
+        gridX = gridY = gridSpacing/2;
+    }
+    else {
+        gridX = gridY = 0;        
+    }
 }

@@ -1,11 +1,15 @@
 // Created 8-Jan-2011 by David Kirkby <dkirkby@uci.edu>
 
-#include "imengine/ImageEngine.h"
+#include "imengine/model/CircularDisc.h"
+#include "imengine/MidpointImageEngine.h"
 
-using namespace imengine;
-using namespace std;
+namespace img = imengine;
+namespace model = imengine::model;
 
 int main(int argc, char **argv) {
-    ImageEngine *ie = new ImageEngine();
-    delete ie;
+    model::Disc disc(12);
+    img::TransformedFunction src(disc);
+    //model::Gaussian psf(...);
+    img::ImageEngine *engine = new img::MidpointImageEngine(src,src,48);
+    delete engine;
 }
