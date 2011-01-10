@@ -20,6 +20,7 @@ namespace imengine {
 	private:
         TransformData *_transformData;
         double *_data;
+        int _break;
 	}; // GenericPixelFunction
 } // imengine
 

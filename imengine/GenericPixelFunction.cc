@@ -21,6 +21,7 @@ void local::GenericPixelFunction::initTransform(TransformData* transformData) {
     _transformData = transformData;
     int ngrid = _transformData->getGridSize();
     _data = new double[ngrid*ngrid];
+    _break = ngrid/2 + 1;
 }
 
 void local::GenericPixelFunction::doTransform(double dx, double dy) const {
@@ -30,14 +31,14 @@ void local::GenericPixelFunction::doTransform(double dx, double dy) const {
     int ngrid = _transformData->getGridSize();
     double spacing = _transformData->getGridSpacing();
     for(int i = 0; i < ngrid; i++) {
-        if(i < ngrid/2) {
+        if(i < _break) {
             x = dx + i*spacing;
         }
         else {
             x = dx + (ngrid - i)*spacing;
         }
         for(int j = 0; j < ngrid; j++) {
-            if(i < ngrid/2) {
+            if(j < _break) {
                 y = dy + j*spacing;
             }
             else {

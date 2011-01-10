@@ -21,10 +21,10 @@ namespace imengine {
         inline const double& imag(int i, int j) const { return _data[2*(j + _gridSize*i)]; }
 
         // helper functions to return the wavenumber associated an index value (no range check on i)
-        inline double wavenumber(int i) const { return i < _gridSizeBy2 ? i*_dk : (_gridSize-i)*_dk; }
+        inline double wavenumber(int i) const { return i < _break ? i*_dk : (_gridSize-i)*_dk; }
 
 	private:
-        int _gridSize,_gridSizeBy2;
+        int _gridSize,_break;
         double _gridSpacing, _dk;
         double *_data;
 	}; // TransformData
