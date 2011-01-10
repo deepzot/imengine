@@ -13,12 +13,14 @@ AbsPixelFunction(), _data(0)
 }
 
 local::GenericPixelFunction::~GenericPixelFunction() {
-    if(0 != _data) delete _data;
+    if(0 != _data) delete[] _data;
 }
 
 void local::GenericPixelFunction::initTransform(TransformData* transformData) {
     assert(0 != transformData);
     _transformData = transformData;
+    int ngrid = _transformData->getGridSize();
+    _data = new double[ngrid*ngrid];
 }
 
 void local::GenericPixelFunction::doTransform(double dx, double dy) const {
