@@ -14,9 +14,9 @@ BIN_NAMES := $(patsubst src/%.cc,%,$(BIN_SRCS))
 
 # sources under $(PKG)/ to compile into build/ and include in the library
 LIB_NAME := lib$(PKG).a
-LIB_SRCS := $(wildcard $(PKG)/*.cc)
-LIB_SRCS += $(wildcard $(MODULES:%=$(PKG)/%/*.cc))
+LIB_SRCS := $(wildcard $(PKG)/*.cc $(MODULES:%=$(PKG)/%/*.cc))
 LIB_OBJS := $(LIB_SRCS:$(PKG)/%.cc=build/%.o)
+LIB_DEPS := $(wildcard build/*.d $(MODULES:%=build/%/*.d))
 
 # compile and link options
 CXXFLAGS := -I. -I$(BOOST)
@@ -24,15 +24,14 @@ LDFLAGS := -L. -l$(PKG)
 
 # named targets
 test:
-	echo $(ALL_SRCS)
-	echo $(ALL_OBJS)
+	echo $(LIB_DEPS)
 
 bin: $(BIN_NAMES)
 
 lib: $(LIB_NAME)
 
 clean:
-	rm -f $(LIB_NAME) $(LIB_OBJS) build/*.d
+	rm -f $(LIB_NAME) $(LIB_OBJS) $(LIB_DEPS)
 
 # implicit rules
 
@@ -42,12 +41,13 @@ $(BIN_NAMES) : % : src/%.cc $(LIB_NAME)
 $(LIB_NAME) : $(LIB_OBJS)
 	$(AR) $(ARFLAGS) $(LIB_NAME) $(LIB_OBJS)
 
-# See http://www.gnu.org/software/automake/manual/make/Automatic-Prerequisites.html
-# and http://mad-scientist.net/make/autodep.html
+# compiling a library source updates its dependency file for next time
+# (see http://www.gnu.org/software/automake/manual/make/Automatic-Prerequisites.html
+# and http://mad-scientist.net/make/autodep.html for details of this logic)
 
 build/%.o : $(PKG)/%.cc
 	$(CXX) -c $< $(CXXFLAGS) -MD -o $@
 
 # include dependencies
 
-include $(wildcard build/*.d)
+include $(LIB_DEPS)
