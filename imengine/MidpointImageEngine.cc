@@ -4,8 +4,8 @@
 
 namespace local = imengine;
 
-local::MidpointImageEngine::MidpointImageEngine(const local::AbsPixelFunction& source, 
-const local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
+local::MidpointImageEngine::MidpointImageEngine(local::AbsPixelFunction& source, 
+local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
 ImageEngine(source,psf,pixelsPerSide,pixelScale)
 {    
 }

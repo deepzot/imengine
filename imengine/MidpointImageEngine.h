@@ -10,7 +10,7 @@ namespace imengine {
     // function at the midpoint of each pixel. This is a fast but low accuracy method.
 	class MidpointImageEngine : public ImageEngine {
 	public:
-		MidpointImageEngine(const AbsPixelFunction &source, const AbsPixelFunction &psf,
+		MidpointImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf,
 		    int pixelsPerSide, double pixelScale = 1);
 		virtual ~MidpointImageEngine();
     protected:

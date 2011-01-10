@@ -8,8 +8,8 @@
 
 namespace local = imengine;
 
-local::ImageEngine::ImageEngine(const local::AbsPixelFunction& source, 
-const local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
+local::ImageEngine::ImageEngine(local::AbsPixelFunction& source, 
+local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
 _source(source), _psf(psf), _pixelsPerSide(pixelsPerSide), _pixelScale(pixelScale),
 _sourceTransform(0), _psfTransform(0), _imageTransform(0)
 {
@@ -21,6 +21,9 @@ _sourceTransform(0), _psfTransform(0), _imageTransform(0)
     _sourceTransform = new TransformData(gridSize,gridSpacing);
     _psfTransform = new TransformData(gridSize,gridSpacing);
     _imageTransform = new TransformData(gridSize,gridSpacing);
+    // initialize the input pixel functions
+    source.initTransform(_sourceTransform);
+    psf.initTransform(_psfTransform);
 }
 
 local::ImageEngine::~ImageEngine() {

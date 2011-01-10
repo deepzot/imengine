@@ -10,7 +10,9 @@ namespace imengine {
 	    // Creates a new data grid with the specified size and spacing
 		TransformData(int gridSize, double gridSpacing);
 		virtual ~TransformData();
+		
         inline int getGridSize() const { return _gridSize; }
+        inline double getGridSpacing() const { return _gridSpacing; }
 
 		// helper functions to access real/imag parts of transform data (no range checks on i,j)
         inline double& real(int i, int j) { return _data[2*(j + _gridSize*i)]; }

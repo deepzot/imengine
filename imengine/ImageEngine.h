@@ -13,7 +13,7 @@ namespace imengine {
 	    // Creates a new engine for the specified source and psf functions to generate
 	    // square images of pixelsPerSide x pixelsPerSide pixels with each pixel measuring
 	    // pixelScale on a side.
-		ImageEngine(const AbsPixelFunction &source, const AbsPixelFunction &psf,
+		ImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf,
 		    int pixelsPerSide, double pixelScale = 1);
 		virtual ~ImageEngine();
 		// Read-only accessors
@@ -26,7 +26,7 @@ namespace imengine {
         double gridSpacing,gridX,gridY;
         virtual void setGridParams();
 	private:
-        const AbsPixelFunction &_source, &_psf;
+        AbsPixelFunction &_source, &_psf;
         int _pixelsPerSide;
         double _pixelScale;
         TransformData *_sourceTransform, *_psfTransform, *_imageTransform;

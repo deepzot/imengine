@@ -4,6 +4,7 @@
 #define IMENGINE_ABS_PIXEL_FUNCTION
 
 namespace imengine {
+    class TransformData;
     // Declares the abstract interface for a real-valued function on a 2D pixel space.
 	class AbsPixelFunction {
 	public:
@@ -11,11 +12,12 @@ namespace imengine {
 		virtual ~AbsPixelFunction();
 		// Returns the function value
         virtual double operator()(double x, double y) const = 0;
-        // Fills the provided array with the function's discrete Fourier transform on
-        // a square ngrid x ngrid lattice with the specified spacing and (x,y) origin
-        // relative to the grid center.
-        virtual void fillArrayWithTransform(double **array, int ngrid,
-            double spacing = 1, double dx = 0, double dy = 0) const = 0;
+        // Performs one-time initializations before subsequent calls to doTransform.
+        // Implementation should save the pointer but does not own it.
+        virtual void initTransform(TransformData *transformData) = 0;
+        // Computes the function's discrete Fourier transform on a square grid with
+        // the specified spacing (x,y) origin relative to the grid center.
+        virtual void doTransform(double dx = 0, double dy = 0) const = 0;
 	private:
 	}; // AbsPixelFunction
 } // imengine
