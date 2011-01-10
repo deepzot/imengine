@@ -21,7 +21,7 @@ void local::ImageEngine::setGridParams() {
     // and introduces a half-pixel offset.
     if(gridSize % 2 == 0) {
         gridSize++;
-        gridX = gridY = gridSpacing/2;
+        gridX = gridY = -gridSpacing/2;
     }
     else {
         gridX = gridY = 0;        
