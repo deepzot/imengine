@@ -12,7 +12,8 @@ GenericPixelFunction(), _sigma(sigma)
 {
     assert(sigma > 0);
     _twosigmasq = 2*sigma*sigma;
-    _norm = std::sqrt(2)*sigma;
+    double twopi = 8*std::atan(1.0);
+    _norm = std::sqrt(twopi)*sigma;
 }
 
 local::GaussianDemo::~GaussianDemo() { }
