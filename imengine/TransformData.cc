@@ -6,8 +6,8 @@
 
 namespace local = imengine;
 
-local::TransformData::TransformData(int gridSize, double gridSpacing) :
-_gridSize(gridSize), _gridSpacing(gridSpacing)
+local::TransformData::TransformData(int gridSize, double gridSpacing, double gridX, double gridY) :
+_gridSize(gridSize), _gridSpacing(gridSpacing), _gridX(gridX), _gridY(gridY)
 {
     assert(gridSize > 0);
     assert(gridSpacing > 0);
@@ -18,4 +18,9 @@ _gridSize(gridSize), _gridSpacing(gridSpacing)
 
 local::TransformData::~TransformData() {
     delete[] _data;
+}
+
+local::TransformData *local::TransformData::createFromPrototype(local::TransformData const &prototype) {
+    return new local::TransformData(prototype._gridSize,prototype._gridSpacing,
+        prototype._gridX,prototype._gridY);
 }

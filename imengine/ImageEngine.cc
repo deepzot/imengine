@@ -15,28 +15,27 @@ _sourceTransform(0), _psfTransform(0), _imageTransform(0)
 {
     assert(pixelsPerSide > 0);
     assert(pixelScale > 0);
-    // delegate the calculation of our transform grid parameters
-    setGridParams();
-    // allocate the transform data arrays
-    _sourceTransform = new TransformData(gridSize,gridSpacing);
-    _psfTransform = new TransformData(gridSize,gridSpacing);
-    _imageTransform = new TransformData(gridSize,gridSpacing);
-    // initialize the input pixel functions
-    source.initTransform(_sourceTransform);
-    psf.initTransform(_psfTransform);
 }
 
 local::ImageEngine::~ImageEngine() {
-    delete _sourceTransform;
-    delete _psfTransform;
-    delete _imageTransform;
+    if(0 != _sourceTransform) {
+        delete _sourceTransform;
+        delete _psfTransform;
+        delete _imageTransform;
+    }
 }
 
 local::ImageData *local::ImageEngine::generate(double dx, double dy) {
+    // do one-time initialization of the transform grids
+    if(0 == _imageTransform) {
+        _imageTransform = createImageTransform();
+        assert(0 != _imageTransform);
+        // build source and psf transform grids with the same attributes
+        _sourceTransform = TransformData::createFromPrototype(*_imageTransform);
+        _psfTransform = TransformData::createFromPrototype(*_imageTransform);
+        // link the grids to their pixel functions
+        _source.initTransform(_sourceTransform);
+        _psf.initTransform(_psfTransform);
+    }
     return 0;
-}
-
-void local::ImageEngine::setGridParams() {
-    // subclasses must override this method
-    assert(0);
 }

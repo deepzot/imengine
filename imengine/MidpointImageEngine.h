@@ -14,7 +14,8 @@ namespace imengine {
 		    int pixelsPerSide, double pixelScale = 1);
 		virtual ~MidpointImageEngine();
     protected:
-        virtual void setGridParams();
+        virtual TransformData *createImageTransform();
+        virtual double estimatePixelValue(int i, int j);
 	private:
 	}; // MidpointImageEngine
 } // imengine

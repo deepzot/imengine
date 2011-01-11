@@ -23,9 +23,6 @@ CXXFLAGS := -I. -I$(BOOST)
 LDFLAGS := -L. -l$(PKG)
 
 # named targets
-test:
-	echo $(LIB_DEPS)
-
 bin: $(BIN_NAMES)
 
 lib: $(LIB_NAME)

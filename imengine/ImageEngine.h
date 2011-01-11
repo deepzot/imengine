@@ -11,25 +11,25 @@ namespace imengine {
 	class ImageEngine {
 	public:
 	    // Creates a new engine for the specified source and psf functions to generate
-	    // square images of pixelsPerSide x pixelsPerSide pixels with each pixel measuring
-	    // pixelScale on a side.
+	    // square images of pixelsPerSide x pixelsPerSide pixels of dimension pixelScale.
 		ImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf,
 		    int pixelsPerSide, double pixelScale = 1);
 		virtual ~ImageEngine();
 		// Read-only accessors
         inline int getPixelsPerSide() const { return _pixelsPerSide; }
         inline double getPixelScale() const { return _pixelScale; }
+        // Initializes 
 		// Generates an image with the source function offset by (dx,dy)
         ImageData *generate(double dx = 0, double dy = 0);
     protected:
-        int gridSize;
-        double gridSpacing,gridX,gridY;
-        virtual void setGridParams();
+        virtual double estimatePixelValue(int i, int j) = 0;
+        virtual TransformData *createImageTransform() = 0;
+        TransformData *_imageTransform;
 	private:
         AbsPixelFunction &_source, &_psf;
         int _pixelsPerSide;
         double _pixelScale;
-        TransformData *_sourceTransform, *_psfTransform, *_imageTransform;
+        TransformData *_sourceTransform, *_psfTransform;
 	}; // ImageEngine
 } // imengine
 
