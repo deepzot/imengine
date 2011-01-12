@@ -35,15 +35,17 @@ namespace imengine {
         // fills the specified row-wise 2D data array with the real part of our inverse Fourier transform
         void inverseTransform(double *realData) const;
         
-        // sets our values to the Fourier transform of the specified row-wise real 2D data array
-        void setToTransform(double const *realData);
+        // Computes the discrete Fourier transform of the specified row-wise real 2D data array
+        // Returns the overall scale factor necessary so that the result corresponds to:
+        // transform[m,n] = 1/N Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
+        double setToTransform(double const *realData);
         
         // sets our values to the element-by-element product of two other transforms
         void setToProduct(TransformData const& t1, TransformData const& t2);
 
 	private:
         int _gridSize,_break;
-        double _gridSpacing, _gridX, _gridY, _dk, _dx;
+        double _gridSpacing, _gridX, _gridY, _dk, _dx,_norm;
         double *_data;
 	}; // TransformData
 

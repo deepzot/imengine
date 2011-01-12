@@ -15,6 +15,7 @@ _gridSize(gridSize), _gridSpacing(gridSpacing), _gridX(gridX), _gridY(gridY)
     assert(gridSpacing > 0);
     _break = gridSize/2 + 1;
     _dk = 1/(gridSize*gridSpacing);
+    _norm = 1.0/gridSize;
     _data = new double[2*gridSize*gridSize];
 }
 
@@ -45,7 +46,7 @@ void local::TransformData::inverseTransform(double *realData) const {
     } 
 }
 
-void local::TransformData::setToTransform(double const *realData) {
+double local::TransformData::setToTransform(double const *realData) {
     double dtheta = -8*std::atan(1.0)/_gridSize; // -2pi/N
     for(int i = 0; i < _gridSize; i++) {
         for(int j = 0; j < _gridSize; j++) {
@@ -62,6 +63,8 @@ void local::TransformData::setToTransform(double const *realData) {
             imag(i,j) = im;
         }
     }
+    // return the appropriate normalization factor
+    return _norm;
 }
 
 void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2) {
