@@ -41,10 +41,10 @@ local::ImageData *local::ImageEngine::generate(double dx, double dy) {
         _imageData = new double[size*size];
     }
     // calculate the (un-normalized) discrete Fourier transform of the source and PSF
-    _source.doTransform(dx,dy);
-    _psf.doTransform(0,0);
+    double norm1 = _source.doTransform(dx,dy);
+    double norm2 = _psf.doTransform(0,0);
     // combine the source and PSF in Fourier space
-    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform);
+    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,norm1*norm2);
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform(_imageData);
 

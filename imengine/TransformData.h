@@ -41,7 +41,7 @@ namespace imengine {
         double setToTransform(double const *realData);
         
         // sets our values to the element-by-element product of two other transforms
-        void setToProduct(TransformData const& t1, TransformData const& t2);
+        void setToProduct(TransformData const& t1, TransformData const& t2, double norm = 1);
 
 	private:
         int _gridSize,_break;

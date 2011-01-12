@@ -67,12 +67,13 @@ double local::TransformData::setToTransform(double const *realData) {
     return _norm;
 }
 
-void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2) {
+void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2, 
+double norm) {
     for(int i = 0; i < _gridSize; i++) {
         for(int j = 0; j < _gridSize; j++) {
             double re1(t1.real(i,j)),im1(t1.imag(i,j)),re2(t2.real(i,j)),im2(t2.imag(i,j));
-            real(i,j) = re1*re2 - im1*im2;
-            imag(i,j) = re1*im2 + im1*re2;
+            real(i,j) = norm*(re1*re2 - im1*im2);
+            imag(i,j) = norm*(re1*im2 + im1*re2);
         }
     }
 }
