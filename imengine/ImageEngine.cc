@@ -37,5 +37,7 @@ local::ImageData *local::ImageEngine::generate(double dx, double dy) {
         _source.initTransform(_sourceTransform);
         _psf.initTransform(_psfTransform);
     }
+    _source.doTransform(dx,dy);
+    //_psf.doTransform(dx,dy);
     return 0;
 }

@@ -4,6 +4,8 @@
 #include "imengine/TransformData.h"
 
 #include <cassert>
+#include <iostream>
+#include <cmath>
 
 namespace local = imengine;
 
@@ -21,33 +23,40 @@ void local::GenericPixelFunction::initTransform(TransformData* transformData) {
     _transformData = transformData;
     int ngrid = _transformData->getGridSize();
     _data = new double[ngrid*ngrid];
-    _break = ngrid/2 + 1;
 }
 
 void local::GenericPixelFunction::doTransform(double dx, double dy) const {
     // tabulate function values on a (x,y) grid
-    double x,y;
     double *ptr = _data;
     int ngrid = _transformData->getGridSize();
     double spacing = _transformData->getGridSpacing();
+    double dtheta = -8*std::atan(1.0)/ngrid;
     for(int i = 0; i < ngrid; i++) {
-        if(i < _break) {
-            x = dx + i*spacing;
-        }
-        else {
-            x = dx + (ngrid - i)*spacing;
-        }
+        double x = _transformData->getX(i);
         for(int j = 0; j < ngrid; j++) {
-            if(j < _break) {
-                y = dy + j*spacing;
+            double y = _transformData->getY(j);
+            double value = (*this)(x,y);
+            *ptr++ = value;
+            std::cout << value << ' ';
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "=== TRANSFORM ===" << std::endl;
+    // calculate the discrete (un-normalized) Fourier transform of the tabulated data
+    for(int i = 0; i < ngrid; i++) {
+        for(int j = 0; j < ngrid; j++) {
+            double real(0), imag(0);
+            for(int m = 0; m < ngrid; m++) {
+                for(int n = 0; n < ngrid; n++) {
+                    double value = _data[n + ngrid*m];
+                    double theta = dtheta*(m*i + n*j);
+                    real += value*std::cos(theta);
+                    imag += value*std::sin(theta);
+                }
             }
-            else {
-                y = dy + (ngrid - j)*spacing;
-            }
-            *ptr++ = (*this)(x,y);
+            _transformData->real(i,j) = real;
+            _transformData->imag(i,j) = imag;
         }
     }
-    // calculate the discrete Fourier transform of the tabulated data
-    // ...
     return;
 }

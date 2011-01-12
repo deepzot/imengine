@@ -42,9 +42,9 @@ namespace imengine {
     inline double TransformData::getGridSpacing() const { return _gridSpacing; }
 
     inline double& TransformData::real(int i, int j) { return _data[2*(j + _gridSize*i)]; }
-    inline double& TransformData::imag(int i, int j) { return _data[2*(j + _gridSize*i)]; }
+    inline double& TransformData::imag(int i, int j) { return _data[2*(j + _gridSize*i)+1]; }
     inline double const& TransformData::real(int i, int j) const { return _data[2*(j + _gridSize*i)]; }
-    inline double const& TransformData::imag(int i, int j) const { return _data[2*(j + _gridSize*i)]; }
+    inline double const& TransformData::imag(int i, int j) const { return _data[2*(j + _gridSize*i)+1]; }
 
     inline double TransformData::waveNumber(int i) const {
         return i < _break ? i*_dk : (_gridSize-i)*_dk;
