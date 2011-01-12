@@ -24,12 +24,12 @@ namespace imengine {
     protected:
         virtual double estimatePixelValue(int i, int j) = 0;
         virtual TransformData *createImageTransform() = 0;
-        TransformData *_imageTransform;
+        double *_imageData;
 	private:
         AbsPixelFunction &_source, &_psf;
         int _pixelsPerSide;
         double _pixelScale;
-        TransformData *_sourceTransform, *_psfTransform;
+        TransformData *_sourceTransform, *_psfTransform, *_imageTransform;
 	}; // ImageEngine
 } // imengine
 

@@ -31,6 +31,15 @@ namespace imengine {
         // returns the axis value associated with an index value (no range check on i,j)
         double getX(int i) const;
         double getY(int j) const;
+        
+        // fills the specified row-wise 2D data array with the real part of our inverse Fourier transform
+        void inverseTransform(double *realData) const;
+        
+        // sets our values to the Fourier transform of the specified row-wise real 2D data array
+        void setToTransform(double const *realData);
+        
+        // sets our values to the element-by-element product of two other transforms
+        void setToProduct(TransformData const& t1, TransformData const& t2);
 
 	private:
         int _gridSize,_break;

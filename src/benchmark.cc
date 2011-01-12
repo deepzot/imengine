@@ -1,13 +1,15 @@
 // Created 8-Jan-2011 by David Kirkby <dkirkby@uci.edu>
 
+#include "imengine/models/DiskDemo.h"
 #include "imengine/models/GaussianDemo.h"
 #include "imengine/MidpointImageEngine.h"
 
 namespace img = imengine;
-namespace models = imengine::models;
+namespace mod = imengine::models;
 
 int main(int argc, char **argv) {
-    models::GaussianDemo src(3),psf(3);
-    img::MidpointImageEngine engine(src,psf,8);
+    mod::DiskDemo src(24);
+    mod::GaussianDemo psf(8);
+    img::MidpointImageEngine engine(src,psf,48);
     engine.generate();
 }

@@ -3,6 +3,7 @@
 #include "imengine/TransformData.h"
 
 #include <cassert>
+#include <cmath>
 
 namespace local = imengine;
 
@@ -23,4 +24,49 @@ local::TransformData::~TransformData() {
 local::TransformData *local::TransformData::createFromPrototype(local::TransformData const &prototype) {
     return new local::TransformData(prototype._gridSize,prototype._gridSpacing,
         prototype._gridX,prototype._gridY);
+}
+
+void local::TransformData::inverseTransform(double *realData) const {
+    double dtheta = +8*std::atan(1.0)/_gridSize; // +2pi/N
+    for(int i = 0; i < _gridSize; i++) {
+        for(int j = 0; j < _gridSize; j++) {
+            double value(0);
+            for(int m = 0; m < _gridSize; m++) {
+                for(int n = 0; n < _gridSize; n++) {
+                    double theta = dtheta*(m*i + n*j);                    
+                    value += real(m,n)*std::cos(theta) - imag(m,n)*std::sin(theta);
+                }
+            }
+            *realData++ = value;
+        }
+    } 
+}
+
+void local::TransformData::setToTransform(double const *realData) {
+    double dtheta = -8*std::atan(1.0)/_gridSize; // -2pi/N
+    for(int i = 0; i < _gridSize; i++) {
+        for(int j = 0; j < _gridSize; j++) {
+            double re(0), im(0);
+            for(int m = 0; m < _gridSize; m++) {
+                for(int n = 0; n < _gridSize; n++) {
+                    double value = _data[n + _gridSize*m];
+                    double theta = dtheta*(m*i + n*j);
+                    re += value*std::cos(theta);
+                    im += value*std::sin(theta);
+                }
+            }
+            real(i,j) = re;
+            imag(i,j) = im;
+        }
+    }
+}
+
+void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2) {
+    for(int i = 0; i < _gridSize; i++) {
+        for(int j = 0; j < _gridSize; j++) {
+            double re1(t1.real(i,j)),im1(t1.imag(i,j)),re2(t2.real(i,j)),im2(t2.imag(i,j));
+            real(i,j) = re1*re2 - im1*im2;
+            imag(i,j) = re1*im2 + im1*re2;
+        }
+    }
 }
