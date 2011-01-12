@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <iostream>
 
 namespace local = imengine;
 
@@ -37,8 +38,10 @@ void local::TransformData::inverseTransform(double *realData) const {
                     value += real(m,n)*std::cos(theta) - imag(m,n)*std::sin(theta);
                 }
             }
-            *realData++ = value;
+            realData[j + _gridSize*i] = value;
+            std::cout << value << ' ';
         }
+        std::cout << std::endl;
     } 
 }
 
@@ -49,7 +52,7 @@ void local::TransformData::setToTransform(double const *realData) {
             double re(0), im(0);
             for(int m = 0; m < _gridSize; m++) {
                 for(int n = 0; n < _gridSize; n++) {
-                    double value = _data[n + _gridSize*m];
+                    double value = realData[n + _gridSize*m];
                     double theta = dtheta*(m*i + n*j);
                     re += value*std::cos(theta);
                     im += value*std::sin(theta);

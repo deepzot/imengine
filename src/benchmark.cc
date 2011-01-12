@@ -8,8 +8,8 @@ namespace img = imengine;
 namespace mod = imengine::models;
 
 int main(int argc, char **argv) {
-    mod::DiskDemo src(24);
-    mod::GaussianDemo psf(8);
+    mod::DiskDemo src(12);
+    mod::GaussianDemo psf(2);
     img::MidpointImageEngine engine(src,psf,48);
     engine.generate();
 }

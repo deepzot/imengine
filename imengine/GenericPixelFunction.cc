@@ -35,8 +35,11 @@ void local::GenericPixelFunction::doTransform(double dx, double dy) const {
             double y = _transformData->getY(j);
             double value = (*this)(x,y);
             *ptr++ = value;
+            std::cout << value << ' ';
         }
+        std::cout << std::endl;
     }
+    std::cout << "------------" << std::endl;
     // calculate the discrete (un-normalized) Fourier transform of the tabulated data
     _transformData->setToTransform(_data);
 }

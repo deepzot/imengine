@@ -47,5 +47,6 @@ local::ImageData *local::ImageEngine::generate(double dx, double dy) {
     _imageTransform->setToProduct(*_sourceTransform,*_psfTransform);
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform(_imageData);
+
     return 0;
 }

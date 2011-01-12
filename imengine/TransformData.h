@@ -15,7 +15,7 @@ namespace imengine {
 		
 		virtual ~TransformData();
 		
-		// returns read-only initialization attributes (use getX(0),getY(0) to retrieve gridX,gridY)
+		// returns read-only initialization attributes
         int getGridSize() const;
         double getGridSpacing() const;
 
@@ -56,15 +56,15 @@ namespace imengine {
     inline double const& TransformData::imag(int i, int j) const { return _data[2*(j + _gridSize*i)+1]; }
 
     inline double TransformData::waveNumber(int i) const {
-        return i < _break ? i*_dk : (_gridSize-i)*_dk;
+        return _dk*(i < _break ? i : i-_gridSize);
     }
 
     inline double TransformData::getX(int i) const {
-        return _gridX + _gridSpacing*(i < _break ? i : _gridSize-i);
+        return _gridX + _gridSpacing*(i < _break ? i : i-_gridSize);
     }
 
     inline double TransformData::getY(int j) const {
-        return _gridY + _gridSpacing*(j < _break ? j : _gridSize-j);
+        return _gridY + _gridSpacing*(j < _break ? j : j-_gridSize);
     }
 
 } // imengine
