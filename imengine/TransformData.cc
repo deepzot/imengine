@@ -40,9 +40,7 @@ void local::TransformData::inverseTransform(double *realData) const {
                 }
             }
             realData[j + _gridSize*i] = value;
-            std::cout << value << ' ';
         }
-        std::cout << std::endl;
     } 
 }
 

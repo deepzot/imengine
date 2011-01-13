@@ -29,5 +29,5 @@ local::TransformData* local::MidpointImageEngine::createImageTransform() {
 }
 
 double local::MidpointImageEngine::estimatePixelValue(int i, int j) {
-    return 0;
+    return getPixelScale()*_imageData[j+(1+getPixelsPerSide())*i];
 }

@@ -5,6 +5,7 @@
 #include "imengine/TransformData.h"
 
 #include <cassert>
+#include <iostream>
 
 namespace local = imengine;
 
@@ -40,13 +41,20 @@ local::ImageData *local::ImageEngine::generate(double dx, double dy) {
         int size = _imageTransform->getGridSize();
         _imageData = new double[size*size];
     }
-    // calculate the (un-normalized) discrete Fourier transform of the source and PSF
+    // calculate the discrete Fourier transform of the source and PSF
     double norm1 = _source.doTransform(dx,dy);
     double norm2 = _psf.doTransform(0,0);
     // combine the source and PSF in Fourier space
     _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,norm1*norm2);
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform(_imageData);
-
+    // estimate the signal in each pixel
+    for(int i = 0; i < _pixelsPerSide; i++) {
+        for(int j = 0; j < _pixelsPerSide; j++) {
+            double value = estimatePixelValue(i,j);
+            std::cout << value << ' ';
+        }
+        std::cout << std::endl;
+    }
     return 0;
 }
