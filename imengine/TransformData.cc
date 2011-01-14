@@ -9,11 +9,8 @@
 namespace local = imengine;
 
 local::TransformData::TransformData(int gridSize, double gridSpacing, double gridX, double gridY) :
-_gridSize(gridSize), _gridSpacing(gridSpacing), _gridX(gridX), _gridY(gridY)
+DataGrid(gridSize,gridSpacing,gridX,gridY)
 {
-    assert(gridSize > 0);
-    assert(gridSpacing > 0);
-    _break = gridSize/2 + 1;
     _dk = 1/(gridSize*gridSpacing);
     _norm = 1.0/gridSize;
     _data = new double[2*gridSize*gridSize];
@@ -23,9 +20,9 @@ local::TransformData::~TransformData() {
     delete[] _data;
 }
 
-local::TransformData *local::TransformData::createFromPrototype(local::TransformData const &prototype) {
-    return new local::TransformData(prototype._gridSize,prototype._gridSpacing,
-        prototype._gridX,prototype._gridY);
+local::TransformData *local::TransformData::createFromPrototype(local::DataGrid const &prototype) {
+    return new local::TransformData(prototype.getGridSize(),prototype.getGridSpacing(),
+        prototype.getGridX(),prototype.getGridY());
 }
 
 void local::TransformData::inverseTransform(double *realData) const {
