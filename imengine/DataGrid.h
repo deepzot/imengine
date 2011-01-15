@@ -30,7 +30,7 @@ namespace imengine {
     inline double DataGrid::getGridSpacing() const { return _gridSpacing; }
     inline double DataGrid::getGridX() const { return _gridX; }
     inline double DataGrid::getGridY() const { return _gridY; }
-     
+    
     inline double DataGrid::getX(int i) const {
         return _gridX + _gridSpacing*(i < _break1 ? i : i-_gridSize);
     }

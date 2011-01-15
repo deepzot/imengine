@@ -28,10 +28,10 @@ double local::GenericPixelFunction::doTransform(double dx, double dy) const {
     double *ptr = _data;
     int ngrid = _transformData->getGridSize();
     double spacing = _transformData->getGridSpacing();
-    for(int i = 0; i < ngrid; i++) {
-        double x = _transformData->getX(i);
-        for(int j = 0; j < ngrid; j++) {
-            double y = _transformData->getY(j);
+    for(int j = 0; j < ngrid; j++) {
+        double y = _transformData->getY(j);
+        for(int i = 0; i < ngrid; i++) {
+            double x = _transformData->getX(i);
             double value = (*this)(x,y);
             *ptr++ = value;
         }

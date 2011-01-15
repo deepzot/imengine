@@ -41,10 +41,10 @@ namespace imengine {
         double *_data;
 	}; // TransformData
 
-    inline double& TransformData::real(int i, int j) { return _data[2*(j + _gridSize*i)]; }
-    inline double& TransformData::imag(int i, int j) { return _data[2*(j + _gridSize*i)+1]; }
-    inline double const& TransformData::real(int i, int j) const { return _data[2*(j + _gridSize*i)]; }
-    inline double const& TransformData::imag(int i, int j) const { return _data[2*(j + _gridSize*i)+1]; }
+    inline double& TransformData::real(int i, int j) { return _data[2*(i + _gridSize*j)]; }
+    inline double& TransformData::imag(int i, int j) { return _data[2*(i + _gridSize*j)+1]; }
+    inline double const& TransformData::real(int i, int j) const { return _data[2*(i + _gridSize*j)]; }
+    inline double const& TransformData::imag(int i, int j) const { return _data[2*(i + _gridSize*j)+1]; }
 
     inline double TransformData::waveNumber(int i) const {
         return _dk*(i < _break1 ? i : i-_gridSize);

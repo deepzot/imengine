@@ -49,8 +49,8 @@ local::ImageData *local::ImageEngine::generate(double dx, double dy) {
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform(_imageData);
     // estimate the signal in each pixel
-    for(int i = 0; i < _pixelsPerSide; i++) {
-        for(int j = 0; j < _pixelsPerSide; j++) {
+    for(int j = 0; j < _pixelsPerSide; j++) {
+        for(int i = 0; i < _pixelsPerSide; i++) {
             double value = estimatePixelValue(i,j);
             std::cout << value << ' ';
         }

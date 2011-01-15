@@ -27,28 +27,28 @@ local::TransformData *local::TransformData::createFromPrototype(local::DataGrid 
 
 void local::TransformData::inverseTransform(double *realData) const {
     double dtheta = +8*std::atan(1.0)/_gridSize; // +2pi/N
-    for(int i = 0; i < _gridSize; i++) {
-        for(int j = 0; j < _gridSize; j++) {
+    for(int j = 0; j < _gridSize; j++) {
+        for(int i = 0; i < _gridSize; i++) {
             double value(0);
-            for(int m = 0; m < _gridSize; m++) {
-                for(int n = 0; n < _gridSize; n++) {
+            for(int n = 0; n < _gridSize; n++) {
+                for(int m = 0; m < _gridSize; m++) {
                     double theta = dtheta*(m*i + n*j);                    
                     value += real(m,n)*std::cos(theta) - imag(m,n)*std::sin(theta);
                 }
             }
-            realData[j + _gridSize*i] = value;
+            realData[i + _gridSize*j] = value;
         }
     } 
 }
 
 double local::TransformData::setToTransform(double const *realData) {
     double dtheta = -8*std::atan(1.0)/_gridSize; // -2pi/N
-    for(int i = 0; i < _gridSize; i++) {
-        for(int j = 0; j < _gridSize; j++) {
+    for(int j = 0; j < _gridSize; j++) {
+        for(int i = 0; i < _gridSize; i++) {
             double re(0), im(0);
-            for(int m = 0; m < _gridSize; m++) {
-                for(int n = 0; n < _gridSize; n++) {
-                    double value = realData[n + _gridSize*m];
+            for(int n = 0; n < _gridSize; n++) {
+                for(int m = 0; m < _gridSize; m++) {
+                    double value = realData[m + _gridSize*n];
                     double theta = dtheta*(m*i + n*j);
                     re += value*std::cos(theta);
                     im += value*std::sin(theta);
@@ -64,8 +64,8 @@ double local::TransformData::setToTransform(double const *realData) {
 
 void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2, 
 double norm) {
-    for(int i = 0; i < _gridSize; i++) {
-        for(int j = 0; j < _gridSize; j++) {
+    for(int j = 0; j < _gridSize; j++) {
+        for(int i = 0; i < _gridSize; i++) {
             double re1(t1.real(i,j)),im1(t1.imag(i,j)),re2(t2.real(i,j)),im2(t2.imag(i,j));
             real(i,j) = norm*(re1*re2 - im1*im2);
             imag(i,j) = norm*(re1*im2 + im1*re2);
