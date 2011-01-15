@@ -47,7 +47,7 @@ namespace imengine {
     inline double const& TransformData::imag(int i, int j) const { return _data[2*(j + _gridSize*i)+1]; }
 
     inline double TransformData::waveNumber(int i) const {
-        return _dk*(i < _break ? i : i-_gridSize);
+        return _dk*(i < _break1 ? i : i-_gridSize);
     }
 
 } // imengine

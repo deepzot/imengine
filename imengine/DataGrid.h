@@ -19,8 +19,10 @@ namespace imengine {
         // returns the (unexploded) axis value associated with an index value (no range check on i,j)
         double getX(int i) const;
         double getY(int j) const;
+        // maps an un-exploded index with (0,0) in the bottom-left corner to an exploded index
+        int getIndex(int k) const;
     protected:
-        int _gridSize,_break;
+        int _gridSize,_break1,_break2;
         double _gridSpacing, _gridX, _gridY;
 	}; // DataGrid
 	
@@ -30,11 +32,15 @@ namespace imengine {
     inline double DataGrid::getGridY() const { return _gridY; }
      
     inline double DataGrid::getX(int i) const {
-        return _gridX + _gridSpacing*(i < _break ? i : i-_gridSize);
+        return _gridX + _gridSpacing*(i < _break1 ? i : i-_gridSize);
     }
     
     inline double DataGrid::getY(int j) const {
-        return _gridY + _gridSpacing*(j < _break ? j : j-_gridSize);
+        return _gridY + _gridSpacing*(j < _break1 ? j : j-_gridSize);
+    }
+    
+    inline int DataGrid::getIndex(int k) const {
+        return (k >= _break1) ? (k - _break1) : (k + _break2);
     }
     
 } // imengine

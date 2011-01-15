@@ -11,7 +11,8 @@ _gridSize(gridSize), _gridSpacing(gridSpacing), _gridX(gridX), _gridY(gridY)
 {
     assert(gridSize > 0);
     assert(gridSpacing > 0);
-    _break = gridSize/2 + 1;
+    _break1 = gridSize/2 + 1;
+    _break2 = _gridSize - _break1;
 }
 
 local::DataGrid::~DataGrid() { }
