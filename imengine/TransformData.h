@@ -6,6 +6,7 @@
 #include "imengine/DataGrid.h"
 
 namespace imengine {
+    class InterpolationData;
     // Stores complex discrete Fourier transform values on a square grid
 	class TransformData : public DataGrid {
 	public:
@@ -21,12 +22,15 @@ namespace imengine {
         double& imag(int i, int j);
         double const& real(int i, int j) const;
         double const& imag(int i, int j) const;
+        
+        // calculates and returns re*re + im*im (no range checks on i,j)
+        double absSquared(int i, int j) const;
 
         // returns the wavenumber associated an index value (no range check on i)
         double waveNumber(int i) const;
         
-        // fills the specified row-wise 2D data array with the real part of our inverse Fourier transform
-        void inverseTransform(double *realData) const;
+        // calculates the real part of our inverse Fourier transform
+        void inverseTransform(InterpolationData &result) const;
         
         // Computes the discrete Fourier transform of the specified row-wise real 2D data array
         // Returns the overall scale factor necessary so that the result corresponds to:
@@ -35,6 +39,9 @@ namespace imengine {
         
         // sets our values to the element-by-element product of two other transforms
         void setToProduct(TransformData const& t1, TransformData const& t2, double norm = 1);
+        
+        // dumps grid absolute-squared values to std::cout in row-wise order
+        void dumpAbsSquared() const;
 
 	private:
         double _dk,_norm;
@@ -45,6 +52,11 @@ namespace imengine {
     inline double& TransformData::imag(int i, int j) { return _data[2*(i + _gridSize*j)+1]; }
     inline double const& TransformData::real(int i, int j) const { return _data[2*(i + _gridSize*j)]; }
     inline double const& TransformData::imag(int i, int j) const { return _data[2*(i + _gridSize*j)+1]; }
+    
+    inline double TransformData::absSquared(int i, int j) const {
+        double re(real(i,j)), im(imag(i,j));
+        return re*re + im*im;
+    }
 
     inline double TransformData::waveNumber(int i) const {
         return _dk*(i < _break1 ? i : i-_gridSize);

@@ -5,7 +5,7 @@
 
 namespace imengine {
     class AbsPixelFunction;
-    class ImageData;
+    class InterpolationData;
     class TransformData;
     // Generates pixelized images of a source convoluted with a psf.
 	class ImageEngine {
@@ -20,14 +20,15 @@ namespace imengine {
         inline double getPixelScale() const { return _pixelScale; }
         // Initializes 
 		// Generates an image with the source function offset by (dx,dy)
-        ImageData *generate(double dx = 0, double dy = 0);
+        void generate(double dx = 0, double dy = 0);
     protected:
-        // Returns a pointer to a newly created TransformData with parameters appropriate
+        // Returns a pointer to a newly created InterpolationData with parameters appropriate
         // for the requested pixel size and pixelation method
-        virtual TransformData *createImageTransform() = 0;
+        virtual InterpolationData *createGrid() = 0;
         // Estimates the signal in pixel (i,j) using the tabulated values in _imageData
         virtual double estimatePixelValue(int i, int j) = 0;
-        double *_imageData;
+        InterpolationData *_imageGrid;
+        double _scaleSquared;
 	private:
         AbsPixelFunction &_source, &_psf;
         int _pixelsPerSide;

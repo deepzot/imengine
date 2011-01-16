@@ -40,7 +40,7 @@ namespace imengine {
     }
     
     inline int DataGrid::getIndex(int k) const {
-        return (k >= _break1) ? (k - _break1) : (k + _break2);
+        return (k >= _break2) ? (k - _break2) : (k + _break1);
     }
     
 } // imengine

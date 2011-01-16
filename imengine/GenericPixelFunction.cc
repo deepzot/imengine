@@ -4,6 +4,7 @@
 #include "imengine/TransformData.h"
 
 #include <cassert>
+#include <iostream>
 
 namespace local = imengine;
 
@@ -33,9 +34,12 @@ double local::GenericPixelFunction::doTransform(double dx, double dy) const {
         for(int i = 0; i < ngrid; i++) {
             double x = _transformData->getX(i);
             double value = (*this)(x,y);
+            std::cout << value << ' ';
             *ptr++ = value;
         }
+        std::cout << std::endl;
     }
+    std::cout << "---" << std::endl;
     // calculate the discrete Fourier transform of the tabulated data
     return _transformData->setToTransform(_data);
 }

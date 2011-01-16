@@ -1,6 +1,7 @@
 // Created 09-Jan-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/TransformData.h"
+#include "imengine/InterpolationData.h"
 
 #include <cassert>
 #include <cmath>
@@ -25,7 +26,7 @@ local::TransformData *local::TransformData::createFromPrototype(local::DataGrid 
         prototype.getGridX(),prototype.getGridY());
 }
 
-void local::TransformData::inverseTransform(double *realData) const {
+void local::TransformData::inverseTransform(InterpolationData &result) const {
     double dtheta = +8*std::atan(1.0)/_gridSize; // +2pi/N
     for(int j = 0; j < _gridSize; j++) {
         for(int i = 0; i < _gridSize; i++) {
@@ -36,7 +37,7 @@ void local::TransformData::inverseTransform(double *realData) const {
                     value += real(m,n)*std::cos(theta) - imag(m,n)*std::sin(theta);
                 }
             }
-            realData[i + _gridSize*j] = value;
+            result.setValue(i,j,value);
         }
     } 
 }
@@ -70,5 +71,14 @@ double norm) {
             real(i,j) = norm*(re1*re2 - im1*im2);
             imag(i,j) = norm*(re1*im2 + im1*re2);
         }
+    }
+}
+
+void local::TransformData::dumpAbsSquared() const {
+    for(int j = 0; j < _gridSize; j++) {
+        for(int i = 0; i < _gridSize; i++) {
+            std::cout << absSquared(i,j) << ' ';
+        }
+        std::cout << std::endl;
     }
 }

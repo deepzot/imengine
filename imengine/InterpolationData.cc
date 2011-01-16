@@ -3,6 +3,7 @@
 #include "imengine/InterpolationData.h"
 
 #include <cassert>
+#include <iostream>
 
 namespace local = imengine;
 
@@ -14,3 +15,12 @@ local::InterpolationData::InterpolationData(int gridSize, int pad, double gridSp
 }
 
 local::InterpolationData::~InterpolationData() { }
+
+void local::InterpolationData::dump() const {
+    for(int j = 0; j < _gridSize; j++) {
+        for(int i = 0; i < _gridSize; i++) {
+            std::cout << _data[i + _gridSize*j] << ' ';
+        }
+        std::cout << std::endl;
+    }
+}
