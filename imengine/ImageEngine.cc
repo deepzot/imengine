@@ -18,6 +18,7 @@ _imageGrid(0), _sourceTransform(0), _psfTransform(0), _imageTransform(0)
     assert(pixelsPerSide > 0);
     assert(pixelScale > 0);
     _scaleSquared = pixelScale*pixelScale;
+    std::cout << "s2 = " << _scaleSquared << std::endl;
 }
 
 local::ImageEngine::~ImageEngine() {
@@ -44,28 +45,23 @@ void local::ImageEngine::generate(double dx, double dy) {
         _source.initTransform(_sourceTransform);
         _psf.initTransform(_psfTransform);
     }
-    // calculate the discrete Fourier transform of the source and PSF
-    double norm1 = _source.doTransform(dx,dy);
-    double norm2 = _psf.doTransform(0,0);
+    // calculate the discrete Fourier transform of the source and PSF (with any offset
+    // only applied to the source)
+    double norm = _source.doTransform(dx,dy);
+    norm *= _psf.doTransform(0,0);
     // combine the source and PSF in Fourier space
-    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,norm1*norm2);
+    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,norm);
     // build a grid of real-space convoluted image data
-    std::cout << "=== src ===" << std::endl;
-    _sourceTransform->dumpAbsSquared();
-    std::cout << "=== psf ===" << std::endl;
-    _psfTransform->dumpAbsSquared();
-    std::cout << "=== abs ===" << std::endl;
-    _imageTransform->dumpAbsSquared();
-    std::cout << "=== inv ===" << std::endl;
-    _imageTransform->inverseTransform(*_imageGrid);
-    _imageGrid->dump();
-    std::cout << "===" << std::endl;
+    norm = _imageTransform->inverseTransform(*_imageGrid);
     // estimate the signal in each pixel
+    double sum(0);
     for(int y = 0; y < _pixelsPerSide; y++) {
         for(int x = 0; x < _pixelsPerSide; x++) {
-            double value = estimatePixelValue(x,y);
+            double value = norm*estimatePixelValue(x,y);
+            sum += value;
             std::cout << value << ' ';
         }
         std::cout << std::endl;
     }
+    std::cout << "sum = " << sum << std::endl;
 }

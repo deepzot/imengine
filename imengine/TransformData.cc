@@ -27,7 +27,7 @@ bool preserveOffset) {
         preserveOffset ? prototype.getGridX() : 0, preserveOffset ? prototype.getGridY() : 0);
 }
 
-void local::TransformData::inverseTransform(InterpolationData &result) const {
+double local::TransformData::inverseTransform(InterpolationData &result) const {
     double dtheta = +8*std::atan(1.0)/_gridSize; // +2pi/N
     for(int j = 0; j < _gridSize; j++) {
         for(int i = 0; i < _gridSize; i++) {
@@ -40,7 +40,9 @@ void local::TransformData::inverseTransform(InterpolationData &result) const {
             }
             result.setValue(i,j,value);
         }
-    } 
+    }
+    // return the appropriate normalization factor
+    return _norm; 
 }
 
 double local::TransformData::setToTransform(double const *realData) {
@@ -66,6 +68,8 @@ double local::TransformData::setToTransform(double const *realData) {
 
 void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2, 
 double norm) {
+    // apply an additional factor for the convolution integral
+    norm *= _gridSpacing*_gridSpacing;
     for(int j = 0; j < _gridSize; j++) {
         for(int i = 0; i < _gridSize; i++) {
             double re1(t1.real(i,j)),im1(t1.imag(i,j)),re2(t2.real(i,j)),im2(t2.imag(i,j));

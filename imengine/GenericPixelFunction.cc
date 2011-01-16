@@ -28,18 +28,18 @@ double local::GenericPixelFunction::doTransform(double dx, double dy) const {
     // tabulate function values on a (x,y) grid
     double *ptr = _data;
     int ngrid = _transformData->getGridSize();
-    double spacing = _transformData->getGridSpacing();
+    double total(0);
     for(int j = 0; j < ngrid; j++) {
-        double y = _transformData->getY(j);
+        double y = _transformData->getY(j) - dy;
         for(int i = 0; i < ngrid; i++) {
-            double x = _transformData->getX(i);
+            double x = _transformData->getX(i) - dx;
             double value = (*this)(x,y);
-            std::cout << value << ' ';
             *ptr++ = value;
+            total += value;
         }
-        std::cout << std::endl;
     }
-    std::cout << "---" << std::endl;
+    double spacing = _transformData->getGridSpacing();
+    std::cout << "GenericPixelFunction: total = " << total*spacing*spacing << std::endl;
     // calculate the discrete Fourier transform of the tabulated data
     return _transformData->setToTransform(_data);
 }

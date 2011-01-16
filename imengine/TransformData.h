@@ -29,8 +29,10 @@ namespace imengine {
         // returns the wavenumber associated an index value (no range check on i)
         double waveNumber(int i) const;
         
-        // calculates the real part of our inverse Fourier transform
-        void inverseTransform(InterpolationData &result) const;
+        // Calculates the real part of our inverse Fourier transform.
+        // Returns the overall scale factor necessary so that the result corresponds to:
+        // transform[m,n] = 1/N Sum[data[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
+        double inverseTransform(InterpolationData &result) const;
         
         // Computes the discrete Fourier transform of the specified row-wise real 2D data array
         // Returns the overall scale factor necessary so that the result corresponds to:
