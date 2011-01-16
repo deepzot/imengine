@@ -18,13 +18,12 @@ local::InterpolationData* local::MidpointImageEngine::createGrid() {
     int size = getPixelsPerSide();
     double scale = getPixelScale();
     if(size % 2 == 1) {
-        // for an odd number of pixels, the grid is already centered on the pixel array,
+        // for an odd number of pixels, the grid is already centered on the pixel array
         return new local::InterpolationData(size,0,scale,0,0);
     }
     else {
-        // an even number of pixels requires padding the top and one side of the grid
-        // and introduces a half-pixel offset.
-        return new local::InterpolationData(size+1,0,scale,scale/2,scale/2);
+        // an even number of pixels requires a half-pixel offset
+        return new local::InterpolationData(size,0,scale,-scale/2,-scale/2);
     }
 }
 

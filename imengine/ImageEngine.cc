@@ -34,10 +34,12 @@ void local::ImageEngine::generate(double dx, double dy) {
     if(0 == _imageTransform) {
         _imageGrid = createGrid();
         assert(0 != _imageGrid);
-        // build discrete Fourier transform grids with the same attributes
-        _imageTransform = TransformData::createFromPrototype(*_imageGrid);
-        _sourceTransform = TransformData::createFromPrototype(*_imageGrid);
-        _psfTransform = TransformData::createFromPrototype(*_imageGrid);
+        // build discrete Fourier transform grids with the same attributes but zero
+        // out the offset in the psf otherwise it will be applied twice (an offset
+        // in the image transform has no effect so we arbitrary zero it here)
+        _sourceTransform = TransformData::createFromPrototype(*_imageGrid,true);
+        _psfTransform = TransformData::createFromPrototype(*_imageGrid,false);
+        _imageTransform = TransformData::createFromPrototype(*_imageGrid,false);
         // link the source and psf grids to their pixel functions
         _source.initTransform(_sourceTransform);
         _psf.initTransform(_psfTransform);

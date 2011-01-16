@@ -21,9 +21,10 @@ local::TransformData::~TransformData() {
     delete[] _data;
 }
 
-local::TransformData *local::TransformData::createFromPrototype(local::DataGrid const &prototype) {
+local::TransformData *local::TransformData::createFromPrototype(local::DataGrid const &prototype,
+bool preserveOffset) {
     return new local::TransformData(prototype.getGridSize(),prototype.getGridSpacing(),
-        prototype.getGridX(),prototype.getGridY());
+        preserveOffset ? prototype.getGridX() : 0, preserveOffset ? prototype.getGridY() : 0);
 }
 
 void local::TransformData::inverseTransform(InterpolationData &result) const {

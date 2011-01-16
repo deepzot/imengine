@@ -15,7 +15,7 @@ namespace imengine {
 		virtual ~TransformData();
 		
 		// Creates a new transform data object with attributes copied from the specified prototype
-		static TransformData *createFromPrototype(DataGrid const& prototype);
+		static TransformData *createFromPrototype(DataGrid const& prototype, bool preserveOffset);
 
 		// accesses the real/imag parts of transform data (no range checks on i,j)
         double& real(int i, int j);
