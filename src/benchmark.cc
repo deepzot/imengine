@@ -3,11 +3,7 @@
 #include <iostream>
 #include <sys/resource.h>
 
-#include "imengine/models/DiskDemo.h"
-#include "imengine/models/GaussianDemo.h"
-#include "imengine/MidpointImageEngine.h"
-#include "imengine/BilinearImageEngine.h"
-#include "imengine/BicubicImageEngine.h"
+#include "imengine.h"
 
 namespace img = imengine;
 namespace mod = imengine::models;

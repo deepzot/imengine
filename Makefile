@@ -50,10 +50,6 @@ LIB_OBJS := $(LIB_SRCS:$(PKG)/%.cc=build/%.o)
 # automatically generated dependency files
 ALL_DEPS := $(wildcard build/*.d $(MODULES:%=build/%/*.d))
 
-
-test:
-	echo $(BIN_NAMES)
-
 # named targets
 bin: $(BIN_NAMES)
 
