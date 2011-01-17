@@ -6,7 +6,6 @@
 #include "imengine/TransformData.h"
 
 #include <cassert>
-#include <iostream>
 
 namespace local = imengine;
 
@@ -18,7 +17,6 @@ _imageGrid(0), _sourceTransform(0), _psfTransform(0), _imageTransform(0)
     assert(pixelsPerSide > 0);
     assert(pixelScale > 0);
     _scaleSquared = pixelScale*pixelScale;
-    std::cout << "s2 = " << _scaleSquared << std::endl;
 }
 
 local::ImageEngine::~ImageEngine() {
@@ -59,9 +57,6 @@ void local::ImageEngine::generate(double dx, double dy) {
         for(int x = 0; x < _pixelsPerSide; x++) {
             double value = estimatePixelValue(x,y);
             sum += value;
-            std::cout << value << ' ';
         }
-        std::cout << std::endl;
     }
-    std::cout << "sum = " << sum << std::endl;
 }

@@ -4,7 +4,6 @@
 #include "imengine/TransformData.h"
 
 #include <cassert>
-#include <iostream>
 
 namespace local = imengine;
 
@@ -39,7 +38,6 @@ void local::GenericPixelFunction::doTransform(double dx, double dy) const {
         }
     }
     double spacing = _transformData->getGridSpacing();
-    std::cout << "GenericPixelFunction: total = " << total*spacing*spacing << std::endl;
     // calculate the discrete Fourier transform of the tabulated data
     _transformData->setToTransform(_data);
 }
