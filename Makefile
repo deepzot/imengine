@@ -35,7 +35,7 @@ MODULES := models
 BOOST := /Users/david/Clib/boost_1_45_0
 
 # compile and link options
-CXXFLAGS := -I. -I$(BOOST)
+CXXFLAGS := -I. -I$(BOOST) -O3
 LDFLAGS := -L. -l$(PKG) $(BOOST)/stage/lib/libboost_program_options.a
 
 # sources under src/ to build as executables in bin/ linked against the library

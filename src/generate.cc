@@ -13,14 +13,19 @@ namespace po = boost::program_options;
 int main(int argc, char **argv) {
     // configure command-line options processing using the boost program_options library
     int npixels;
+    double dx,dy,scale;
     po::options_description cli;
     cli.add_options()
         ("help,h", "Prints this info and exit.")
         ("midpoint", "Uses the midpoint method for pixelization.")
-        ("bilinear", "Uses bilinear interpolation for pixelization.")
+        ("bilinear", "Uses bilinear interpolation for pixelization (this is the default).")
         ("bicubic", "Uses bicubic interpolation for pixelization.")
         ("npixels,n", po::value<int>(&npixels)->default_value(48),
-            "Number of pixels per side for final square image.");
+            "Number of pixels per side for final square image.")
+        ("dx",po::value<double>(&dx)->default_value(0.),"Horizontal source shift.")
+        ("dy",po::value<double>(&dx)->default_value(0.),"Vertical source shift.")
+        ("scale",po::value<double>(&scale)->default_value(1.),"Pixel scale.")
+        ;
 
     // do the command line parsing now
     po::variables_map vm;
@@ -52,13 +57,11 @@ int main(int argc, char **argv) {
         return 3;
     }
 
-    double scale = 1;
-
     // create the source model
-    mod::DiskDemo src(0.2*npixels*scale);
+    mod::DiskDemo src(0.2*npixels);
     
     // create the psf model
-    mod::GaussianDemo psf(0.1*npixels*scale);
+    mod::GaussianDemo psf(0.1*npixels);
     
     // create the pixelization engine
     img::ImageEngine *engine(0);
@@ -74,7 +77,7 @@ int main(int argc, char **argv) {
     
     // generate the image
     img::ImageWriter writer;
-    engine->generate(writer);
+    engine->generate(writer,dx,dy);
     
     // cleanup and exit without error
     if(engine) delete engine;

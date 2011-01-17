@@ -44,10 +44,17 @@ int main(int argc, char **argv) {
     std::cout << "96 " << trial(16,1) << std::endl;
 }
 
-/* results:
+/* results without optimization:
 6 869.386
 12 10387.2
 24 141793
 48 2.09801e+06
 96 3.22019e+07
+
+results with -O3:
+6 772.033
+12 9258.01
+24 126121
+48 1.86437e+06
+96 2.86504e+07
 */
