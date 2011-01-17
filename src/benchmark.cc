@@ -2,14 +2,16 @@
 
 #include "imengine/models/DiskDemo.h"
 #include "imengine/models/GaussianDemo.h"
+#include "imengine/MidpointImageEngine.h"
 #include "imengine/BilinearImageEngine.h"
+#include "imengine/BicubicImageEngine.h"
 
 namespace img = imengine;
 namespace mod = imengine::models;
 
 int main(int argc, char **argv) {
-    mod::DiskDemo src(5);
+    mod::GaussianDemo src(1);
     mod::GaussianDemo psf(1);
-    img::BilinearImageEngine engine(src,psf,25,0.75);
-    engine.generate(0,0);
+    img::BilinearImageEngine engine(src,psf,10,3.0);
+    engine.generate(0.5,0);
 }

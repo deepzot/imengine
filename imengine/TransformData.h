@@ -40,7 +40,7 @@ namespace imengine {
         void setToTransform(double const *realData);
         
         // sets our values to the element-by-element product of two other transforms
-        void setToProduct(TransformData const& t1, TransformData const& t2, double norm = 1);
+        void setToProduct(TransformData const& t1, TransformData const& t2);
         
         // dumps grid absolute-squared values to std::cout in row-wise order
         void dumpAbsSquared() const;

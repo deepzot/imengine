@@ -50,7 +50,7 @@ void local::ImageEngine::generate(double dx, double dy) {
     _source.doTransform(dx,dy);
     _psf.doTransform(0,0);
     // combine the source and PSF in Fourier space
-    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,1);
+    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform);
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform(*_imageGrid);
     // estimate the signal in each pixel
