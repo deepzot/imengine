@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
         bilinear = true; // specifies default method
     }
     else if(methods != 1) {
-        std::cerr << "Exactly one pixelization method must be specified (midpoint,bilinear,bicubic)"
+        std::cerr << "Only one pixelization method can be specified (midpoint,bilinear,bicubic)"
             << std::endl;
         return 2;
     }
@@ -52,7 +52,30 @@ int main(int argc, char **argv) {
         return 3;
     }
 
-    std::cout << "Generating with size " << npixels << std::endl;
+    double scale = 1;
 
+    // create the source model
+    mod::DiskDemo src(0.2*npixels*scale);
+    
+    // create the psf model
+    mod::GaussianDemo psf(0.1*npixels*scale);
+    
+    // create the pixelization engine
+    img::ImageEngine *engine(0);
+    if(midpoint) {
+        engine = new img::MidpointImageEngine(src,psf,npixels,scale);
+    }
+    else if(bilinear) {
+        engine = new img::BilinearImageEngine(src,psf,npixels,scale);
+    }
+    else if(bicubic) {
+        engine = new img::BicubicImageEngine(src,psf,npixels,scale);
+    }
+    
+    // generate the image
+    engine->generate();
+    
+    // cleanup and exit without error
+    if(engine) delete engine;
     return 0;
 }
