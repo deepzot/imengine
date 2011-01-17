@@ -36,7 +36,7 @@ BOOST := /Users/david/Clib/boost_1_45_0
 
 # compile and link options
 CXXFLAGS := -I. -I$(BOOST)
-LDFLAGS := -L. -l$(PKG)
+LDFLAGS := -L. -l$(PKG) $(BOOST)/stage/lib/libboost_program_options.a
 
 # sources under src/ to build as executables in bin/ linked against the library
 BIN_SRCS := $(wildcard src/*.cc)
