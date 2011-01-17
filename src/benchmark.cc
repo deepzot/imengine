@@ -2,7 +2,7 @@
 
 #include "imengine/models/DiskDemo.h"
 #include "imengine/models/GaussianDemo.h"
-#include "imengine/MidpointImageEngine.h"
+#include "imengine/BilinearImageEngine.h"
 
 namespace img = imengine;
 namespace mod = imengine::models;
@@ -10,6 +10,6 @@ namespace mod = imengine::models;
 int main(int argc, char **argv) {
     mod::DiskDemo src(5);
     mod::GaussianDemo psf(1);
-    img::MidpointImageEngine engine(src,psf,25,0.75);
+    img::BilinearImageEngine engine(src,psf,25,0.75);
     engine.generate(0,0);
 }
