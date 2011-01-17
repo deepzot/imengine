@@ -47,17 +47,17 @@ void local::ImageEngine::generate(double dx, double dy) {
     }
     // calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source)
-    double norm = _source.doTransform(dx,dy);
-    norm *= _psf.doTransform(0,0);
+    _source.doTransform(dx,dy);
+    _psf.doTransform(0,0);
     // combine the source and PSF in Fourier space
-    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,norm);
+    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,1);
     // build a grid of real-space convoluted image data
-    norm = _imageTransform->inverseTransform(*_imageGrid);
+    _imageTransform->inverseTransform(*_imageGrid);
     // estimate the signal in each pixel
     double sum(0);
     for(int y = 0; y < _pixelsPerSide; y++) {
         for(int x = 0; x < _pixelsPerSide; x++) {
-            double value = norm*estimatePixelValue(x,y);
+            double value = estimatePixelValue(x,y);
             sum += value;
             std::cout << value << ' ';
         }

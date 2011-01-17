@@ -29,15 +29,15 @@ namespace imengine {
         // returns the wavenumber associated an index value (no range check on i)
         double waveNumber(int i) const;
         
-        // Calculates the real part of our inverse Fourier transform.
-        // Returns the overall scale factor necessary so that the result corresponds to:
-        // transform[m,n] = 1/N Sum[data[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
-        double inverseTransform(InterpolationData &result) const;
+        // Calculates the real part of our inverse Fourier transform and saves the result
+        // in the storage provided. Normalization is defined by:
+        // data[m,n] = 1/N^2 Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
+        void inverseTransform(InterpolationData &result) const;
         
-        // Computes the discrete Fourier transform of the specified row-wise real 2D data array
-        // Returns the overall scale factor necessary so that the result corresponds to:
-        // transform[m,n] = 1/N Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
-        double setToTransform(double const *realData);
+        // Sets our contents to the discrete Fourier transform of the specified row-wise
+        // real 2D data array, normalized so that:
+        // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
+        void setToTransform(double const *realData);
         
         // sets our values to the element-by-element product of two other transforms
         void setToProduct(TransformData const& t1, TransformData const& t2, double norm = 1);

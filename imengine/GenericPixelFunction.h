@@ -15,10 +15,10 @@ namespace imengine {
         // Performs one-time initializations before subsequent calls to doTransform.
         virtual void initTransform(TransformData *transformData);
         // Computes the function's discrete Fourier transform on a square grid with
-        // the specified spacing (x,y) origin relative to the grid center. Returns
-        // the overall scale factor necessary so that the result corresponds to:
-        // transform[m,n] = 1/N Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
-        virtual double doTransform(double dx = 0, double dy = 0) const;
+        // the specified spacing and (x,y) origin relative to the grid center. The
+        // transform is defined as:
+        // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
+        virtual void doTransform(double dx = 0, double dy = 0) const;
 	private:
         TransformData *_transformData;
         double *_data;

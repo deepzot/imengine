@@ -24,7 +24,7 @@ void local::GenericPixelFunction::initTransform(TransformData* transformData) {
     _data = new double[ngrid*ngrid];
 }
 
-double local::GenericPixelFunction::doTransform(double dx, double dy) const {
+void local::GenericPixelFunction::doTransform(double dx, double dy) const {
     // tabulate function values on a (x,y) grid
     double *ptr = _data;
     int ngrid = _transformData->getGridSize();
@@ -41,5 +41,5 @@ double local::GenericPixelFunction::doTransform(double dx, double dy) const {
     double spacing = _transformData->getGridSpacing();
     std::cout << "GenericPixelFunction: total = " << total*spacing*spacing << std::endl;
     // calculate the discrete Fourier transform of the tabulated data
-    return _transformData->setToTransform(_data);
+    _transformData->setToTransform(_data);
 }

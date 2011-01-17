@@ -13,7 +13,7 @@ local::TransformData::TransformData(int gridSize, double gridSpacing, double gri
 DataGrid(gridSize,gridSpacing,gridX,gridY)
 {
     _dk = 1/(gridSize*gridSpacing);
-    _norm = 1.0/gridSize;
+    _norm = 1.0/(gridSize*gridSize);
     _data = new double[2*gridSize*gridSize];
 }
 
@@ -27,25 +27,23 @@ bool preserveOffset) {
         preserveOffset ? prototype.getGridX() : 0, preserveOffset ? prototype.getGridY() : 0);
 }
 
-double local::TransformData::inverseTransform(InterpolationData &result) const {
+void local::TransformData::inverseTransform(InterpolationData &result) const {
     double dtheta = +8*std::atan(1.0)/_gridSize; // +2pi/N
     for(int j = 0; j < _gridSize; j++) {
         for(int i = 0; i < _gridSize; i++) {
-            double value(0);
+            double re(0);
             for(int n = 0; n < _gridSize; n++) {
                 for(int m = 0; m < _gridSize; m++) {
                     double theta = dtheta*(m*i + n*j);                    
-                    value += real(m,n)*std::cos(theta) - imag(m,n)*std::sin(theta);
+                    re += _norm*(real(m,n)*std::cos(theta) - imag(m,n)*std::sin(theta));
                 }
             }
-            result.setValue(i,j,value);
+            result.setValue(i,j,re);
         }
     }
-    // return the appropriate normalization factor
-    return _norm; 
 }
 
-double local::TransformData::setToTransform(double const *realData) {
+void local::TransformData::setToTransform(double const *realData) {
     double dtheta = -8*std::atan(1.0)/_gridSize; // -2pi/N
     for(int j = 0; j < _gridSize; j++) {
         for(int i = 0; i < _gridSize; i++) {
@@ -62,8 +60,6 @@ double local::TransformData::setToTransform(double const *realData) {
             imag(i,j) = im;
         }
     }
-    // return the appropriate normalization factor
-    return _norm;
 }
 
 void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2, 
