@@ -1,6 +1,7 @@
 // Created 17-Jan-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include <iostream>
+#include <string>
 
 #include "imengine.h"
 
@@ -14,16 +15,19 @@ int main(int argc, char **argv) {
     // configure command-line options processing using the boost program_options library
     int npixels;
     double dx,dy,scale;
+    std::string outfile;
     po::options_description cli;
     cli.add_options()
         ("help,h", "Prints this info and exit.")
+        ("output,o", po::value<std::string>(&outfile)->default_value(""),
+            "Output file for writing image data (defaults to stdout).")
         ("midpoint", "Uses the midpoint method for pixelization.")
         ("bilinear", "Uses bilinear interpolation for pixelization (this is the default).")
         ("bicubic", "Uses bicubic interpolation for pixelization.")
         ("npixels,n", po::value<int>(&npixels)->default_value(48),
             "Number of pixels per side for final square image.")
         ("dx",po::value<double>(&dx)->default_value(0.),"Horizontal source shift.")
-        ("dy",po::value<double>(&dx)->default_value(0.),"Vertical source shift.")
+        ("dy",po::value<double>(&dy)->default_value(0.),"Vertical source shift.")
         ("scale",po::value<double>(&scale)->default_value(1.),"Pixel scale.")
         ;
 
@@ -77,7 +81,7 @@ int main(int argc, char **argv) {
         }
     
         // generate the image
-        img::ImageFileWriter writer;
+        img::ImageFileWriter writer(outfile.c_str());
         engine->generate(writer,dx,dy);
     }
     catch(std::exception const &e) {
