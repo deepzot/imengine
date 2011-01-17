@@ -1,4 +1,4 @@
-// Created 8-Jan-2011 by David Kirkby <dkirkby@uci.edu>
+// Created 8-Jan-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include <iostream>
 #include <sys/resource.h>
