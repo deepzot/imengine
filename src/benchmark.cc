@@ -17,17 +17,19 @@ double elapsed(struct rusage const &before, struct rusage const &after) {
 }
 
 double trial(int scaleUp=1, int trials = 100) {
+    // use a silent image writer
+    img::ImageWriter silent;
     // initialize the models
     mod::DiskDemo src(scaleUp);
     mod::GaussianDemo psf(scaleUp);
     img::BilinearImageEngine engine(src,psf,6*scaleUp,1);
     // run the engine once to trigger first-time initializations
-    engine.generate();
+    engine.generate(silent,0,0);
     // run timed trials
     struct rusage before,after;
     getrusage(RUSAGE_SELF,&before);
     for(int n = 0; n < trials; n++) {
-        engine.generate();
+        engine.generate(silent);
     }
     getrusage(RUSAGE_SELF,&after);
     // return the average trial time in usecs

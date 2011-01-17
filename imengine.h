@@ -14,4 +14,7 @@
 #include "imengine/models/DiskDemo.h"
 #include "imengine/models/GaussianDemo.h"
 
+// Image writers
+#include "imengine/ImageWriter.h"
+
 #endif // IMENGINE

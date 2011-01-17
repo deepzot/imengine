@@ -73,7 +73,8 @@ int main(int argc, char **argv) {
     }
     
     // generate the image
-    engine->generate();
+    img::ImageWriter writer;
+    engine->generate(writer);
     
     // cleanup and exit without error
     if(engine) delete engine;

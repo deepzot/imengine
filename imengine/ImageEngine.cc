@@ -4,6 +4,7 @@
 #include "imengine/AbsPixelFunction.h"
 #include "imengine/InterpolationData.h"
 #include "imengine/TransformData.h"
+#include "imengine/ImageWriter.h"
 
 #include <cassert>
 
@@ -28,7 +29,7 @@ local::ImageEngine::~ImageEngine() {
     }
 }
 
-void local::ImageEngine::generate(double dx, double dy) {
+void local::ImageEngine::generate(local::ImageWriter &writer, double dx, double dy) {
     // do one-time initialization of the transform grids
     if(0 == _imageTransform) {
         _imageGrid = createGrid();
@@ -43,6 +44,8 @@ void local::ImageEngine::generate(double dx, double dy) {
         _source.initTransform(_sourceTransform);
         _psf.initTransform(_psfTransform);
     }
+    // initialize our writer
+    writer.open();
     // calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source)
     _source.doTransform(dx,dy);
@@ -52,11 +55,10 @@ void local::ImageEngine::generate(double dx, double dy) {
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform(*_imageGrid);
     // estimate the signal in each pixel
-    double sum(0);
     for(int y = 0; y < _pixelsPerSide; y++) {
         for(int x = 0; x < _pixelsPerSide; x++) {
-            double value = estimatePixelValue(x,y);
-            sum += value;
+            writer.write(x,y,estimatePixelValue(x,y));
         }
     }
+    writer.close();
 }
