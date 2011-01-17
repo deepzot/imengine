@@ -57,27 +57,34 @@ int main(int argc, char **argv) {
         return 3;
     }
 
-    // create the source model
-    mod::DiskDemo src(0.2*npixels);
-    
-    // create the psf model
-    mod::GaussianDemo psf(0.1*npixels);
-    
-    // create the pixelization engine
     img::ImageEngine *engine(0);
-    if(midpoint) {
-        engine = new img::MidpointImageEngine(src,psf,npixels,scale);
-    }
-    else if(bilinear) {
-        engine = new img::BilinearImageEngine(src,psf,npixels,scale);
-    }
-    else if(bicubic) {
-        engine = new img::BicubicImageEngine(src,psf,npixels,scale);
-    }
+    try {
+        // create the source model
+        mod::DiskDemo src(0.2*npixels);
     
-    // generate the image
-    img::ImageWriter writer;
-    engine->generate(writer,dx,dy);
+        // create the psf model
+        mod::GaussianDemo psf(0.1*npixels);
+    
+        // create the pixelization engine
+        if(midpoint) {
+            engine = new img::MidpointImageEngine(src,psf,npixels,scale);
+        }
+        else if(bilinear) {
+            engine = new img::BilinearImageEngine(src,psf,npixels,scale);
+        }
+        else if(bicubic) {
+            engine = new img::BicubicImageEngine(src,psf,npixels,scale);
+        }
+    
+        // generate the image
+        img::ImageFileWriter writer;
+        engine->generate(writer,dx,dy);
+    }
+    catch(std::exception const &e) {
+        std::cerr << "Internal error while generating the image:" << std::endl
+            << e.what() << std::endl;
+        return -2;
+    }    
     
     // cleanup and exit without error
     if(engine) delete engine;

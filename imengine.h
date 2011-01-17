@@ -16,5 +16,6 @@
 
 // Image writers
 #include "imengine/ImageWriter.h"
+#include "imengine/ImageFileWriter.h"
 
 #endif // IMENGINE
