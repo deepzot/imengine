@@ -39,8 +39,10 @@ namespace imengine {
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
         void setToTransform(double const *realData);
         
-        // sets our values to the element-by-element product of two other transforms
-        void setToProduct(TransformData const& t1, TransformData const& t2);
+        // sets our values to the element-by-element product of two other transforms,
+        // including an optional translation to be applied analytically via a complex
+        // exponential factor exp(-ik.dr)
+        void setToProduct(TransformData const& t1, TransformData const& t2, double dx=0, double dy=0);
         
         // dumps grid absolute-squared values to std::cout in row-wise order
         void dumpAbsSquared() const;

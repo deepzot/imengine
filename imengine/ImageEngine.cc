@@ -37,23 +37,25 @@ void local::ImageEngine::generate(local::ImageWriter &writer, double dx, double 
         // build discrete Fourier transform grids with the same attributes but zero
         // out the offset in the psf otherwise it will be applied twice (an offset
         // in the image transform has no effect so we arbitrary zero it here)
-        _sourceTransform = TransformData::createFromPrototype(*_imageGrid,true);
+        _sourceTransform = TransformData::createFromPrototype(*_imageGrid,false); /*!!*/
         _psfTransform = TransformData::createFromPrototype(*_imageGrid,false);
         _imageTransform = TransformData::createFromPrototype(*_imageGrid,false);
         // link the source and psf grids to their pixel functions
         _source.initTransform(_sourceTransform);
         _psf.initTransform(_psfTransform);
     }
-    // initialize our writer
-    writer.open();
     // calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source)
-    _source.doTransform(dx,dy);
+    _source.doTransform(0,0);
     _psf.doTransform(0,0);
     // combine the source and PSF in Fourier space
-    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform);
+    dx -= _imageGrid->getGridX();
+    dy -= _imageGrid->getGridY();
+    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,dx,dy);
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform(*_imageGrid);
+    // initialize our writer
+    writer.open();
     // estimate the signal in each pixel
     for(int y = 0; y < _pixelsPerSide; y++) {
         for(int x = 0; x < _pixelsPerSide; x++) {
