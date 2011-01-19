@@ -10,3 +10,7 @@ local::FastTransformData::FastTransformData(int gridSize, double gridSpacing)
 }
 
 local::FastTransformData::~FastTransformData() { }
+
+local::FastTransformData *local::FastTransformData::createFromPrototype(local::DataGrid const &prototype) {
+    return new local::FastTransformData(prototype.getGridSize(),prototype.getGridSpacing());
+}

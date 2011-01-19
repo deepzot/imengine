@@ -33,3 +33,11 @@ double local::BilinearImageEngine<T>::estimatePixelValue(int x, int y) {
         _imageGrid->getValueForPixel(x,y) + _imageGrid->getValueForPixel(x+1,y) +
         _imageGrid->getValueForPixel(x,y+1) + _imageGrid->getValueForPixel(x+1,y+1));
 }
+
+// explicit template instantiations
+
+#include "imengine/TransformData.h"
+template class local::BilinearImageEngine<local::TransformData>;
+
+#include "imengine/FastTransformData.h"
+template class local::BilinearImageEngine<local::FastTransformData>;

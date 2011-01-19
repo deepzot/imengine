@@ -10,6 +10,8 @@ namespace imengine {
 	public:
 		FastTransformData(int gridSize, double gridSpacing);
 		virtual ~FastTransformData();
+		// Creates a new transform data object with attributes copied from the specified prototype
+		static FastTransformData *createFromPrototype(DataGrid const& prototype);
 	private:
 	}; // FastTransformData
 } // imengine

@@ -49,3 +49,11 @@ double local::BicubicImageEngine<T>::estimatePixelValue(int x, int y) {
             _imageGrid->getValueForPixel(x+2,y+2) + _imageGrid->getValueForPixel(x+2,y-1)
         );
 }
+
+// explicit template instantiations
+
+#include "imengine/TransformData.h"
+template class local::BicubicImageEngine<local::TransformData>;
+
+#include "imengine/FastTransformData.h"
+template class local::BicubicImageEngine<local::FastTransformData>;

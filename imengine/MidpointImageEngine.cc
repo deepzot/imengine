@@ -30,3 +30,11 @@ template <class T>
 double local::MidpointImageEngine<T>::estimatePixelValue(int x, int y) {
     return this->_scaleSquared*this->_imageGrid->getValueForPixel(x,y);
 }
+
+// explicit template instantiations
+
+#include "imengine/TransformData.h"
+template class local::MidpointImageEngine<local::TransformData>;
+
+#include "imengine/FastTransformData.h"
+template class local::MidpointImageEngine<local::FastTransformData>;
