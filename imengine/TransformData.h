@@ -47,9 +47,11 @@ namespace imengine {
         // dumps grid absolute-squared values to std::cout in row-wise order
         void dumpAbsSquared() const;
 
-	private:
-        double _dk,_norm;
+	protected:
         double *_data;
+
+    private:
+        double _dk,_norm;
 	}; // TransformData
 
     inline double& TransformData::real(int i, int j) { return _data[2*(i + _gridSize*j)]; }
