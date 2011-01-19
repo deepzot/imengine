@@ -6,10 +6,9 @@
 namespace imengine {
     class AbsPixelFunction;
     class InterpolationData;
-    class TransformData;
     class ImageWriter;
     // Generates pixelized images of a source convoluted with a psf.
-	class ImageEngine {
+	template <class T> class ImageEngine {
 	public:
 	    // Creates a new engine for the specified source and psf functions to generate
 	    // square images of pixelsPerSide x pixelsPerSide pixels of dimension pixelScale.
@@ -17,8 +16,8 @@ namespace imengine {
 		    int pixelsPerSide, double pixelScale = 1);
 		virtual ~ImageEngine();
 		// Read-only accessors
-        inline int getPixelsPerSide() const { return _pixelsPerSide; }
-        inline double getPixelScale() const { return _pixelScale; }
+        int getPixelsPerSide() const;
+        double getPixelScale() const;
         // Initializes 
 		// Generates an image with the source function offset by (dx,dy)
         void generate(ImageWriter &writer, double dx = 0, double dy = 0);
@@ -34,8 +33,15 @@ namespace imengine {
         AbsPixelFunction &_source, &_psf;
         int _pixelsPerSide;
         double _pixelScale;
-        TransformData *_sourceTransform, *_psfTransform, *_imageTransform;
+        T *_sourceTransform, *_psfTransform, *_imageTransform;
 	}; // ImageEngine
+	
+	template <class T>
+    inline int ImageEngine<T>::getPixelsPerSide() const { return _pixelsPerSide; }
+    
+	template <class T>
+    inline double ImageEngine<T>::getPixelScale() const { return _pixelScale; }
+    
 } // imengine
 
 #endif // IMENGINE_IMAGE_ENGINE

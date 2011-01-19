@@ -5,21 +5,24 @@
 
 namespace local = imengine;
 
-local::BicubicImageEngine::BicubicImageEngine(local::AbsPixelFunction& source, 
+template <class T>
+local::BicubicImageEngine<T>::BicubicImageEngine(local::AbsPixelFunction& source, 
 local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
-ImageEngine(source,psf,pixelsPerSide,pixelScale)
+ImageEngine<T>(source,psf,pixelsPerSide,pixelScale)
 {
-    _norm1 = _scaleSquared/576.;
-    _norm13 = -13*_scaleSquared/576.;
-    _norm169 = 169*_scaleSquared/576.;
+    _norm1 = this->_scaleSquared/576.;
+    _norm13 = -13*this->_scaleSquared/576.;
+    _norm169 = 169*this->_scaleSquared/576.;
 }
 
-local::BicubicImageEngine::~BicubicImageEngine() { }
+template <class T>
+local::BicubicImageEngine<T>::~BicubicImageEngine() { }
 
-local::InterpolationData* local::BicubicImageEngine::createGrid() {
+template <class T>
+local::InterpolationData* local::BicubicImageEngine<T>::createGrid() {
     // Put a grid point at the corners of each pixel
-    int size = getPixelsPerSide() + 3;
-    double scale = getPixelScale();
+    int size = this->getPixelsPerSide() + 3;
+    double scale = this->getPixelScale();
     // for an odd number of pixels, the grid is already centered on the pixel array but
     // an even number of pixels requires a half-pixel offset
     double offset = (size % 2) ? 0 : -scale/2;
@@ -28,7 +31,8 @@ local::InterpolationData* local::BicubicImageEngine::createGrid() {
     return new local::InterpolationData(size,1,scale,offset,offset);
 }
 
-double local::BicubicImageEngine::estimatePixelValue(int x, int y) {
+template <class T>
+double local::BicubicImageEngine<T>::estimatePixelValue(int x, int y) {
     return
         _norm169*(
             _imageGrid->getValueForPixel(x,y) + _imageGrid->getValueForPixel(x+1,y) +

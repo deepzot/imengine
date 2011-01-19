@@ -8,7 +8,7 @@
 namespace imengine {
     // Implements an image engine that estimates the pixel data by evaluating the image
     // function at the midpoint of each pixel. This is a fast but low accuracy method.
-	class MidpointImageEngine : public ImageEngine {
+	template <class T> class MidpointImageEngine : public ImageEngine<T> {
 	public:
 		MidpointImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf,
 		    int pixelsPerSide, double pixelScale = 1);

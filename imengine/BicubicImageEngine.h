@@ -9,7 +9,7 @@ namespace imengine {
     // Implements an image engine that estimates the pixel data by integrating a bicubic
     // interpolating function across the pixel that is derived from the image function value
     // at the pixel corners.
-	class BicubicImageEngine : public ImageEngine {
+	template <class T> class BicubicImageEngine : public ImageEngine<T> {
 	public:
 		BicubicImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf,
 		    int pixelsPerSide, double pixelScale = 1);
@@ -19,6 +19,7 @@ namespace imengine {
         virtual double estimatePixelValue(int i, int j);
 	private:
         double _norm1,_norm13,_norm169;
+        using ImageEngine<T>::_imageGrid; // makes this-> unecessary in implementation code
 	}; // BicubicImageEngine
 } // imengine
 

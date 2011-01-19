@@ -5,27 +5,31 @@
 
 namespace local = imengine;
 
-local::BilinearImageEngine::BilinearImageEngine(local::AbsPixelFunction& source, 
+template <class T>
+local::BilinearImageEngine<T>::BilinearImageEngine(local::AbsPixelFunction& source, 
 local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
-ImageEngine(source,psf,pixelsPerSide,pixelScale)
+ImageEngine<T>(source,psf,pixelsPerSide,pixelScale)
 {
-    _norm = _scaleSquared/4;
+    _norm = this->_scaleSquared/4;
 }
 
-local::BilinearImageEngine::~BilinearImageEngine() { }
+template <class T>
+local::BilinearImageEngine<T>::~BilinearImageEngine() { }
 
-local::InterpolationData* local::BilinearImageEngine::createGrid() {
+template <class T>
+local::InterpolationData* local::BilinearImageEngine<T>::createGrid() {
     // Put a grid point at the corners of each pixel
-    int size = getPixelsPerSide() + 1;
-    double scale = getPixelScale();
+    int size = this->getPixelsPerSide() + 1;
+    double scale = this->getPixelScale();
     // for an odd number of pixels, the grid is already centered on the pixel array but
     // an even number of pixels requires a half-pixel offset
     double offset = (size % 2) ? 0 : -scale/2;
     return new local::InterpolationData(size,0,scale,offset,offset);
 }
 
-double local::BilinearImageEngine::estimatePixelValue(int x, int y) {
-    return _norm*(
+template <class T>
+double local::BilinearImageEngine<T>::estimatePixelValue(int x, int y) {
+    return this->_norm*(
         _imageGrid->getValueForPixel(x,y) + _imageGrid->getValueForPixel(x+1,y) +
         _imageGrid->getValueForPixel(x,y+1) + _imageGrid->getValueForPixel(x+1,y+1));
 }

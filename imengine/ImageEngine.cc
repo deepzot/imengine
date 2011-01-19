@@ -3,14 +3,14 @@
 #include "imengine/ImageEngine.h"
 #include "imengine/AbsPixelFunction.h"
 #include "imengine/InterpolationData.h"
-#include "imengine/TransformData.h"
 #include "imengine/ImageWriter.h"
 
 #include <cassert>
 
 namespace local = imengine;
 
-local::ImageEngine::ImageEngine(local::AbsPixelFunction& source, 
+template <class T>
+local::ImageEngine<T>::ImageEngine(local::AbsPixelFunction& source, 
 local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
 _source(source), _psf(psf), _pixelsPerSide(pixelsPerSide), _pixelScale(pixelScale),
 _imageGrid(0), _sourceTransform(0), _psfTransform(0), _imageTransform(0)
@@ -20,7 +20,8 @@ _imageGrid(0), _sourceTransform(0), _psfTransform(0), _imageTransform(0)
     _scaleSquared = pixelScale*pixelScale;
 }
 
-local::ImageEngine::~ImageEngine() {
+template <class T>
+local::ImageEngine<T>::~ImageEngine() {
     if(0 != _imageGrid) {
         delete _imageGrid;
         delete _sourceTransform;
@@ -29,7 +30,8 @@ local::ImageEngine::~ImageEngine() {
     }
 }
 
-void local::ImageEngine::generate(local::ImageWriter &writer, double dx, double dy) {
+template <class T>
+void local::ImageEngine<T>::generate(local::ImageWriter &writer, double dx, double dy) {
     // do one-time initialization of the transform grids
     if(0 == _imageTransform) {
         _imageGrid = createGrid();
@@ -37,9 +39,9 @@ void local::ImageEngine::generate(local::ImageWriter &writer, double dx, double 
         // build discrete Fourier transform grids with the same attributes but zero
         // out the offset in the psf otherwise it will be applied twice (an offset
         // in the image transform has no effect so we arbitrary zero it here)
-        _sourceTransform = TransformData::createFromPrototype(*_imageGrid);
-        _psfTransform = TransformData::createFromPrototype(*_imageGrid);
-        _imageTransform = TransformData::createFromPrototype(*_imageGrid);
+        _sourceTransform = T::createFromPrototype(*_imageGrid);
+        _psfTransform = T::createFromPrototype(*_imageGrid);
+        _imageTransform = T::createFromPrototype(*_imageGrid);
         // link the source and psf grids to their pixel functions
         _source.initTransform(_sourceTransform);
         _psf.initTransform(_psfTransform);
