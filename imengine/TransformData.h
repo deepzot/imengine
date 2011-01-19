@@ -11,11 +11,11 @@ namespace imengine {
 	class TransformData : public DataGrid {
 	public:
 	    // Creates a new transform data grid with the specified size, spacing, and coordinate offset
-		TransformData(int gridSize, double gridSpacing, double gridX, double gridY);		
+		TransformData(int gridSize, double gridSpacing);		
 		virtual ~TransformData();
 		
 		// Creates a new transform data object with attributes copied from the specified prototype
-		static TransformData *createFromPrototype(DataGrid const& prototype, bool preserveOffset);
+		static TransformData *createFromPrototype(DataGrid const& prototype);
 
 		// accesses the real/imag parts of transform data (no range checks on i,j)
         double& real(int i, int j);

@@ -13,6 +13,10 @@ namespace imengine {
 		InterpolationData(int gridSize, int pad, double gridSpacing, double gridX, double gridY);
 		virtual ~InterpolationData();
 		
+        // Accesses constructor parameters
+        double getGridX() const;
+        double getGridY() const;
+
 		// Sets the value associated with grid point (i,j) (no range checks on i,j)
         void setValue(int i, int j, double value);
 		
@@ -24,9 +28,13 @@ namespace imengine {
         
 	private:
         int _pad;
+        double _gridX, _gridY;
         double *_data;
 	}; // InterpolationData
 	
+    inline double InterpolationData::getGridX() const { return _gridX; }
+    inline double InterpolationData::getGridY() const { return _gridY; }
+
 	inline void InterpolationData::setValue(int i, int j, double value) {
         _data[i + _gridSize*j] = value;
 	}

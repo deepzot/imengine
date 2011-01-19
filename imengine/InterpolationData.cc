@@ -7,8 +7,9 @@
 
 namespace local = imengine;
 
-local::InterpolationData::InterpolationData(int gridSize, int pad, double gridSpacing, double gridX, double gridY)
-: DataGrid(gridSize,gridSpacing,gridX,gridY), _pad(pad)
+local::InterpolationData::InterpolationData(int gridSize, int pad, double gridSpacing,
+double gridX, double gridY)
+: DataGrid(gridSize,gridSpacing), _pad(pad), _gridX(gridX), _gridY(gridY)
 {
     assert(pad >= 0 && pad < gridSize);
     _data = new double[gridSize*gridSize];

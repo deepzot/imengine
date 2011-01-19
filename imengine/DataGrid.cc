@@ -6,8 +6,8 @@
 
 namespace local = imengine;
 
-local::DataGrid::DataGrid(int gridSize, double gridSpacing, double gridX, double gridY) :
-_gridSize(gridSize), _gridSpacing(gridSpacing), _gridX(gridX), _gridY(gridY)
+local::DataGrid::DataGrid(int gridSize, double gridSpacing) :
+_gridSize(gridSize), _gridSpacing(gridSpacing)
 {
     assert(gridSize > 0);
     assert(gridSpacing > 0);
