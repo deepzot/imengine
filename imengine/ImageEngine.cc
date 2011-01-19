@@ -11,19 +11,15 @@ namespace local = imengine;
 
 template <class T>
 local::ImageEngine<T>::ImageEngine(local::AbsPixelFunction& source, 
-local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
-_source(source), _psf(psf), _pixelsPerSide(pixelsPerSide), _pixelScale(pixelScale),
-_imageGrid(0), _sourceTransform(0), _psfTransform(0), _imageTransform(0)
+local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale)
+: AbsImageEngine(source,psf,pixelsPerSide,pixelScale),
+_sourceTransform(0), _psfTransform(0), _imageTransform(0)
 {
-    assert(pixelsPerSide > 0);
-    assert(pixelScale > 0);
-    _scaleSquared = pixelScale*pixelScale;
 }
 
 template <class T>
 local::ImageEngine<T>::~ImageEngine() {
-    if(0 != _imageGrid) {
-        delete _imageGrid;
+    if(0 != _imageTransform) {
         delete _sourceTransform;
         delete _psfTransform;
         delete _imageTransform;

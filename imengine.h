@@ -5,6 +5,10 @@
 
 // Includes all package headers with public APIs...
 
+// Fourier transform implementations
+#include "imengine/TransformData.h"
+#include "imengine/FastTransformData.h"
+
 // Pixel interpolation schemes
 #include "imengine/MidpointImageEngine.h"
 #include "imengine/BilinearImageEngine.h"

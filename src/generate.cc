@@ -24,6 +24,7 @@ int main(int argc, char **argv) {
         ("midpoint", "Uses the midpoint method for pixelization.")
         ("bilinear", "Uses bilinear interpolation for pixelization (this is the default).")
         ("bicubic", "Uses bicubic interpolation for pixelization.")
+        ("slow", "Uses un-optimized discrete Fourier transforms.")
         ("npixels,n", po::value<int>(&npixels)->default_value(48),
             "Number of pixels per side for final square image.")
         ("dx",po::value<double>(&dx)->default_value(0.),"Horizontal source shift.")
@@ -46,6 +47,7 @@ int main(int argc, char **argv) {
         std::cout << cli << std::endl;
         return 1;
     }
+    bool slow(vm.count("slow"));
     bool midpoint(vm.count("midpoint")),bilinear(vm.count("bilinear")),bicubic(vm.count("bicubic"));
     int methods = vm.count("midpoint")+vm.count("bilinear")+vm.count("bicubic");
     if(methods == 0) {
@@ -61,7 +63,7 @@ int main(int argc, char **argv) {
         return 3;
     }
 
-    img::ImageEngine *engine(0);
+    img::AbsImageEngine *engine(0);
     try {
         // create the source model
         mod::DiskDemo src(0.2*npixels);
@@ -71,13 +73,19 @@ int main(int argc, char **argv) {
     
         // create the pixelization engine
         if(midpoint) {
-            engine = new img::MidpointImageEngine(src,psf,npixels,scale);
+            engine = slow ?
+                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::TransformData>(src,psf,npixels,scale)) :
+                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::FastTransformData>(src,psf,npixels,scale));
         }
         else if(bilinear) {
-            engine = new img::BilinearImageEngine(src,psf,npixels,scale);
+            engine = slow ?
+                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::TransformData>(src,psf,npixels,scale)) :
+                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransformData>(src,psf,npixels,scale));
         }
         else if(bicubic) {
-            engine = new img::BicubicImageEngine(src,psf,npixels,scale);
+            engine = slow ?
+                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::TransformData>(src,psf,npixels,scale)) :
+                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransformData>(src,psf,npixels,scale));
         }
     
         // generate the image

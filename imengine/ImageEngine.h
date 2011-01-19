@@ -3,45 +3,27 @@
 #ifndef IMENGINE_IMAGE_ENGINE
 #define IMENGINE_IMAGE_ENGINE
 
+#include "imengine/AbsImageEngine.h"
+
 namespace imengine {
     class AbsPixelFunction;
     class InterpolationData;
     class ImageWriter;
     // Generates pixelized images of a source convoluted with a psf.
-	template <class T> class ImageEngine {
+	template <class T> class ImageEngine : public AbsImageEngine {
 	public:
 	    // Creates a new engine for the specified source and psf functions to generate
 	    // square images of pixelsPerSide x pixelsPerSide pixels of dimension pixelScale.
 		ImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf,
 		    int pixelsPerSide, double pixelScale = 1);
 		virtual ~ImageEngine();
-		// Read-only accessors
-        int getPixelsPerSide() const;
-        double getPixelScale() const;
         // Initializes 
 		// Generates an image with the source function offset by (dx,dy)
-        void generate(ImageWriter &writer, double dx = 0, double dy = 0);
+        virtual void generate(ImageWriter &writer, double dx = 0, double dy = 0);
     protected:
-        // Returns a pointer to a newly created InterpolationData with parameters appropriate
-        // for the requested pixel size and pixelation method
-        virtual InterpolationData *createGrid() = 0;
-        // Estimates the signal in pixel (i,j) using the tabulated values in _imageData
-        virtual double estimatePixelValue(int i, int j) = 0;
-        InterpolationData *_imageGrid;
-        double _scaleSquared;
 	private:
-        AbsPixelFunction &_source, &_psf;
-        int _pixelsPerSide;
-        double _pixelScale;
         T *_sourceTransform, *_psfTransform, *_imageTransform;
 	}; // ImageEngine
-	
-	template <class T>
-    inline int ImageEngine<T>::getPixelsPerSide() const { return _pixelsPerSide; }
-    
-	template <class T>
-    inline double ImageEngine<T>::getPixelScale() const { return _pixelScale; }
-    
 } // imengine
 
 #endif // IMENGINE_IMAGE_ENGINE

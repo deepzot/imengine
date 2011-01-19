@@ -14,3 +14,6 @@ local::FastTransformData::~FastTransformData() { }
 local::FastTransformData *local::FastTransformData::createFromPrototype(local::DataGrid const &prototype) {
     return new local::FastTransformData(prototype.getGridSize(),prototype.getGridSpacing());
 }
+
+void local::FastTransformData::setToTransform(double const *realData) {
+}
