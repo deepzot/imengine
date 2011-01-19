@@ -36,10 +36,9 @@ namespace imengine {
 
         // ---------------------------------------------------------------------------------
         // In addition to the pure virtual methods below, all subclasses T must implement a
-        // static method that creates a new subclass object using attributes copied
-        // from the prototype provided:
+        // static method that creates a new subclass object for a specified target:
         //
-        // static T *createFromPrototype(DataGrid const& prototype);
+        // static T *createForTarget(InterpolationData& target);
         // ---------------------------------------------------------------------------------
 
         // Calculates the real part of our inverse Fourier transform and saves the result

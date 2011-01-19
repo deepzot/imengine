@@ -11,8 +11,8 @@ namespace imengine {
 	    // Implements discrete Fourier transforms using the optimized FFTW library
 		FastTransform(int gridSize, double gridSpacing);
 		virtual ~FastTransform();
-		// Creates a new transform data object with attributes copied from the specified prototype
-		static FastTransform *createFromPrototype(DataGrid const& prototype);
+		// Creates a new transform data object for the specified target
+		static FastTransform *createForTarget(InterpolationData& target);
         // Sets our contents to the discrete Fourier transform of the specified row-wise
         // real 2D data array, normalized so that:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]

@@ -35,9 +35,9 @@ void local::ImageEngine<T>::generate(local::ImageWriter &writer, double dx, doub
         // build discrete Fourier transform grids with the same attributes but zero
         // out the offset in the psf otherwise it will be applied twice (an offset
         // in the image transform has no effect so we arbitrary zero it here)
-        _sourceTransform = T::createFromPrototype(*_imageGrid);
-        _psfTransform = T::createFromPrototype(*_imageGrid);
-        _imageTransform = T::createFromPrototype(*_imageGrid);
+        _sourceTransform = T::createForTarget(*_imageGrid);
+        _psfTransform = T::createForTarget(*_imageGrid);
+        _imageTransform = T::createForTarget(*_imageGrid);
         // link the source and psf grids to their pixel functions
         _source.initTransform(_sourceTransform);
         _psf.initTransform(_psfTransform);

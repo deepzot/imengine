@@ -14,8 +14,8 @@ local::SlowTransform::SlowTransform(int gridSize, double gridSpacing)
 
 local::SlowTransform::~SlowTransform() { }
 
-local::SlowTransform *local::SlowTransform::createFromPrototype(local::DataGrid const &prototype) {
-    return new local::SlowTransform(prototype.getGridSize(),prototype.getGridSpacing());
+local::SlowTransform *local::SlowTransform::createForTarget(local::InterpolationData& target) {
+    return new local::SlowTransform(target.getGridSize(),target.getGridSpacing());
 }
 
 void local::SlowTransform::inverseTransform(InterpolationData &result) const {
