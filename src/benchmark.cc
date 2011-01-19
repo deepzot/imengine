@@ -24,8 +24,8 @@ double trial(int scaleUp, int trials, bool slow) {
     mod::GaussianDemo psf(scaleUp);
     // create a fast/slow bilinear engine
     img::AbsImageEngine *engine = slow ?
-        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::TransformData>(src,psf,6*scaleUp,1)) :
-        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransformData>(src,psf,6*scaleUp,1));
+        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf,6*scaleUp,1)) :
+        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf,6*scaleUp,1));
     // run the engine once to trigger first-time initializations
     engine->generate(silent,0,0);
     // run timed trials with the slow engine

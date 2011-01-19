@@ -52,8 +52,8 @@ double local::BicubicImageEngine<T>::estimatePixelValue(int x, int y) {
 
 // explicit template instantiations
 
-#include "imengine/TransformData.h"
-template class local::BicubicImageEngine<local::TransformData>;
+#include "imengine/SlowTransform.h"
+template class local::BicubicImageEngine<local::SlowTransform>;
 
-#include "imengine/FastTransformData.h"
-template class local::BicubicImageEngine<local::FastTransformData>;
+#include "imengine/FastTransform.h"
+template class local::BicubicImageEngine<local::FastTransform>;

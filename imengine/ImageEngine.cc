@@ -65,8 +65,8 @@ void local::ImageEngine<T>::generate(local::ImageWriter &writer, double dx, doub
 
 // explicit template instantiations
 
-#include "imengine/TransformData.h"
-template class local::ImageEngine<local::TransformData>;
+#include "imengine/SlowTransform.h"
+template class local::ImageEngine<local::SlowTransform>;
 
-#include "imengine/FastTransformData.h"
-template class local::ImageEngine<local::FastTransformData>;
+#include "imengine/FastTransform.h"
+template class local::ImageEngine<local::FastTransform>;

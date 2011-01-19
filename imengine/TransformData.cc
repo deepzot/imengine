@@ -1,7 +1,6 @@
 // Created 09-Jan-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/TransformData.h"
-#include "imengine/InterpolationData.h"
 
 #include <cassert>
 #include <cmath>
@@ -20,45 +19,6 @@ DataGrid(gridSize,gridSpacing)
 
 local::TransformData::~TransformData() {
     delete[] _data;
-}
-
-local::TransformData *local::TransformData::createFromPrototype(local::DataGrid const &prototype) {
-    return new local::TransformData(prototype.getGridSize(),prototype.getGridSpacing());
-}
-
-void local::TransformData::inverseTransform(InterpolationData &result) const {
-    double dtheta = +8*std::atan(1.0)/_gridSize; // +2pi/N
-    for(int j = 0; j < _gridSize; j++) {
-        for(int i = 0; i < _gridSize; i++) {
-            double re(0);
-            for(int n = 0; n < _gridSize; n++) {
-                for(int m = 0; m < _gridSize; m++) {
-                    double theta = dtheta*(m*i + n*j);                    
-                    re += _norm*(real(m,n)*std::cos(theta) - imag(m,n)*std::sin(theta));
-                }
-            }
-            result.setValue(i,j,re);
-        }
-    }
-}
-
-void local::TransformData::setToTransform(double const *realData) {
-    double dtheta = -8*std::atan(1.0)/_gridSize; // -2pi/N
-    for(int j = 0; j < _gridSize; j++) {
-        for(int i = 0; i < _gridSize; i++) {
-            double re(0), im(0);
-            for(int n = 0; n < _gridSize; n++) {
-                for(int m = 0; m < _gridSize; m++) {
-                    double value = realData[m + _gridSize*n];
-                    double theta = dtheta*(m*i + n*j);
-                    re += value*std::cos(theta);
-                    im += value*std::sin(theta);
-                }
-            }
-            real(i,j) = re;
-            imag(i,j) = im;
-        }
-    }
 }
 
 void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2,
