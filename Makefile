@@ -31,12 +31,15 @@ PKG := imengine
 # (handling of these loosely inspired by http://aegis.sourceforge.net/auug97.pdf)
 MODULES := models
 
+# location of the FFTW3 installation to use
+FFTW3 := /Users/david/Clib/fftw-3.2.2
+
 # location of the boost installation to use
 BOOST := /Users/david/Clib/boost_1_45_0
 
 # compile and link options
-CXXFLAGS := -I. -I$(BOOST) -O3
-LDFLAGS := -L. -l$(PKG) $(BOOST)/stage/lib/libboost_program_options.a
+CXXFLAGS := -I. -I$(BOOST) -I$(FFTW3)/api -O3
+LDFLAGS := -L. -l$(PKG) $(BOOST)/stage/lib/libboost_program_options.a -L$(FFTW3)/.libs -lfftw3
 
 # sources under src/ to build as executables in bin/ linked against the library
 BIN_SRCS := $(wildcard src/*.cc)

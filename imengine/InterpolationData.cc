@@ -2,6 +2,8 @@
 
 #include "imengine/InterpolationData.h"
 
+#include "fftw3.h"
+
 #include <cassert>
 #include <iostream>
 
@@ -12,10 +14,13 @@ double gridX, double gridY)
 : DataGrid(gridSize,gridSpacing), _pad(pad), _gridX(gridX), _gridY(gridY)
 {
     assert(pad >= 0 && pad < gridSize);
-    _data = new double[gridSize*gridSize];
+    // use FFTW allocator for best SIMD alignment
+    _data = (double*)fftw_malloc(gridSize*gridSize*sizeof(double));
 }
 
-local::InterpolationData::~InterpolationData() { }
+local::InterpolationData::~InterpolationData() {
+    fftw_free(_data);
+}
 
 void local::InterpolationData::dump() const {
     for(int j = 0; j < _gridSize; j++) {

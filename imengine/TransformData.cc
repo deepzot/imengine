@@ -3,6 +3,8 @@
 #include "imengine/TransformData.h"
 #include "imengine/InterpolationData.h"
 
+#include "fftw3.h"
+
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -15,11 +17,13 @@ DataGrid(target.getGridSize(),target.getGridSpacing()), _target(target)
     double twopi = 8*std::atan(1.0);
     _dk = twopi/(_gridSize*_gridSpacing);
     _norm = 1.0/(_gridSize*_gridSize);
-    _data = new double[2*_gridSize*_gridSize];
+    // use FFTW allocator for best SIMD alignment
+    assert(2*sizeof(double) == sizeof(fftw_complex));
+    _data = (double*)fftw_malloc(2*sizeof(double)*_gridSize*_gridSize);
 }
 
 local::TransformData::~TransformData() {
-    delete[] _data;
+    fftw_free(_data);
 }
 
 void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2,
