@@ -10,8 +10,8 @@ namespace imengine {
     // Stores complex discrete Fourier transform values on a square grid
 	class TransformData : public DataGrid {
 	public:
-	    // Creates a new transform data grid with the specified size, spacing, and coordinate offset
-		TransformData(int gridSize, double gridSpacing);		
+	    // Creates a new transform data grid for the specified real-space target grid
+        TransformData(InterpolationData &target);
 		virtual ~TransformData();
 		
 		// accesses the real/imag parts of transform data (no range checks on i,j)
@@ -34,13 +34,6 @@ namespace imengine {
         // dumps grid absolute-squared values to std::cout in row-wise order
         void dumpAbsSquared() const;
 
-        // ---------------------------------------------------------------------------------
-        // In addition to the pure virtual methods below, all subclasses T must implement a
-        // static method that creates a new subclass object for a specified target:
-        //
-        // static T *createForTarget(InterpolationData& target);
-        // ---------------------------------------------------------------------------------
-
         // Calculates the real part of our inverse Fourier transform and saves the result
         // in the storage provided. Normalization is defined by:
         // data[m,n] = 1/N^2 Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
@@ -52,6 +45,7 @@ namespace imengine {
         virtual void setToTransform(double const *realData) = 0;
 
 	protected:
+        InterpolationData &_target;
         double _norm;
         double *_data;
 

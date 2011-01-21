@@ -5,16 +5,12 @@
 
 namespace local = imengine;
 
-local::FastTransform::FastTransform(int gridSize, double gridSpacing)
-: TransformData(gridSize,gridSpacing)
+local::FastTransform::FastTransform(InterpolationData &target)
+: TransformData(target)
 {
 }
 
 local::FastTransform::~FastTransform() { }
-
-local::FastTransform *local::FastTransform::createForTarget(local::InterpolationData& target) {
-    return new local::FastTransform(target.getGridSize(),target.getGridSpacing());
-}
 
 void local::FastTransform::setToTransform(double const *realData) {
 }

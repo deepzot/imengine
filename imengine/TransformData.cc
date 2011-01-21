@@ -1,6 +1,7 @@
 // Created 09-Jan-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/TransformData.h"
+#include "imengine/InterpolationData.h"
 
 #include <cassert>
 #include <cmath>
@@ -8,13 +9,13 @@
 
 namespace local = imengine;
 
-local::TransformData::TransformData(int gridSize, double gridSpacing) :
-DataGrid(gridSize,gridSpacing)
+local::TransformData::TransformData(InterpolationData &target) :
+DataGrid(target.getGridSize(),target.getGridSpacing()), _target(target)
 {
     double twopi = 8*std::atan(1.0);
-    _dk = twopi/(gridSize*gridSpacing);
-    _norm = 1.0/(gridSize*gridSize);
-    _data = new double[2*gridSize*gridSize];
+    _dk = twopi/(_gridSize*_gridSpacing);
+    _norm = 1.0/(_gridSize*_gridSize);
+    _data = new double[2*_gridSize*_gridSize];
 }
 
 local::TransformData::~TransformData() {

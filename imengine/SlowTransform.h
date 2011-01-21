@@ -9,10 +9,8 @@ namespace imengine {
 	class SlowTransform : public TransformData {
 	public:
 	    // Implements discrete Fourier transforms using explicit summation formulas
-		SlowTransform(int gridSize, double gridSpacing);
+		SlowTransform(InterpolationData &target);
 		virtual ~SlowTransform();
-		// Creates a new transform data object for the specified target
-		static SlowTransform *createForTarget(InterpolationData& target);
         // Sets our contents to the discrete Fourier transform of the specified row-wise
         // real 2D data array, normalized so that:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]

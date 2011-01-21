@@ -7,16 +7,12 @@
 
 namespace local = imengine;
 
-local::SlowTransform::SlowTransform(int gridSize, double gridSpacing)
-: TransformData(gridSize,gridSpacing)
+local::SlowTransform::SlowTransform(InterpolationData &target)
+: TransformData(target)
 {
 }
 
 local::SlowTransform::~SlowTransform() { }
-
-local::SlowTransform *local::SlowTransform::createForTarget(local::InterpolationData& target) {
-    return new local::SlowTransform(target.getGridSize(),target.getGridSpacing());
-}
 
 void local::SlowTransform::inverseTransform(InterpolationData &result) const {
     double dtheta = +8*std::atan(1.0)/_gridSize; // +2pi/N
