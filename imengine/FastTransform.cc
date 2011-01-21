@@ -15,5 +15,5 @@ local::FastTransform::~FastTransform() { }
 void local::FastTransform::setToTransform(double const *realData) {
 }
 
-void local::FastTransform::inverseTransform(InterpolationData &result) const {
+void local::FastTransform::inverseTransform() {
 }

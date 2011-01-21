@@ -14,7 +14,7 @@ local::SlowTransform::SlowTransform(InterpolationData &target)
 
 local::SlowTransform::~SlowTransform() { }
 
-void local::SlowTransform::inverseTransform(InterpolationData &result) const {
+void local::SlowTransform::inverseTransform() {
     double dtheta = +8*std::atan(1.0)/_gridSize; // +2pi/N
     for(int j = 0; j < _gridSize; j++) {
         for(int i = 0; i < _gridSize; i++) {
@@ -25,7 +25,7 @@ void local::SlowTransform::inverseTransform(InterpolationData &result) const {
                     re += _norm*(real(m,n)*std::cos(theta) - imag(m,n)*std::sin(theta));
                 }
             }
-            result.setValue(i,j,re);
+            _target.setValue(i,j,re);
         }
     }
 }

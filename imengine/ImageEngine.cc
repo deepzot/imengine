@@ -53,7 +53,7 @@ void local::ImageEngine<T>::generate(local::ImageWriter &writer, double dx, doub
     dy -= _imageGrid->getGridY();
     _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,dx,dy);
     // build a grid of real-space convoluted image data
-    _imageTransform->inverseTransform(*_imageGrid);
+    _imageTransform->inverseTransform();
     // initialize our writer
     writer.open();
     // estimate the signal in each pixel
