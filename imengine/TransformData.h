@@ -20,6 +20,9 @@ namespace imengine {
         double const& real(int i, int j) const;
         double const& imag(int i, int j) const;
         
+        // writes a real value into the target InterpolationGrid
+        void setTarget(int i, int j, double value);
+        
         // calculates and returns re*re + im*im (no range checks on i,j)
         double absSquared(int i, int j) const;
 
@@ -39,10 +42,10 @@ namespace imengine {
         // data[m,n] = 1/N^2 Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
         virtual void inverseTransform() = 0;
         
-        // Sets our contents to the discrete Fourier transform of the specified row-wise
-        // real 2D data array, normalized so that:
+        // Sets our contents to the discrete Fourier transform of our target InterpolationData
+        // object. Normalization is defined by:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
-        virtual void setToTransform(double const *realData) = 0;
+        virtual void setToTransform() = 0;
 
 	protected:
         InterpolationData &_target;

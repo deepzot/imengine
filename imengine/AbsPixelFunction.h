@@ -15,11 +15,10 @@ namespace imengine {
         // Performs one-time initializations before subsequent calls to doTransform.
         // Implementation should save the pointer but does not own it.
         virtual void initTransform(TransformData *transformData) = 0;
-        // Computes the function's discrete Fourier transform on a square grid with
-        // the specified spacing and (x,y) origin relative to the grid center. The
-        // transform is defined as:
+        // Computes the function's discrete Fourier transform and saves the results in
+        // the transform object passed to initTransform(). The transform is defined as:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
-        virtual void doTransform(double dx = 0, double dy = 0) const = 0;
+        virtual void doTransform() = 0;
 	private:
 	}; // AbsPixelFunction
 } // imengine

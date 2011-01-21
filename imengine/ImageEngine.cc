@@ -46,8 +46,8 @@ void local::ImageEngine<T>::generate(local::ImageWriter &writer, double dx, doub
     }
     // calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source)
-    _source.doTransform(0,0);
-    _psf.doTransform(0,0);
+    _source.doTransform();
+    _psf.doTransform();
     // combine the source and PSF in Fourier space
     dx -= _imageGrid->getGridX();
     dy -= _imageGrid->getGridY();

@@ -30,14 +30,14 @@ void local::SlowTransform::inverseTransform() {
     }
 }
 
-void local::SlowTransform::setToTransform(double const *realData) {
+void local::SlowTransform::setToTransform() {
     double dtheta = -8*std::atan(1.0)/_gridSize; // -2pi/N
     for(int j = 0; j < _gridSize; j++) {
         for(int i = 0; i < _gridSize; i++) {
             double re(0), im(0);
             for(int n = 0; n < _gridSize; n++) {
                 for(int m = 0; m < _gridSize; m++) {
-                    double value = realData[m + _gridSize*n];
+                    double value = _target.getValue(m,n);
                     double theta = dtheta*(m*i + n*j);
                     re += value*std::cos(theta);
                     im += value*std::sin(theta);

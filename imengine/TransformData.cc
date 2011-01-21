@@ -26,6 +26,10 @@ local::TransformData::~TransformData() {
     fftw_free(_data);
 }
 
+void local::TransformData::setTarget(int i, int j, double value) {
+    _target.setValue(i,j,value);
+}
+
 void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2,
 double dx, double dy) {
     // is there any translation to apply?

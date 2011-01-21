@@ -20,6 +20,9 @@ namespace imengine {
         double getGridX() const;
         double getGridY() const;
 
+        // Returns the value associated with grid point (i,j)
+        double getValue(int i, int j) const;
+        
 		// Sets the value associated with grid point (i,j) (no range checks on i,j)
         void setValue(int i, int j, double value);
 		
@@ -37,6 +40,10 @@ namespace imengine {
 	
     inline double InterpolationData::getGridX() const { return _gridX; }
     inline double InterpolationData::getGridY() const { return _gridY; }
+
+    inline double InterpolationData::getValue(int i, int j) const {
+        return _data[i + _gridSize*j];
+    }
 
 	inline void InterpolationData::setValue(int i, int j, double value) {
         _data[i + _gridSize*j] = value;
