@@ -27,7 +27,7 @@ namespace imengine {
         virtual InterpolationData *createGrid() = 0;
         // Estimates the signal in pixel (i,j) using the tabulated values in _imageData
         virtual double estimatePixelValue(int i, int j) = 0;
-        InterpolationData *_imageGrid;
+        InterpolationData *_imageGrid, *_workspace;
         int _pixelsPerSide;
         double _pixelScale;
         double _scaleSquared;

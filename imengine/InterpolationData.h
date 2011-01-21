@@ -13,6 +13,9 @@ namespace imengine {
 		InterpolationData(int gridSize, int pad, double gridSpacing, double gridX, double gridY);
 		virtual ~InterpolationData();
 		
+		// Creates a new object with the same dimensions
+        InterpolationData *createWorkspace() const;
+		
         // Accesses constructor parameters
         double getGridX() const;
         double getGridY() const;

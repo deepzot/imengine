@@ -11,7 +11,8 @@ namespace local = imengine;
 
 local::AbsImageEngine::AbsImageEngine(local::AbsPixelFunction& source, 
 local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
-_source(source), _psf(psf), _pixelsPerSide(pixelsPerSide), _pixelScale(pixelScale), _imageGrid(0)
+_source(source), _psf(psf), _pixelsPerSide(pixelsPerSide), _pixelScale(pixelScale),
+_imageGrid(0), _workspace(0)
 {
     assert(pixelsPerSide > 0);
     assert(pixelScale > 0);
@@ -21,5 +22,6 @@ _source(source), _psf(psf), _pixelsPerSide(pixelsPerSide), _pixelScale(pixelScal
 local::AbsImageEngine::~AbsImageEngine() {
     if(0 != _imageGrid) {
         delete _imageGrid;
+        delete _workspace;
     }
 }

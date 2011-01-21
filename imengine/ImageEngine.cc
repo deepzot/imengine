@@ -32,15 +32,17 @@ void local::ImageEngine<T>::generate(local::ImageWriter &writer, double dx, doub
     if(0 == _imageTransform) {
         _imageGrid = createGrid();
         assert(0 != _imageGrid);
-        // build discrete Fourier transform grids with the same attributes but zero
-        // out the offset in the psf otherwise it will be applied twice (an offset
-        // in the image transform has no effect so we arbitrary zero it here)
-        _sourceTransform = new T(*_imageGrid);
-        _psfTransform = new T(*_imageGrid);
-        _imageTransform = new T(*_imageGrid);
+        // create a private workspace with the same dimensions as the image grid
+        _workspace = _imageGrid->createWorkspace();
+        // build discrete Fourier transform grids (linked to the workspace) for
+        // the source and psf models
+        _sourceTransform = new T(*_workspace);
+        _psfTransform = new T(*_workspace);
         // link the source and psf grids to their pixel functions
         _source.initTransform(_sourceTransform);
         _psf.initTransform(_psfTransform);
+        // build a discrete Fourier transform grid for the final image
+        _imageTransform = new T(*_imageGrid);
     }
     // calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source)

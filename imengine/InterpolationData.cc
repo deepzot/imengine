@@ -22,6 +22,10 @@ local::InterpolationData::~InterpolationData() {
     fftw_free(_data);
 }
 
+local::InterpolationData *local::InterpolationData::createWorkspace() const {
+    return new local::InterpolationData(_gridSize, _pad, _gridSpacing, _gridX, _gridY);
+}
+
 void local::InterpolationData::dump() const {
     for(int j = 0; j < _gridSize; j++) {
         for(int i = 0; i < _gridSize; i++) {
