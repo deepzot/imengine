@@ -5,6 +5,8 @@
 
 #include "imengine/DataGrid.h"
 
+#include <cassert>
+
 namespace imengine {
     class InterpolationData;
     // Stores complex discrete Fourier transform values on a square grid
@@ -14,11 +16,9 @@ namespace imengine {
         TransformData(InterpolationData &target);
 		virtual ~TransformData();
 		
-		// accesses the real/imag parts of transform data (no range checks on i,j)
-        double& real(int i, int j);
-        double& imag(int i, int j);
-        double const& real(int i, int j) const;
-        double const& imag(int i, int j) const;
+		// returns the real and imaginary components of element (i,j)
+        double const getReal(int i, int j) const;
+        double const getImag(int i, int j) const;
         
         // writes a real value into the target InterpolationGrid
         void setTarget(int i, int j, double value);
@@ -47,26 +47,53 @@ namespace imengine {
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
         virtual void setToTransform() = 0;
 
+        //void validate() const;
+
 	protected:
+		// accesses the real/imag parts of transform data (no range checks on i,j)
+        double& real(int i, int j);
+        double& imag(int i, int j);
+        double const& real(int i, int j) const;
+        double const& imag(int i, int j) const;
+        
         InterpolationData &_target;
         double _norm;
-        double *_data;
 
     private:
+        double *_data;
         double _dk;
 	}; // TransformData
 
-    inline double& TransformData::real(int i, int j) { return _data[2*(i + _gridSize*j)]; }
-    inline double& TransformData::imag(int i, int j) { return _data[2*(i + _gridSize*j)+1]; }
-    inline double const& TransformData::real(int i, int j) const { return _data[2*(i + _gridSize*j)]; }
-    inline double const& TransformData::imag(int i, int j) const { return _data[2*(i + _gridSize*j)+1]; }
+    inline double& TransformData::real(int i, int j) {
+        assert(i >= 0 && i < _break1);
+        assert(j >= 0 && j < _gridSize);
+        return _data[2*(i + _break1*j)];
+    }
+    inline double& TransformData::imag(int i, int j) {
+        assert(i >= 0 && i < _break1);
+        assert(j >= 0 && j < _gridSize);
+        return _data[2*(i + _break1*j)+1];
+    }
+    inline double const& TransformData::real(int i, int j) const {
+        assert(i >= 0 && i < _break1);
+        assert(j >= 0 && j < _gridSize);
+        return _data[2*(i + _break1*j)];
+    }
+    inline double const& TransformData::imag(int i, int j) const {
+        assert(i >= 0 && i < _break1);
+        assert(j >= 0 && j < _gridSize);
+        return _data[2*(i + _break1*j)+1];
+    }
     
     inline double TransformData::absSquared(int i, int j) const {
-        double re(real(i,j)), im(imag(i,j));
+        assert(i >= 0 && i < _gridSize);
+        assert(j >= 0 && j < _gridSize);
+        double re(getReal(i,j)), im(getImag(i,j));
         return re*re + im*im;
     }
 
     inline double TransformData::waveNumber(int i) const {
+        assert(i >= 0 && i < _gridSize);
         return _dk*(i < _break1 ? i : i-_gridSize);
     }
 

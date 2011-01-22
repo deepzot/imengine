@@ -22,6 +22,12 @@ local::InterpolationData::~InterpolationData() {
     fftw_free(_data);
 }
 
+void local::InterpolationData::setValue(int i, int j, double value) {
+    assert(i >= 0 && i < _gridSize);
+    assert(j >= 0 && j < _gridSize);
+    _data[i + _gridSize*j] = value;
+}
+
 local::InterpolationData *local::InterpolationData::createWorkspace() const {
     return new local::InterpolationData(_gridSize, _pad, _gridSpacing, _gridX, _gridY);
 }

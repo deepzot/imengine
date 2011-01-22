@@ -6,6 +6,7 @@
 #include "imengine/ImageWriter.h"
 
 #include <cassert>
+#include <iostream>
 
 namespace local = imengine;
 

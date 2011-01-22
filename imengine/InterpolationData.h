@@ -45,10 +45,6 @@ namespace imengine {
         return _data[i + _gridSize*j];
     }
 
-	inline void InterpolationData::setValue(int i, int j, double value) {
-        _data[i + _gridSize*j] = value;
-	}
-	
 	inline double InterpolationData::getValueForPixel(int x, int y) const {
         return _data[getIndex(x + _pad) + _gridSize*getIndex(y + _pad)];
 	}

@@ -4,6 +4,7 @@
 #include "imengine/InterpolationData.h"
 
 #include <cmath>
+#include <cassert>
 
 namespace local = imengine;
 
@@ -15,17 +16,18 @@ local::SlowTransform::SlowTransform(InterpolationData &target)
 local::SlowTransform::~SlowTransform() { }
 
 void local::SlowTransform::inverseTransform() {
-    double dtheta = +8*std::atan(1.0)/_gridSize; // +2pi/N
-    for(int j = 0; j < _gridSize; j++) {
-        for(int i = 0; i < _gridSize; i++) {
-            double re(0);
-            for(int n = 0; n < _gridSize; n++) {
-                for(int m = 0; m < _gridSize; m++) {
-                    double theta = dtheta*(m*i + n*j);                    
-                    re += _norm*(real(m,n)*std::cos(theta) - imag(m,n)*std::sin(theta));
+    int N(_gridSize);
+    double dtheta = +8*std::atan(1.0)/N; // +2pi/N
+    for(int j = 0; j < N; j++) {
+        for(int i = 0; i < N; i++) {
+            double value(0);
+            for(int n = 0; n < N; n++) {
+                for(int m = 0; m < N; m++) {
+                    double theta = dtheta*(m*i + n*j);
+                    value += _norm*(getReal(m,n)*std::cos(theta) - getImag(m,n)*std::sin(theta));
                 }
             }
-            _target.setValue(i,j,re);
+            _target.setValue(i,j,value);
         }
     }
 }
@@ -33,7 +35,7 @@ void local::SlowTransform::inverseTransform() {
 void local::SlowTransform::setToTransform() {
     double dtheta = -8*std::atan(1.0)/_gridSize; // -2pi/N
     for(int j = 0; j < _gridSize; j++) {
-        for(int i = 0; i < _gridSize; i++) {
+        for(int i = 0; i < _break1; i++) {
             double re(0), im(0);
             for(int n = 0; n < _gridSize; n++) {
                 for(int m = 0; m < _gridSize; m++) {

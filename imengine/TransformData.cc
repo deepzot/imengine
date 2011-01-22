@@ -19,24 +19,60 @@ DataGrid(target.getGridSize(),target.getGridSpacing()), _target(target)
     _norm = 1.0/(_gridSize*_gridSize);
     // use FFTW allocator for best SIMD alignment
     assert(2*sizeof(double) == sizeof(fftw_complex));
-    _data = (double*)fftw_malloc(2*sizeof(double)*_gridSize*_gridSize);
+    _data = (double*)fftw_malloc(2*sizeof(double)*_gridSize*_break1);
 }
 
 local::TransformData::~TransformData() {
     fftw_free(_data);
 }
 
+double const local::TransformData::getReal(int i, int j) const {
+    assert(i >= 0 && i < _gridSize);
+    assert(j >= 0 && j < _gridSize);
+    int N(_gridSize);
+    if(i < _break1) {
+        return real(i,j);
+    }
+    else if(j == 0) {
+        return real(N-i,0);
+    }
+    else if(2*j == N) {
+        return -real(N-i,j);
+    }
+    else {
+        return real(N-i,N-j);
+    }
+}
+
+double const local::TransformData::getImag(int i, int j) const {
+    assert(i >= 0 && i < _gridSize);
+    assert(j >= 0 && j < _gridSize);
+    int N(_gridSize);
+    if(i < _break1) {
+        return imag(i,j);
+    }
+    else if(j == 0) {
+        return -imag(N-i,0);
+    }
+    else if(2*j == _gridSize) {
+        return imag(N-i,j);
+    }
+    else {
+        return -imag(N-i,N-j);
+    }
+}
+
 void local::TransformData::setTarget(int i, int j, double value) {
     _target.setValue(i,j,value);
 }
 
-void local::TransformData::setToProduct(local::TransformData const& t1, local::TransformData const& t2,
-double dx, double dy) {
+void local::TransformData::setToProduct(local::TransformData const& t1,
+local::TransformData const& t2, double dx, double dy) {
     // is there any translation to apply?
     bool translated = (0 != dx)||(0 != dy);
     double norm = _gridSpacing*_gridSpacing;
     for(int j = 0; j < _gridSize; j++) {
-        for(int i = 0; i < _gridSize; i++) {
+        for(int i = 0; i < _break1; i++) {
             double re1(t1.real(i,j)),im1(t1.imag(i,j)),re2(t2.real(i,j)),im2(t2.imag(i,j));
             double re = norm*(re1*re2 - im1*im2);
             double im = norm*(re1*im2 + im1*re2);
@@ -54,6 +90,24 @@ double dx, double dy) {
         }
     }
 }
+
+/**
+void local::TransformData::validate() const {
+    int N = _gridSize;
+    for(int j = 0; j < _gridSize; j++) {
+        //int j2 = (j == 0) ? 0 : N-j;
+        //int sign = (N%2 == 0 && j == N/2) ? -1 : +1;
+        for(int i = 0; i < _gridSize; i++) {
+            if(std::fabs(getReal(i,j)-real(i,j)) > 1e-10) {
+                std::cout << "re(" << i << ',' << j << ") " << getReal(i,j) << ' ' << real(i,j) << std::endl;
+            }
+            if(std::fabs(getImag(i,j)-imag(i,j)) > 1e-10) {
+                std::cout << "im(" << i << ',' << j << ") " << getImag(i,j) << ' ' << imag(i,j) << std::endl;
+            }
+        }
+    }
+}
+**/
 
 void local::TransformData::dumpAbsSquared() const {
     for(int j = 0; j < _gridSize; j++) {
