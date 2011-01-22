@@ -19,7 +19,7 @@ namespace imengine {
         virtual void setToTransform();
         // Calculates the real part of our inverse Fourier transform and saves the result
         // in our target InterpolationData object. Normalization is defined by:
-        // data[m,n] = 1/N^2 Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
+        // data[m,n] = Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
         virtual void inverseTransform();
 	private:
         fftw_plan _forwardPlan, _inversePlan;

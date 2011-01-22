@@ -17,6 +17,7 @@ namespace imengine {
         virtual InterpolationData *createGrid();
         virtual double estimatePixelValue(int i, int j);
 	private:
+        double _norm;
 	}; // MidpointImageEngine
 } // imengine
 

@@ -23,7 +23,7 @@ void local::SlowTransform::inverseTransform() {
             for(int n = 0; n < N; n++) {
                 for(int m = 0; m < N; m++) {
                     double theta = dtheta*(m*i + n*j);
-                    value += _norm*(getReal(m,n)*std::cos(theta) - getImag(m,n)*std::sin(theta));
+                    value += getReal(m,n)*std::cos(theta) - getImag(m,n)*std::sin(theta);
                 }
             }
             setTargetValue(i,j,value);

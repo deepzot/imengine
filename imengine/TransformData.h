@@ -39,7 +39,7 @@ namespace imengine {
 
         // Calculates the real part of our inverse Fourier transform and saves the result
         // in our target InterpolationData object. Normalization is defined by:
-        // data[m,n] = 1/N^2 Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
+        // data[m,n] = Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
         virtual void inverseTransform() = 0;
         
         // Sets our contents to the discrete Fourier transform of our target InterpolationData
@@ -65,8 +65,6 @@ namespace imengine {
         // returns a pointer to the target data array
         double *getTargetDataPtr();
         
-        double _norm;
-
     private:
         InterpolationData &_target;
         double *_data;

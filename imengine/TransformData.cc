@@ -16,7 +16,6 @@ DataGrid(target.getGridSize(),target.getGridSpacing()), _target(target)
 {
     double twopi = 8*std::atan(1.0);
     _dk = twopi/(_gridSize*_gridSpacing);
-    _norm = 1.0/(_gridSize*_gridSize);
     // use FFTW allocator for best SIMD alignment
     assert(2*sizeof(double) == sizeof(fftw_complex));
     _data = (double*)fftw_malloc(2*sizeof(double)*_gridSize*_break1);

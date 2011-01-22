@@ -20,7 +20,13 @@ void local::FastTransform::setToTransform() {
         _forwardPlan = fftw_plan_dft_r2c_2d(_gridSize,_gridSize,
             getTargetDataPtr(),(fftw_complex*)getDataPtr(),FFTW_ESTIMATE);
     }
+    fftw_execute(_forwardPlan);
 }
 
 void local::FastTransform::inverseTransform() {
+    if(0 == _inversePlan) {
+        _inversePlan = fftw_plan_dft_c2r_2d(_gridSize,_gridSize,
+            (fftw_complex*)getDataPtr(),getTargetDataPtr(),FFTW_ESTIMATE);
+    }
+    fftw_execute(_inversePlan);
 }

@@ -10,7 +10,6 @@ local::BilinearImageEngine<T>::BilinearImageEngine(local::AbsPixelFunction& sour
 local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
 ImageEngine<T>(source,psf,pixelsPerSide,pixelScale)
 {
-    _norm = this->_scaleSquared/4;
 }
 
 template <class T>
@@ -21,6 +20,7 @@ local::InterpolationData* local::BilinearImageEngine<T>::createGrid() {
     // Put a grid point at the corners of each pixel
     int size = this->getPixelsPerSide() + 1;
     double scale = this->getPixelScale();
+    _norm = this->_scaleSquared/(4*size*size);
     // for an odd number of pixels, the grid is already centered on the pixel array but
     // an even number of pixels requires a half-pixel offset
     double offset = (size % 2) ? 0 : -scale/2;

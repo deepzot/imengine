@@ -20,6 +20,7 @@ local::InterpolationData* local::MidpointImageEngine<T>::createGrid() {
     // Put a grid point in the center of each pixel...
     int size = this->getPixelsPerSide();
     double scale = this->getPixelScale();
+    this->_norm = this->_scaleSquared/(size*size);
     // for an odd number of pixels, the grid is already centered on the pixel array but
     // an even number of pixels requires a half-pixel offset
     double offset = (size % 2) ? 0 : -scale/2;
@@ -28,7 +29,7 @@ local::InterpolationData* local::MidpointImageEngine<T>::createGrid() {
 
 template <class T>
 double local::MidpointImageEngine<T>::estimatePixelValue(int x, int y) {
-    return this->_scaleSquared*this->_imageGrid->getValueForPixel(x,y);
+    return this->_norm*this->_imageGrid->getValueForPixel(x,y);
 }
 
 // explicit template instantiations

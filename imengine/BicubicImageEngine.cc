@@ -10,9 +10,6 @@ local::BicubicImageEngine<T>::BicubicImageEngine(local::AbsPixelFunction& source
 local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
 ImageEngine<T>(source,psf,pixelsPerSide,pixelScale)
 {
-    _norm1 = this->_scaleSquared/576.;
-    _norm13 = -13*this->_scaleSquared/576.;
-    _norm169 = 169*this->_scaleSquared/576.;
 }
 
 template <class T>
@@ -23,6 +20,9 @@ local::InterpolationData* local::BicubicImageEngine<T>::createGrid() {
     // Put a grid point at the corners of each pixel
     int size = this->getPixelsPerSide() + 3;
     double scale = this->getPixelScale();
+    _norm1 = this->_scaleSquared/(576*size*size);
+    _norm13 = -13*_norm1;
+    _norm169 = 169*_norm1;
     // for an odd number of pixels, the grid is already centered on the pixel array but
     // an even number of pixels requires a half-pixel offset
     double offset = (size % 2) ? 0 : -scale/2;
