@@ -5,6 +5,8 @@
 
 #include "imengine/TransformData.h"
 
+#include "fftw3.h"
+
 namespace imengine {
 	class FastTransform : public TransformData {
 	public:
@@ -20,6 +22,7 @@ namespace imengine {
         // data[m,n] = 1/N^2 Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
         virtual void inverseTransform();
 	private:
+        fftw_plan _forwardPlan, _inversePlan;
 	}; // FastTransform
 } // imengine
 

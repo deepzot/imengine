@@ -62,8 +62,12 @@ double const local::TransformData::getImag(int i, int j) const {
     }
 }
 
-void local::TransformData::setTarget(int i, int j, double value) {
-    _target.setValue(i,j,value);
+void local::TransformData::setTargetValue(int i, int j, double value) {
+    getTarget().setValue(i,j,value);
+}
+
+double *local::TransformData::getTargetDataPtr() {
+    return getTarget()._data;
 }
 
 void local::TransformData::setToProduct(local::TransformData const& t1,

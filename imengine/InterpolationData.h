@@ -7,6 +7,7 @@
 
 namespace imengine {
     // Stores a grid of image function values to support pixelation.
+    class TransformData;
 	class InterpolationData : public DataGrid {
 	public:
 	    // The reference grid point for pixel (0,0) is at (pad,pad)
@@ -31,6 +32,9 @@ namespace imengine {
         
         // dumps grid values to std::cout in row-wise order
         void dump() const;
+
+        // transforms require direct access to our private _data array
+        friend class TransformData;
         
 	private:
         int _pad;

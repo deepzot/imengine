@@ -28,7 +28,7 @@ void local::GenericPixelFunction::doTransform() {
         for(int i = 0; i < ngrid; i++) {
             double x = _transformData->getX(i);
             double value = (*this)(x,y);
-            _transformData->setTarget(i,j,value);
+            _transformData->setTargetValue(i,j,value);
         }
     }
     double spacing = _transformData->getGridSpacing();

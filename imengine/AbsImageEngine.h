@@ -3,12 +3,14 @@
 #ifndef IMENGINE_ABS_IMAGE_ENGINE
 #define IMENGINE_ABS_IMAGE_ENGINE
 
+#include "boost/utility.hpp"
+
 namespace imengine {
     class AbsPixelFunction;
     class InterpolationData;
     class ImageWriter;
     // Generates pixelized images of a source convoluted with a psf.
-	class AbsImageEngine {
+	class AbsImageEngine : boost::noncopyable {
 	public:
 	    // Creates a new engine for the specified source and psf functions to generate
 	    // square images of pixelsPerSide x pixelsPerSide pixels of dimension pixelScale.

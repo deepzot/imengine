@@ -4,7 +4,6 @@
 #include "imengine/InterpolationData.h"
 
 #include <cmath>
-#include <cassert>
 
 namespace local = imengine;
 
@@ -27,7 +26,7 @@ void local::SlowTransform::inverseTransform() {
                     value += _norm*(getReal(m,n)*std::cos(theta) - getImag(m,n)*std::sin(theta));
                 }
             }
-            _target.setValue(i,j,value);
+            setTargetValue(i,j,value);
         }
     }
 }
@@ -39,7 +38,7 @@ void local::SlowTransform::setToTransform() {
             double re(0), im(0);
             for(int n = 0; n < _gridSize; n++) {
                 for(int m = 0; m < _gridSize; m++) {
-                    double value = _target.getValue(m,n);
+                    double value = getTarget().getValue(m,n);
                     double theta = dtheta*(m*i + n*j);
                     re += value*std::cos(theta);
                     im += value*std::sin(theta);

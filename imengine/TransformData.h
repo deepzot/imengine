@@ -21,7 +21,7 @@ namespace imengine {
         double const getImag(int i, int j) const;
         
         // writes a real value into the target InterpolationGrid
-        void setTarget(int i, int j, double value);
+        void setTargetValue(int i, int j, double value);
         
         // calculates and returns re*re + im*im (no range checks on i,j)
         double absSquared(int i, int j) const;
@@ -55,11 +55,20 @@ namespace imengine {
         double& imag(int i, int j);
         double const& real(int i, int j) const;
         double const& imag(int i, int j) const;
+
+        // returns a reference to our target
+        InterpolationData &getTarget();
+
+        // returns a pointer to our transform data array
+        double *getDataPtr();
+
+        // returns a pointer to the target data array
+        double *getTargetDataPtr();
         
-        InterpolationData &_target;
         double _norm;
 
     private:
+        InterpolationData &_target;
         double *_data;
         double _dk;
 	}; // TransformData
@@ -96,7 +105,15 @@ namespace imengine {
         assert(i >= 0 && i < _gridSize);
         return _dk*(i < _break1 ? i : i-_gridSize);
     }
-
+    
+    inline double *TransformData::getDataPtr() {
+        return _data;
+    }
+    
+    inline InterpolationData &TransformData::getTarget() {
+        return _target;
+    }
+    
 } // imengine
 
 #endif // IMENGINE_TRANSFORM_DATA
