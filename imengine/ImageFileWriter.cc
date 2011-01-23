@@ -9,7 +9,7 @@
 namespace local = imengine;
 
 local::ImageFileWriter::ImageFileWriter(const char *filename)
-: _filename(filename), _os(0)
+: AbsImageWriter(), _filename(filename), _os(0)
 { }
 
 local::ImageFileWriter::~ImageFileWriter() {
@@ -17,7 +17,7 @@ local::ImageFileWriter::~ImageFileWriter() {
     assert(0 == _os);
 }
 
-void local::ImageFileWriter::open() {
+void local::ImageFileWriter::open(int size, double scale) {
     // this should never happen if open/close calls are balanced
     assert(0 == _os);
     // (re)open our named file if a name has been specified
@@ -27,19 +27,17 @@ void local::ImageFileWriter::open() {
     else {
         _os = &std::cout;
     }
-    _lastY = 0;
+    _lastX = size-1;
 }
 
 void local::ImageFileWriter::write(int x, int y, double value) {
-    if(y > _lastY) {
-        *_os << std::endl;
-        _lastY = y;
-    }
     *_os << ' ' << value;
+    if(x == _lastX) {
+        *_os << std::endl;
+    }
 }
 
 void local::ImageFileWriter::close() {
-    *_os << std::endl;
     if(_filename != "") {
         delete _os;
     }

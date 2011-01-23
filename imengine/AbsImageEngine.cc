@@ -3,7 +3,6 @@
 #include "imengine/AbsImageEngine.h"
 #include "imengine/AbsPixelFunction.h"
 #include "imengine/InterpolationData.h"
-#include "imengine/ImageWriter.h"
 
 #include <cassert>
 

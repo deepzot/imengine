@@ -19,7 +19,7 @@ namespace imengine {
 		virtual ~ImageEngine();
         // Initializes 
 		// Generates an image with the source function offset by (dx,dy)
-        virtual void generate(ImageWriter &writer, double dx = 0, double dy = 0);
+        virtual void generate(AbsImageWriter &writer, double dx = 0, double dy = 0);
     protected:
 	private:
         T *_sourceTransform, *_psfTransform, *_imageTransform;

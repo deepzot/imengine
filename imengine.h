@@ -15,7 +15,7 @@
 #include "imengine/BicubicImageEngine.h"
 
 // Image writers
-#include "imengine/ImageWriter.h"
+#include "imengine/SilentImageWriter.h"
 #include "imengine/ImageFileWriter.h"
 
 // Source and PSF models

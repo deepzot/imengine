@@ -27,7 +27,7 @@ boost::variate_generator<boost::mt19937&, boost::uniform_real<> > offset(gen, pd
 
 double trial(int scaleUp, int trials, bool slow) {
     // use a silent image writer
-    img::ImageWriter silent;
+    img::SilentImageWriter silent;
     // initialize the models
     mod::DiskDemo src(scaleUp);
     mod::GaussianDemo psf(scaleUp);

@@ -8,7 +8,7 @@
 namespace imengine {
     class AbsPixelFunction;
     class InterpolationData;
-    class ImageWriter;
+    class AbsImageWriter;
     // Generates pixelized images of a source convoluted with a psf.
 	class AbsImageEngine : boost::noncopyable {
 	public:
@@ -22,7 +22,7 @@ namespace imengine {
         double getPixelScale() const;
         // Initializes 
 		// Generates an image with the source function offset by (dx,dy)
-        virtual void generate(ImageWriter &writer, double dx = 0, double dy = 0) = 0;
+        virtual void generate(AbsImageWriter &writer, double dx = 0, double dy = 0) = 0;
     protected:
         // Returns a pointer to a newly created InterpolationData with parameters appropriate
         // for the requested pixel size and pixelation method

@@ -3,7 +3,7 @@
 #include "imengine/ImageEngine.h"
 #include "imengine/AbsPixelFunction.h"
 #include "imengine/InterpolationData.h"
-#include "imengine/ImageWriter.h"
+#include "imengine/AbsImageWriter.h"
 
 #include <cassert>
 #include <iostream>
@@ -28,7 +28,7 @@ local::ImageEngine<T>::~ImageEngine() {
 }
 
 template <class T>
-void local::ImageEngine<T>::generate(local::ImageWriter &writer, double dx, double dy) {
+void local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx, double dy) {
     // do one-time initialization of the transform grids
     if(0 == _imageTransform) {
         _imageGrid = createGrid();
@@ -56,7 +56,7 @@ void local::ImageEngine<T>::generate(local::ImageWriter &writer, double dx, doub
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform();
     // initialize our writer
-    writer.open();
+    writer.open(_pixelsPerSide,_pixelScale);
     // estimate the signal in each pixel
     for(int y = 0; y < _pixelsPerSide; y++) {
         for(int x = 0; x < _pixelsPerSide; x++) {
