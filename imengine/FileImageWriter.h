@@ -1,7 +1,7 @@
 // Created 17-Jan-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
-#ifndef IMENGINE_IMAGE_FILE_WRITER
-#define IMENGINE_IMAGE_FILE_WRITER
+#ifndef IMENGINE_FILE_IMAGE_WRITER
+#define IMENGINE_FILE_IMAGE_WRITER
 
 #include "imengine/AbsImageWriter.h"
 
@@ -9,10 +9,10 @@
 
 namespace imengine {
     // Writes pixel values to the named file (or else stdout) with one line per row
-	class ImageFileWriter : public AbsImageWriter {
+	class FileImageWriter : public AbsImageWriter {
 	public:
-		ImageFileWriter(const char *filename = "");
-		virtual ~ImageFileWriter();
+		FileImageWriter(const char *filename = "");
+		virtual ~FileImageWriter();
         void open(int size, double scale);
         void write(int x, int y, double value);
         void close();
@@ -20,7 +20,7 @@ namespace imengine {
         std::string _filename;
         std::ostream *_os;
         int _lastX;
-	}; // ImageFileWriter
+	}; // FileImageWriter
 } // imengine
 
-#endif // IMENGINE_IMAGE_FILE_WRITER
+#endif // IMENGINE_FILE_IMAGE_WRITER

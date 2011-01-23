@@ -16,7 +16,7 @@
 
 // Image writers
 #include "imengine/SilentImageWriter.h"
-#include "imengine/ImageFileWriter.h"
+#include "imengine/FileImageWriter.h"
 
 // Source and PSF models
 #include "imengine/models/DiskDemo.h"

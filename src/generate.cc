@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
         }
     
         // generate the image
-        img::ImageFileWriter writer(outfile.c_str());
+        img::FileImageWriter writer(outfile.c_str());
         engine->generate(writer,dx,dy);
     }
     catch(std::exception const &e) {
