@@ -25,9 +25,10 @@ boost::mt19937 gen;
 boost::uniform_real<> pdf(-1,+1);
 boost::variate_generator<boost::mt19937&, boost::uniform_real<> > offset(gen, pdf);
 
+// initialize array image writers
+img::ArrayImageWriter slowResult,fastResult;
+
 double trial(int scaleUp, int trials, bool slow) {
-    // use a silent image writer
-    img::SilentImageWriter silent;
     // initialize the models
     mod::DiskDemo src(scaleUp);
     mod::GaussianDemo psf(scaleUp);
@@ -35,8 +36,11 @@ double trial(int scaleUp, int trials, bool slow) {
     img::AbsImageEngine *engine = slow ?
         (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf,6*scaleUp,1)) :
         (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf,6*scaleUp,1));
-    // run the engine once to trigger first-time initializations
-    engine->generate(silent,0,0);
+    // run the engine once with no offset to trigger first-time initializations
+    img::ArrayImageWriter &writer = slow ? slowResult : fastResult;
+    engine->generate(writer,0,0);
+    // use a silent image writer for the trials
+    img::SilentImageWriter silent;
     // run timed trials with the slow engine
     double sum(0),sumsq(0);
     struct rusage before,after;
