@@ -3,6 +3,10 @@
 #include <iostream>
 #include <sys/resource.h>
 
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_real.hpp>
+#include <boost/random/variate_generator.hpp>
+
 #include "imengine.h"
 
 namespace img = imengine;
@@ -15,6 +19,11 @@ double elapsed(struct timeval const &before, struct timeval const &after) {
 double elapsed(struct rusage const &before, struct rusage const &after) {
     return elapsed(before.ru_utime,after.ru_utime) + elapsed(before.ru_stime,after.ru_stime);
 }
+
+// initialize random number generator
+boost::mt19937 gen;
+boost::uniform_real<> pdf(-1,+1);
+boost::variate_generator<boost::mt19937&, boost::uniform_real<> > offset(gen, pdf);
 
 double trial(int scaleUp, int trials, bool slow) {
     // use a silent image writer
@@ -29,10 +38,12 @@ double trial(int scaleUp, int trials, bool slow) {
     // run the engine once to trigger first-time initializations
     engine->generate(silent,0,0);
     // run timed trials with the slow engine
+    double sum(0),sumsq(0);
     struct rusage before,after;
     getrusage(RUSAGE_SELF,&before);
     for(int n = 0; n < trials; n++) {
-        engine->generate(silent,0,0);
+        // generate an image with a dx,dy offsets
+        engine->generate(silent,offset(),offset());
     }
     getrusage(RUSAGE_SELF,&after);
     // clean up
@@ -42,11 +53,18 @@ double trial(int scaleUp, int trials, bool slow) {
 }
 
 int main(int argc, char **argv) {
+    
     std::cout << "6 " << trial(1,10000,true) << ' ' << trial(1,10000,false) << std::endl;
-    std::cout << "12 " << trial(2,1000,true) << ' ' << trial(2,1000,false) << std::endl;
-    std::cout << "24 " << trial(4,100,true) << ' ' << trial(4,100,false) << std::endl;
-    std::cout << "48 " << trial(8,10,true) << ' ' << trial(8,10,false) << std::endl;
-    std::cout << "96 " << trial(16,1,true) << ' ' << trial(16,1,false) << std::endl;
+    std::cout << "12 " << trial(2,3000,true) << ' ' << trial(2,1000,false) << std::endl;
+    std::cout << "24 " << trial(4,200,true) << ' ' << trial(4,1000,false) << std::endl;
+    std::cout << "48 " << trial(8,15,true) << ' ' << trial(8,1000,false) << std::endl;
+    std::cout << "96 " << trial(16,1,true) << ' ' << trial(16,1000,false) << std::endl;
+    /* only use fast method for larger grid sizes */
+    std::cout << "96 0 " << trial(16,1000,false) << std::endl;
+    std::cout << "192 0 " << trial(32,1000,false) << std::endl;
+    std::cout << "384 0 " << trial(64,100,false) << std::endl;
+    std::cout << "768 0 " << trial(128,100,false) << std::endl;
+    std::cout << "1536 0 " << trial(256,100,false) << std::endl;
 }
 
 /* results on DK laptop:
