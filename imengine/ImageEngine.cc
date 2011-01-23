@@ -11,9 +11,8 @@
 namespace local = imengine;
 
 template <class T>
-local::ImageEngine<T>::ImageEngine(local::AbsPixelFunction& source, 
-local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale)
-: AbsImageEngine(source,psf,pixelsPerSide,pixelScale),
+local::ImageEngine<T>::ImageEngine(local::AbsPixelFunction& source, local::AbsPixelFunction& psf)
+: AbsImageEngine(source,psf),
 _sourceTransform(0), _psfTransform(0), _imageTransform(0)
 {
 }
@@ -28,23 +27,26 @@ local::ImageEngine<T>::~ImageEngine() {
 }
 
 template <class T>
+void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
+    AbsImageEngine::initialize(pixelsPerSide,pixelScale);
+    _imageGrid = createGrid();
+    assert(0 != _imageGrid);
+    // create a private workspace with the same dimensions as the image grid
+    _workspace = _imageGrid->createWorkspace();
+    // build discrete Fourier transform grids (linked to the workspace) for
+    // the source and psf models
+    _sourceTransform = new T(*_workspace);
+    _psfTransform = new T(*_workspace);
+    // link the source and psf grids to their pixel functions
+    _source.initTransform(_sourceTransform);
+    _psf.initTransform(_psfTransform);
+    // build a discrete Fourier transform grid for the final image
+    _imageTransform = new T(*_imageGrid);
+}
+
+template <class T>
 void local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx, double dy) {
-    // do one-time initialization of the transform grids
-    if(0 == _imageTransform) {
-        _imageGrid = createGrid();
-        assert(0 != _imageGrid);
-        // create a private workspace with the same dimensions as the image grid
-        _workspace = _imageGrid->createWorkspace();
-        // build discrete Fourier transform grids (linked to the workspace) for
-        // the source and psf models
-        _sourceTransform = new T(*_workspace);
-        _psfTransform = new T(*_workspace);
-        // link the source and psf grids to their pixel functions
-        _source.initTransform(_sourceTransform);
-        _psf.initTransform(_psfTransform);
-        // build a discrete Fourier transform grid for the final image
-        _imageTransform = new T(*_imageGrid);
-    }
+    assert(isInitialized());
     // calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source)
     _source.doTransform();
@@ -56,10 +58,11 @@ void local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx, d
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform();
     // initialize our writer
-    writer.open(_pixelsPerSide,_pixelScale);
+    int N(getPixelsPerSide());
+    writer.open(N,getPixelScale());
     // estimate the signal in each pixel
-    for(int y = 0; y < _pixelsPerSide; y++) {
-        for(int x = 0; x < _pixelsPerSide; x++) {
+    for(int y = 0; y < N; y++) {
+        for(int x = 0; x < N; x++) {
             writer.write(x,y,estimatePixelValue(x,y));
         }
     }

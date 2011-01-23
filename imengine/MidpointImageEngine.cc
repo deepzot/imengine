@@ -7,8 +7,8 @@ namespace local = imengine;
 
 template <class T>
 local::MidpointImageEngine<T>::MidpointImageEngine(local::AbsPixelFunction& source, 
-local::AbsPixelFunction& psf, int pixelsPerSide, double pixelScale) :
-ImageEngine<T>(source,psf,pixelsPerSide,pixelScale)
+local::AbsPixelFunction& psf) :
+ImageEngine<T>(source,psf)
 {
 }
 

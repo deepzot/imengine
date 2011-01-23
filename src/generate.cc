@@ -79,22 +79,23 @@ int main(int argc, char **argv) {
         // create the pixelization engine
         if(midpoint) {
             engine = slow ?
-                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::SlowTransform>(src,psf,npixels,scale)) :
-                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::FastTransform>(src,psf,npixels,scale));
+                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::SlowTransform>(src,psf)) :
+                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::FastTransform>(src,psf));
         }
         else if(bilinear) {
             engine = slow ?
-                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf,npixels,scale)) :
-                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf,npixels,scale));
+                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf)) :
+                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf));
         }
         else if(bicubic) {
             engine = slow ?
-                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(src,psf,npixels,scale)) :
-                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(src,psf,npixels,scale));
+                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(src,psf)) :
+                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(src,psf));
         }
     
         // generate the image
         img::FileImageWriter writer(outfile.c_str());
+        engine->initialize(npixels,scale);
         engine->generate(writer,dx,dy);
     }
     catch(std::exception const &e) {

@@ -12,15 +12,15 @@ namespace imengine {
     // Generates pixelized images of a source convoluted with a psf.
 	class AbsImageEngine : boost::noncopyable {
 	public:
-	    // Creates a new engine for the specified source and psf functions to generate
-	    // square images of pixelsPerSide x pixelsPerSide pixels of dimension pixelScale.
-		AbsImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf,
-		    int pixelsPerSide, double pixelScale = 1);
+	    // Creates a new engine for the specified source and psf functions.
+		AbsImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf);
 		virtual ~AbsImageEngine();
 		// Read-only accessors
         int getPixelsPerSide() const;
         double getPixelScale() const;
-        // Initializes 
+        bool isInitialized() const;
+        // (Re)initializes the engine for the specified pixel grid size and scale
+        virtual void initialize(int pixelsPerSide, double pixelScale = 1) = 0;
 		// Generates an image with the source function offset by (dx,dy)
         virtual void generate(AbsImageWriter &writer, double dx = 0, double dy = 0) = 0;
     protected:
@@ -30,15 +30,18 @@ namespace imengine {
         // Estimates the signal in pixel (i,j) using the tabulated values in _imageData
         virtual double estimatePixelValue(int i, int j) = 0;
         InterpolationData *_imageGrid, *_workspace;
-        int _pixelsPerSide;
-        double _pixelScale;
         double _scaleSquared;
         AbsPixelFunction &_source, &_psf;
 	private:
+        void _reset();
+        int _pixelsPerSide;
+        double _pixelScale;
+        bool _initialized;
 	}; // AbsImageEngine
 	
     inline int AbsImageEngine::getPixelsPerSide() const { return _pixelsPerSide; }    
     inline double AbsImageEngine::getPixelScale() const { return _pixelScale; }
+    inline bool AbsImageEngine::isInitialized() const { return _initialized; }
     
 } // imengine
 

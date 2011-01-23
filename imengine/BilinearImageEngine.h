@@ -11,8 +11,7 @@ namespace imengine {
     // at the pixel corners.
 	template <class T> class BilinearImageEngine : public ImageEngine<T> {
 	public:
-		BilinearImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf,
-		    int pixelsPerSide, double pixelScale = 1);
+		BilinearImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf);
 		virtual ~BilinearImageEngine();
     protected:
         virtual InterpolationData *createGrid();
