@@ -3,6 +3,8 @@
 #include "imengine/ArrayImageWriter.h"
 
 #include <cassert>
+#include <iostream>
+#include <cmath>
 
 namespace local = imengine;
 
@@ -28,3 +30,54 @@ void local::ArrayImageWriter::write(int x, int y, double value) {
 }
 
 void local::ArrayImageWriter::close() { }
+
+bool local::compareImages(ArrayImageWriter const &first, ArrayImageWriter const &second,
+bool verbose, double abstol, double reltol)
+{
+    if(first.getSize() != second.getSize()) {
+        if(verbose) {
+            std::cout << "compareImages: sizes do not match! " << first.getSize()
+                << ", " << second.getSize() << std::endl;
+        }
+        return false;
+    }
+    int N(first.getSize());
+    bool pass(true);
+    double maxDelta(0),maxFrac(0);
+    for(int x = 0; x < N; x++) {
+        for(int y = 0; y < N; y++) {
+            double value1 = first.getValue(x,y);
+            double value2 = second.getValue(x,y);
+            double delta = std::fabs(value1 - value2);
+            double sum = std::fabs(value1 + value2);
+            if(delta > maxDelta) {
+                maxDelta = delta;
+            }
+            if(delta > abstol) {
+                if(verbose) {
+                    std::cout << "compareImages: |v1-v2| > " << abstol << " at (x,y) = ("
+                        << x << ',' << y << ")" << std::endl;
+                }
+                pass = false;
+            }
+            if(sum > 0) {
+                double frac = delta/sum;
+                if(frac > maxFrac) {
+                    maxFrac = frac;
+                }
+                if(frac > reltol) {
+                    if(verbose) {
+                        std::cout << "compareImages: |v1-v2|/|v1+v2| > " << reltol
+                            << " at (x,y) = (" << x << ',' << y << ")" << std::endl;
+                    }
+                    pass = false;                
+                }
+            }
+        }
+    }
+    if(verbose) {
+        std::cout << "compareImages: max|v1-v2| = " << maxDelta << " , max|v1-v2|/|v1+v2| = "
+            << maxFrac << std::endl;
+    }
+    return pass;
+}

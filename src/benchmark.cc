@@ -28,6 +28,13 @@ boost::variate_generator<boost::mt19937&, boost::uniform_real<> > offset(gen, pd
 // initialize array image writers
 img::ArrayImageWriter slowResult,fastResult;
 
+void checkResults(bool verbose = true) {
+    bool pass = img::compareImages(slowResult,fastResult,verbose);
+    if(!pass) {
+        std::cout << "Fast and slow methods give different results!" << std::endl;
+    }
+}
+
 double trial(int scaleUp, int trials, bool slow) {
     // initialize the models
     mod::DiskDemo src(scaleUp);
@@ -38,7 +45,7 @@ double trial(int scaleUp, int trials, bool slow) {
         (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf,6*scaleUp,1));
     // run the engine once with no offset to trigger first-time initializations
     img::ArrayImageWriter &writer = slow ? slowResult : fastResult;
-    engine->generate(writer,0,0);
+    engine->generate(writer,+0.1,-0.2);
     // use a silent image writer for the trials
     img::SilentImageWriter silent;
     // run timed trials with the slow engine
@@ -58,11 +65,16 @@ double trial(int scaleUp, int trials, bool slow) {
 
 int main(int argc, char **argv) {
     
+    // use both fast and slow methods for small grid sizes and check that their results agree
     std::cout << "6 " << trial(1,10000,true) << ' ' << trial(1,10000,false) << std::endl;
+    checkResults();
     std::cout << "12 " << trial(2,3000,true) << ' ' << trial(2,1000,false) << std::endl;
+    checkResults();
     std::cout << "24 " << trial(4,200,true) << ' ' << trial(4,1000,false) << std::endl;
+    checkResults();
     std::cout << "48 " << trial(8,15,true) << ' ' << trial(8,1000,false) << std::endl;
-    std::cout << "96 " << trial(16,1,true) << ' ' << trial(16,1000,false) << std::endl;
+    checkResults();
+    
     /* only use fast method for larger grid sizes */
     std::cout << "96 0 " << trial(16,1000,false) << std::endl;
     std::cout << "192 0 " << trial(32,1000,false) << std::endl;

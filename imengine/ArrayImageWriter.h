@@ -25,6 +25,12 @@ namespace imengine {
         double *_data;
 	}; // ArrayImageWriter
 	
+	// Compares two images saved to arrays and returns true if they match within
+	// the specified absolute |v1-v2| and relative |v1-v2|/|v1+v2| tolerances.
+	// Prints info about the comparison to std::cout if verbose is true.
+    bool compareImages(ArrayImageWriter const &first, ArrayImageWriter const &second,
+        bool verbose = false, double abstol = 1e-14, double reltol = 1e-10);
+	
     inline int ArrayImageWriter::getSize() const { return _size; }
     
     inline double ArrayImageWriter::getValue(int x, int y) const {
