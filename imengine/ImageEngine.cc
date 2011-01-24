@@ -45,7 +45,7 @@ void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
 }
 
 template <class T>
-void local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx, double dy) {
+double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx, double dy) {
     assert(isInitialized());
     // calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source)
@@ -59,14 +59,18 @@ void local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx, d
     _imageTransform->inverseTransform();
     // initialize our writer
     int N(getPixelsPerSide());
+    double sum(0);
     writer.open(N,getPixelScale());
     // estimate the signal in each pixel
     for(int y = 0; y < N; y++) {
         for(int x = 0; x < N; x++) {
-            writer.write(x,y,estimatePixelValue(x,y));
+            double value = estimatePixelValue(x,y);
+            writer.write(x,y,value);
+            sum += value;
         }
     }
     writer.close();
+    return sum;
 }
 
 // explicit template instantiations

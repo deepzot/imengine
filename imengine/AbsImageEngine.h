@@ -21,8 +21,9 @@ namespace imengine {
         bool isInitialized() const;
         // (Re)initializes the engine for the specified pixel grid size and scale
         virtual void initialize(int pixelsPerSide, double pixelScale = 1) = 0;
-		// Generates an image with the source function offset by (dx,dy)
-        virtual void generate(AbsImageWriter &writer, double dx = 0, double dy = 0) = 0;
+		// Generates an image with the source function offset by (dx,dy) and returns
+		// the pixel sum
+        virtual double generate(AbsImageWriter &writer, double dx = 0, double dy = 0) = 0;
     protected:
         // Returns a pointer to a newly created InterpolationData with parameters appropriate
         // for the requested pixel size and pixelation method
