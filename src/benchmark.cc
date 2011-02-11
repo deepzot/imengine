@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <math.h> // for erf
 #include <sys/resource.h>
 
 #include <boost/random/mersenne_twister.hpp>
@@ -29,7 +30,7 @@ boost::variate_generator<boost::mt19937&, boost::uniform_real<> > offset(gen, pd
 // initialize array image writers
 img::ArrayImageWriter slowResult,fastResult;
 
-void checkResults(bool verbose = false) {
+void checkResults(bool verbose = true) {
     bool pass = img::compareImages(slowResult,fastResult,verbose);
     if(!pass) {
         std::cout << "Fast and slow methods give different results!" << std::endl;
@@ -48,10 +49,13 @@ TrialResults trial(int scaleUp, int trials, bool slow) {
     // prepare our results
     TrialResults results;
     // initialize the models
-    mod::DiskDemo src(scaleUp);
+//    mod::DiskDemo src(scaleUp);
+    mod::GaussianDemo src(scaleUp);
     mod::GaussianDemo psf(scaleUp);
     // create a fast/slow bilinear engine
     img::AbsImageEngine *engine = slow ?
+//        (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(src,psf)) :
+//        (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(src,psf));
         (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf)) :
         (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf));
     // initialize the engine
@@ -62,21 +66,30 @@ TrialResults trial(int scaleUp, int trials, bool slow) {
     // use a silent image writer for the trials
     img::SilentImageWriter silent;
     // run timed trials with the slow engine
-    double norm,nsum(0),nsumsq(0);
+    double norm;
+    long double nsum(0),nsumsq(0);
     struct rusage before,after;
     getrusage(RUSAGE_SELF,&before);
     for(int n = 0; n < trials; n++) {
-        // generate an image with a dx,dy offsets
-        norm = engine->generate(silent,offset(),offset());
-        nsum += norm;
-        nsumsq += norm*norm;
+        // generate an image with dx,dy offsets
+        double dx(offset()),dy(offset());
+        double norm(engine->generate(silent,dx*scaleUp,dy*scaleUp));
+        // calculate the analytic norm for these offsets
+        double analyticNorm =
+            (erf((-3 + dx)/2.) - erf((3 + dx)/2.))*(erf((-3 + dy)/2.) - erf((3 + dy)/2.))/4.;
+        //std::cout << analyticNorm << ' ' << norm << std::endl;
+        double delta(norm - analyticNorm);
+        nsum += delta;
+        nsumsq += delta*delta;
     }
     // calculate the average trial time in usecs
     getrusage(RUSAGE_SELF,&after);
     results.speed = elapsed(before,after)/trials;
     // calculate the mean and rms normalization
-    results.mean = nsum/trials;
-    results.rms = std::sqrt(nsumsq/trials - results.mean*results.mean);
+    nsum /= trials;
+    nsumsq /= trials;
+    results.mean = (double)nsum;
+    results.rms = (nsumsq > nsum*nsum) ? (double)std::sqrt(nsumsq - nsum*nsum) : 0;
     // clean up
     delete engine;
     return results;
