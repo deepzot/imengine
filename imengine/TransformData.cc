@@ -74,8 +74,8 @@ local::TransformData const& t2, double dx, double dy) {
     // is there any translation to apply?
     bool translated = (0 != dx)||(0 != dy);
     double norm = _gridSpacing*_gridSpacing;
-    for(int j = 0; j < _gridSize; j++) {
-        for(int i = 0; i < _break1; i++) {
+    for(int j = 0; j < _gridSize; ++j) {
+        for(int i = 0; i < _break1; ++i) {
             double re1(t1.real(i,j)),im1(t1.imag(i,j)),re2(t2.real(i,j)),im2(t2.imag(i,j));
             double re = norm*(re1*re2 - im1*im2);
             double im = norm*(re1*im2 + im1*re2);

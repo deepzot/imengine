@@ -20,6 +20,7 @@
 #include "imengine/ArrayImageWriter.h"
 
 // Source and PSF models
+#include "imengine/models/DeltaFunction.h"
 #include "imengine/models/DiskDemo.h"
 #include "imengine/models/GaussianDemo.h"
 

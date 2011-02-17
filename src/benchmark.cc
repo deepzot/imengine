@@ -24,14 +24,14 @@ double elapsed(struct rusage const &before, struct rusage const &after) {
 
 // initialize random number generator
 boost::mt19937 gen;
-boost::uniform_real<> pdf(-1,+1);
+boost::uniform_real<> pdf(-0.5,+0.5);
 boost::variate_generator<boost::mt19937&, boost::uniform_real<> > offset(gen, pdf);
 
 // initialize array image writers
 img::ArrayImageWriter slowResult,fastResult;
 
-void checkResults(bool verbose = true) {
-    bool pass = img::compareImages(slowResult,fastResult,verbose);
+void checkResults(bool verbose = false, double abstol = 1e-14, double reltol = 1e-8) {
+    bool pass = img::compareImages(slowResult,fastResult,verbose,abstol,reltol);
     if(!pass) {
         std::cout << "Fast and slow methods give different results!" << std::endl;
     }
@@ -50,14 +50,16 @@ TrialResults trial(int scaleUp, int trials, bool slow) {
     TrialResults results;
     // initialize the models
 //    mod::DiskDemo src(scaleUp);
-    mod::GaussianDemo src(scaleUp);
-    mod::GaussianDemo psf(scaleUp);
+    mod::GaussianDemo src(scaleUp/2.);
+    mod::GaussianDemo psf(scaleUp/2.);
     // create a fast/slow bilinear engine
     img::AbsImageEngine *engine = slow ?
-//        (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(src,psf)) :
-//        (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(src,psf));
-        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf)) :
-        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf));
+        (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(src,psf)) :
+        (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(src,psf));
+//        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf)) :
+//        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf));
+//        (img::AbsImageEngine*)(new img::MidpointImageEngine<img::SlowTransform>(src,psf)) :
+//        (img::AbsImageEngine*)(new img::MidpointImageEngine<img::FastTransform>(src,psf));
     // initialize the engine
     engine->initialize(6*scaleUp,1);
     // run the engine once with a fixed offset, for comparing results between methods
@@ -75,8 +77,7 @@ TrialResults trial(int scaleUp, int trials, bool slow) {
         double dx(offset()),dy(offset());
         double norm(engine->generate(silent,dx*scaleUp,dy*scaleUp));
         // calculate the analytic norm for these offsets
-        double analyticNorm =
-            (erf((-3 + dx)/2.) - erf((3 + dx)/2.))*(erf((-3 + dy)/2.) - erf((3 + dy)/2.))/4.;
+        double analyticNorm = (erf(3 - dx) + erf(3 + dx))*(erf(3 - dy) + erf(3 + dy))/4.;
         //std::cout << analyticNorm << ' ' << norm << std::endl;
         double delta(norm - analyticNorm);
         nsum += delta;
@@ -116,9 +117,38 @@ int main(int argc, char **argv) {
 }
 
 /* results on DK laptop:
-6 640.7 11.0685
-12 7501.21 34.632
-24 101350 138.41
-48 1.48939e+06 785.7
-96 2.27998e+07 5173
+
+-- midpoint --
+6 375.4 0.0589314 7.14934e-05 12.4916 0.0589317 7.17383e-05
+12 5698.33 0.000144701 7.23113e-05 45.007 0.000146114 7.22083e-05
+24 89044.4 0.000144417 6.8416e-05 197.06 0.000138557 6.74034e-05
+48 1.40468e+06 0.000168864 7.09367e-05 784.731 0.000144993 7.28755e-05
+96 0 0 0 3093.22 0.000141672 7.18092e-05
+192 0 0 0 13046.8 0.000140511 7.21483e-05
+384 0 0 0 56434.9 0.000143047 7.50315e-05
+768 0 0 0 239726 0.000134577 6.46979e-05
+1536 0 0 0 1.01022e+06 0.000148855 7.11177e-05
+
+-- bilinear --
+6 652.589 0.0569047 0.00105429 15.933 0.0569038 0.00106223
+12 7612.96 -7.11412e-05 2.95252e-05 55.089 -7.17597e-05 2.95167e-05
+24 102526 1.67862e-05 1.08687e-05 210.382 1.58487e-05 1.06391e-05
+48 1.49872e+06 7.94434e-05 3.5143e-05 934.909 6.77311e-05 3.59743e-05
+96 0 0 0 5586.96 9.86419e-05 5.12471e-05
+192 0 0 0 22627 0.000117522 6.10895e-05
+384 0 0 0 69373 0.000130883 6.90625e-05
+768 0 0 0 386075 0.00012872 6.20781e-05
+1536 0 0 0 1.82254e+06 0.000145602 6.96621e-05
+
+-- bicubic --
+6 1750.52 0.0597253 0.000569863 27.5378 0.0597258 0.000575275
+12 13359.2 0.000111292 3.35428e-05 78.217 0.000112044 3.35654e-05
+24 139184 7.29969e-06 2.54761e-06 303.371 7.08296e-06 2.52345e-06
+48 1.762e+06 1.83994e-05 8.65504e-06 1274.17 1.55573e-05 8.81381e-06
+96 0 0 0 4387.38 4.73693e-05 2.5724e-05
+192 0 0 0 16821.3 8.18845e-05 4.35842e-05
+384 0 0 0 97604.7 0.000109442 5.84324e-05
+768 0 0 0 411327 0.000117722 5.71324e-05
+1536 0 0 0 1.40121e+06 0.000139296 6.68336e-05
+
 */

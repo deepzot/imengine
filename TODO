@@ -1,0 +1,19 @@
+x Check benchmark mean pixel sum against analytic calculation
+
+x Why is benchmark RMS so small? (check random offsets?)
+
+x Is bicubic interpolation formula correct? Need better estimate of derivatives?
+
+Calculate chi-square over all pixels, in addition to pixel sum, as accuracy metric?
+
+Use benchmark with more realistic RMS for individual Gaussians.
+
+Possible to include full covariance in analytic benchmark model?
+
+Why does error on the pixel sum increase for large N (rounding? try long double FFT?)
+
+Why are pixel values negative, e.g., for generate -n 5 (try generate -n 6 --midpoint with delta)
+
+Is FFTW_MEASURE actually faster than ESTIMATE?
+
+Implement class OversamplingImageEngine

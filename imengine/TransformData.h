@@ -16,7 +16,8 @@ namespace imengine {
         TransformData(InterpolationData &target);
 		virtual ~TransformData();
 		
-		// returns the real and imaginary components of element (i,j)
+		// Returns the real and imaginary components of element (i,j)
+		// with 0 <= i,j < getGridSize().
         double const getReal(int i, int j) const;
         double const getImag(int i, int j) const;
         

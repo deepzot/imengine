@@ -31,7 +31,6 @@ void local::GenericPixelFunction::doTransform() {
             _transformData->setTargetValue(i,j,value);
         }
     }
-    double spacing = _transformData->getGridSpacing();
     // calculate the discrete Fourier transform of the tabulated data
     _transformData->setToTransform();
 }
