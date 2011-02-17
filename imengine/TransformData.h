@@ -5,6 +5,8 @@
 
 #include "imengine/DataGrid.h"
 
+#include "boost/function.hpp"
+
 #include <cassert>
 
 namespace imengine {
@@ -15,11 +17,24 @@ namespace imengine {
 	    // Creates a new transform data grid for the specified real-space target grid
         TransformData(InterpolationData &target);
 		virtual ~TransformData();
-		
+
+        // Defines the representation of complex transform data (using the convention
+        // that [0] = real and [1] = imag)
+        typedef double Complex[2];
+
 		// Returns the real and imaginary components of element (i,j)
-		// with 0 <= i,j < getGridSize().
+		// with 0 <= i,j < getGridSize(). There is no method to return a complex<double>
+		// since, in general, this would require creating the returned object.
         double const getReal(int i, int j) const;
         double const getImag(int i, int j) const;
+        
+        // Assigns a complete set of values by repeatedly calling the function provided.
+        // The provided function should be compatible with the following declaration:
+        //
+        //   void tabulator(double kx, double ky, Complex& result)
+        //
+        typedef boost::function<void (double,double,Complex&)> Tabulator;
+        void tabulate(Tabulator tabulator);
         
         // writes a real value into the target InterpolationGrid
         void setTargetValue(int i, int j, double value);

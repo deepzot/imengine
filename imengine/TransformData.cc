@@ -17,8 +17,8 @@ DataGrid(target.getGridSize(),target.getGridSpacing()), _target(target)
     double twopi = 8*std::atan(1.0);
     _dk = twopi/(_gridSize*_gridSpacing);
     // use FFTW allocator for best SIMD alignment
-    assert(2*sizeof(double) == sizeof(fftw_complex));
-    _data = (double*)fftw_malloc(2*sizeof(double)*_gridSize*_break1);
+    assert(sizeof(Complex) == sizeof(fftw_complex));
+    _data = (double*)fftw_malloc(sizeof(Complex)*_gridSize*_break1);
 }
 
 local::TransformData::~TransformData() {
@@ -58,6 +58,17 @@ double const local::TransformData::getImag(int i, int j) const {
     }
     else {
         return -imag(N-i,N-j);
+    }
+}
+
+void local::TransformData::tabulate(local::TransformData::Tabulator tabulator) {
+    Complex value;
+    for(int j = 0; j < _gridSize; ++j) {
+        double ky(waveNumber(j));
+        for(int i = 0; i < _break1; ++i) {
+            double kx(waveNumber(i));
+            tabulator(kx,ky,reinterpret_cast<Complex&>(real(i,j)));
+        }
     }
 }
 

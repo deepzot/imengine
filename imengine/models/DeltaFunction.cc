@@ -16,4 +16,14 @@ void local::DeltaFunction::initTransform(TransformData* transformData) {
 }
 
 void local::DeltaFunction::doTransform() {
+    _transformData->tabulate(&local::DeltaFunction::setValueToOne);
+}
+
+double local::DeltaFunction::operator()(double x, double y) const {
+    return 0;
+}
+
+void local::DeltaFunction::setValueToOne(double kx, double ky, imengine::TransformData::Complex& value) {
+    value[0] = 1;
+    value[1] = 0;
 }

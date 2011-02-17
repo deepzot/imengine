@@ -74,7 +74,8 @@ int main(int argc, char **argv) {
         mod::DiskDemo src(0.2*npixels);
     
         // create the psf model
-        mod::GaussianDemo psf(0.1*npixels);
+        //mod::GaussianDemo psf(0.1*npixels);
+        mod::DeltaFunction psf;
     
         // create the pixelization engine
         if(midpoint) {
