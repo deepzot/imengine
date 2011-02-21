@@ -36,7 +36,7 @@ double const local::TransformData::getReal(int i, int j) const {
         return real(N-i,0);
     }
     else if(2*j == N) {
-        return -real(N-i,j);
+        return real(N-i,j);
     }
     else {
         return real(N-i,N-j);
@@ -53,8 +53,8 @@ double const local::TransformData::getImag(int i, int j) const {
     else if(j == 0) {
         return -imag(N-i,0);
     }
-    else if(2*j == _gridSize) {
-        return imag(N-i,j);
+    else if(2*j == N) {
+        return -imag(N-i,j);
     }
     else {
         return -imag(N-i,N-j);
@@ -92,6 +92,10 @@ local::TransformData const& t2, double dx, double dy) {
             double im = norm*(re1*im2 + im1*re2);
             if(translated) {
                 double theta = -(waveNumber(i)*dx + waveNumber(j)*dy);
+                // coerce the symmetry required for a real-valued inverse DFT
+                if(2*i == _gridSize && j >= _break1) {
+                    theta = -(-waveNumber(i)*dx + waveNumber(j)*dy);
+                }
                 double costh = std::cos(theta);
                 double sinth = std::sin(theta);
                 real(i,j) = re*costh - im*sinth;
@@ -102,6 +106,15 @@ local::TransformData const& t2, double dx, double dy) {
                 imag(i,j) = im;
             }
         }
+    }
+    // Coerce the symmetry required for a real-valued inverse DFT. The reason that this might
+    // be required is that sub-pixel translation via an exponential factor breaks the
+    // symmetry when _gridSize is even.
+    if(_gridSize % 2 == 0) {
+       int nby2(_gridSize >> 1);
+       imag(nby2,0) = 0;
+       imag(0,nby2) = 0;
+       imag(nby2,nby2) = 0;
     }
 }
 

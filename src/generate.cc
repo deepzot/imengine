@@ -71,11 +71,12 @@ int main(int argc, char **argv) {
     img::AbsImageEngine *engine(0);
     try {
         // create the source model
-        mod::DiskDemo src(0.2*npixels);
-    
+        mod::DiskDemo src(0.205*npixels);
+        //mod::DeltaFunction src;
+        
         // create the psf model
-        //mod::GaussianDemo psf(0.1*npixels);
-        mod::DeltaFunction psf;
+        mod::GaussianDemo psf(0.105*npixels);
+        //mod::DeltaFunction psf;
     
         // create the pixelization engine
         if(midpoint) {

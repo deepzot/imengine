@@ -27,7 +27,7 @@ namespace imengine {
 		// Sets the value associated with grid point (i,j) (no range checks on i,j)
         void setValue(int i, int j, double value);
 		
-        // Returns the value associated with pixel coord (x,y) (no range checks on x,y)
+        // Returns the absolute value associated with pixel coord (x,y) (no range checks on x,y)
         double getValueForPixel(int x, int y) const;
         
         // dumps grid values to std::cout in row-wise order
@@ -50,7 +50,8 @@ namespace imengine {
     }
 
 	inline double InterpolationData::getValueForPixel(int x, int y) const {
-        return _data[getIndex(x + _pad) + _gridSize*getIndex(y + _pad)];
+        double value(_data[getIndex(x + _pad) + _gridSize*getIndex(y + _pad)]);
+        return value > 0 ? +value : -value;
 	}
 } // imengine
 

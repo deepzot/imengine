@@ -19,14 +19,18 @@ void local::SlowTransform::inverseTransform() {
     double dtheta = +8*std::atan(1.0)/N; // +2pi/N
     for(int j = 0; j < N; j++) {
         for(int i = 0; i < N; i++) {
-            double value(0);
+            double re(0),im(0);
             for(int n = 0; n < N; n++) {
                 for(int m = 0; m < N; m++) {
+                    double re1(getReal(m,n)),im1(getImag(m,n));
                     double theta = dtheta*(m*i + n*j);
-                    value += getReal(m,n)*std::cos(theta) - getImag(m,n)*std::sin(theta);
+                    double re2(std::cos(theta)),im2(std::sin(theta));
+                    re += re1*re2 - im1*im2;
+                    //im += re1*im2 + re2*im1;
                 }
             }
-            setTargetValue(i,j,value);
+            setTargetValue(i,j,re);
+            //assert(std::fabs(im) < 1e-8);
         }
     }
 }
