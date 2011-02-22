@@ -16,4 +16,4 @@ x Why are pixel values negative, e.g., for generate -n 5 (try generate -n 6 --mi
 
 Is FFTW_MEASURE actually faster than ESTIMATE?
 
-Implement class OversamplingImageEngine
+Move TransformData includes out of GenericPixelFunction.h and TransformedProfileFunction.h ? (will need to somehow forward declare Complex typedef)
