@@ -11,18 +11,19 @@
 namespace local = imengine;
 
 local::TransformedProfileFunction::TransformedProfileFunction(
-AbsRadialProfile const &profile, AbsCoordTransform &transform) :
+boost::shared_ptr<AbsRadialProfile const> profile,
+boost::shared_ptr<AbsCoordTransform const> transform) :
 _radialProfile(profile), _coordTransform(transform)
 {
-    _determinant = _coordTransform.determinant();
+    _determinant = _coordTransform->determinant();
     assert(0 < _determinant);
 }
 
 local::TransformedProfileFunction::~TransformedProfileFunction() { }
 
 double local::TransformedProfileFunction::operator()(double x, double y) const {
-    double r(_coordTransform.transformedRadius(x,y));
-    return _radialProfile(r);
+    double r(_coordTransform->transformedRadius(x,y));
+    return (*_radialProfile)(r);
 }
 
 void local::TransformedProfileFunction::initTransform(TransformData* transformData) {
@@ -37,7 +38,7 @@ void local::TransformedProfileFunction::doTransform() {
 
 void local::TransformedProfileFunction::tabulator(double kx, double ky,
 local::TransformData::Complex& value) {
-    double kappa(_coordTransform.transformedWaveNumber(kx,ky));
-    value[0] = _radialProfile.radialIntegral(kappa)/_determinant;
+    double kappa(_coordTransform->transformedWaveNumber(kx,ky));
+    value[0] = _radialProfile->radialIntegral(kappa)/_determinant;
     value[1] = 0;
 }

@@ -5,6 +5,7 @@
 
 #include "imengine.h"
 
+#include "boost/smart_ptr.hpp"
 #include "boost/program_options.hpp"
 
 namespace img = imengine;
@@ -24,6 +25,7 @@ int main(int argc, char **argv) {
         ("midpoint", "Uses the midpoint method for pixelization.")
         ("bilinear", "Uses bilinear interpolation for pixelization (this is the default).")
         ("bicubic", "Uses bicubic interpolation for pixelization.")
+        ("profile", "Uses analytic profiles.")
         ("slow", "Uses un-optimized discrete Fourier transforms.")
         ("fast", "Uses optimized fast Fourier transforms.")
         ("npixels,n", po::value<int>(&npixels)->default_value(48),
@@ -67,32 +69,43 @@ int main(int argc, char **argv) {
         std::cerr << "Only one speed can be specified (fast,slow)" << std::endl;
         return 4;
     }
+    bool profile(vm.count("profile"));
 
-    img::AbsImageEngine *engine(0);
+    boost::scoped_ptr<img::AbsImageEngine> engine;
+    boost::scoped_ptr<img::AbsPixelFunction> src,psf;
+
     try {
         // create the source model
-        mod::DiskDemo src(0.205*npixels);
-        //mod::DeltaFunction src;
+        //src.reset(new mod::DiskDemo(0.205*npixels));
+        src.reset(new mod::DeltaFunction);
         
         // create the psf model
-        mod::GaussianDemo psf(0.105*npixels);
-        //mod::DeltaFunction psf;
+        double sigma(0.105*npixels);
+        if(profile) {
+            boost::shared_ptr<img::AbsRadialProfile const> profile(new mod::GaussianProfile(sigma));
+            boost::shared_ptr<img::AbsCoordTransform const> transform(new img::IdentityTransform);
+            psf.reset(new img::TransformedProfileFunction(profile,transform));
+        }
+        else {
+            psf.reset(new mod::GaussianDemo(sigma));
+        }
+        //psf.reset(new mod::DeltaFunction);
     
         // create the pixelization engine
         if(midpoint) {
-            engine = slow ?
-                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::SlowTransform>(src,psf)) :
-                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::FastTransform>(src,psf));
+            engine.reset(slow ?
+                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::SlowTransform>(*src,*psf)) :
+                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::FastTransform>(*src,*psf)));
         }
         else if(bilinear) {
-            engine = slow ?
-                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf)) :
-                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf));
+            engine.reset(slow ?
+                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(*src,*psf)) :
+                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(*src,*psf)));
         }
         else if(bicubic) {
-            engine = slow ?
-                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(src,psf)) :
-                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(src,psf));
+            engine.reset(slow ?
+                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(*src,*psf)) :
+                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(*src,*psf)));
         }
     
         // generate the image
@@ -107,6 +120,5 @@ int main(int argc, char **argv) {
     }    
     
     // cleanup and exit without error
-    if(engine) delete engine;
     return 0;
 }
