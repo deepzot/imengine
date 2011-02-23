@@ -25,4 +25,7 @@
 #include "imengine/models/DiskDemo.h"
 #include "imengine/models/GaussianDemo.h"
 
+// Radial profile transforms
+#include "imengine/IdentityTransform.h"
+
 #endif // IMENGINE

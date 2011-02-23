@@ -27,6 +27,7 @@ namespace imengine {
 	private:
         AbsRadialProfile const &_radialProfile;
         AbsCoordTransform const &_coordTransform;
+        double _determinant;
         TransformData *_transformData;
 	}; // TransformedProfileFunction
 } // imengine
