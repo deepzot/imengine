@@ -6,6 +6,7 @@
 
 #include "boost/bind.hpp"
 
+#include <iostream>
 #include <cassert>
 
 namespace local = imengine;
@@ -19,7 +20,9 @@ _radialProfile(profile), _coordTransform(transform)
     assert(0 < _determinant);
 }
 
-local::TransformedProfileFunction::~TransformedProfileFunction() { }
+local::TransformedProfileFunction::~TransformedProfileFunction() {
+    std::cout << "TransformedProfileFunction::dtor says bye" << std::endl;
+}
 
 double local::TransformedProfileFunction::operator()(double x, double y) const {
     double r(_coordTransform->transformedRadius(x,y));

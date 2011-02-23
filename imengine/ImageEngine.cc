@@ -55,6 +55,7 @@ double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx,
     dx -= _imageGrid->getGridX();
     dy -= _imageGrid->getGridY();
     _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,dx,dy);
+    _imageTransform->dump();
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform();
     // initialize our writer

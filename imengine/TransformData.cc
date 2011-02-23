@@ -7,7 +7,7 @@
 
 #include <cassert>
 #include <cmath>
-#include <iostream>
+#include <cstdio>
 
 namespace local = imengine;
 
@@ -136,11 +136,10 @@ void local::TransformData::validate() const {
 }
 **/
 
-void local::TransformData::dumpAbsSquared() const {
+void local::TransformData::dump() const {
     for(int j = 0; j < _gridSize; j++) {
         for(int i = 0; i < _gridSize; i++) {
-            std::cout << absSquared(i,j) << ' ';
+            printf("[%3d,%3d] %10g + I %10g\n",i,j,getReal(i,j),getImag(i,j));
         }
-        std::cout << std::endl;
     }
 }

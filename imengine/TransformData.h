@@ -50,8 +50,8 @@ namespace imengine {
         // exponential factor exp(-ik.dr)
         void setToProduct(TransformData const& t1, TransformData const& t2, double dx=0, double dy=0);
         
-        // dumps grid absolute-squared values to std::cout in row-wise order
-        void dumpAbsSquared() const;
+        // dumps grid complex values to std::cout in row-wise order
+        void dump() const;
 
         // Calculates the real part of our inverse Fourier transform and saves the result
         // in our target InterpolationData object. Normalization is defined by:
