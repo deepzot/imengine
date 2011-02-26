@@ -10,11 +10,11 @@ namespace local = imengine::models;
 
 local::GaussianProfile::GaussianProfile(double sigma) {
     assert(sigma > 0);
-    _twosigsq = 2*sigma*sigma;
-    _sigsqby2 = _twosigsq/4;
-    double root2pi(std::sqrt(8*std::atan(1.0)));
-    _norm = 1/(root2pi*sigma);
-    _integralNorm = sigma/root2pi;
+    double sigsq(sigma*sigma);
+    _twosigsq = sigsq*2;
+    _sigsqby2 = sigsq/2;
+    double twopi(8*std::atan(1.0));
+    _norm = 1/(twopi*sigsq);
 }
 
 local::GaussianProfile::~GaussianProfile() {
@@ -26,5 +26,5 @@ double local::GaussianProfile::operator()(double r) const {
 }
 
 double local::GaussianProfile::radialIntegral(double kappa) const {
-    return _integralNorm*std::exp(-kappa*kappa*_sigsqby2);
+    return std::exp(-kappa*kappa*_sigsqby2);
 }

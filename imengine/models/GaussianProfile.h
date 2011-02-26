@@ -16,7 +16,7 @@ namespace models {
         // Evaluates this profile's real-valued radial integral for the specified kappa.
         virtual double radialIntegral(double kappa) const;
 	private:
-        double _twosigsq, _sigsqby2, _norm, _integralNorm;
+        double _twosigsq, _sigsqby2, _norm;
 	}; // GaussianProfile
 }} // imengine::models
 
