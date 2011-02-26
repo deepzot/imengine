@@ -2,7 +2,6 @@
 
 #include "imengine/models/GaussianProfile.h"
 
-#include <iostream>
 #include <cassert>
 #include <cmath>
 
@@ -18,7 +17,6 @@ local::GaussianProfile::GaussianProfile(double sigma) {
 }
 
 local::GaussianProfile::~GaussianProfile() {
-    std::cout << "GaussianProfile::dtor says bye" << std::endl;
 }
 
 double local::GaussianProfile::operator()(double r) const {
