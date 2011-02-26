@@ -22,6 +22,7 @@
 // Source and PSF models
 #include "imengine/TransformedProfileFunction.h"
 #include "imengine/models/GaussianProfile.h"
+#include "imengine/models/DiskProfile.h"
 #include "imengine/models/DeltaFunction.h"
 #include "imengine/models/DiskDemo.h"
 #include "imengine/models/GaussianDemo.h"

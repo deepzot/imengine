@@ -37,9 +37,12 @@ FFTW3 := /Users/david/Clib/fftw-3.2.2
 # location of the boost installation to use
 BOOST := /Users/david/Clib/boost_1_45_0
 
+# location of the Gnu scientific library installation to use
+GSL := /Users/david/Clib/gsl-1.14
+
 # compile and link options
-CXXFLAGS := -I. -I$(BOOST) -I$(FFTW3)/api -O3
-LDFLAGS := -L. -l$(PKG) $(BOOST)/stage/lib/libboost_program_options.a -L$(FFTW3)/.libs -lfftw3
+CXXFLAGS := -I. -I$(GSL) -I$(BOOST) -I$(FFTW3)/api -O3
+LDFLAGS := -L. -l$(PKG) -L$(GSL) -lgsl $(BOOST)/stage/lib/libboost_program_options.a -L$(FFTW3)/.libs -lfftw3
 
 # sources under src/ to build as executables in bin/ linked against the library
 BIN_SRCS := $(wildcard src/*.cc)

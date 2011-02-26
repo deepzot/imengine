@@ -2,6 +2,8 @@
 
 #include "imengine/models/DiskProfile.h"
 
+#include "gsl/gsl_sf_bessel.h"
+
 #include <cassert>
 #include <cmath>
 
@@ -11,8 +13,8 @@ local::DiskProfile::DiskProfile(double radius) :
 _radius(radius)
 {
     assert(_radius > 0);
-    double twopi(8*std::atan(1.0));
-    _norm = 1/(twopi*_radius*_radius);
+    double pi(4*std::atan(1.0));
+    _norm = 1/(pi*_radius*_radius);
 }
 
 local::DiskProfile::~DiskProfile() { }
@@ -23,5 +25,5 @@ double local::DiskProfile::operator()(double r) const {
 
 double local::DiskProfile::radialIntegral(double kappa) const {
     double kr(kappa*_radius);
-    return 0;
+    return kr == 0 ? 1 : 2*gsl_sf_bessel_J1(kr)/kr;
 }

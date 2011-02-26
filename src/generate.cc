@@ -76,8 +76,16 @@ int main(int argc, char **argv) {
 
     try {
         // create the source model
-        //src.reset(new mod::DiskDemo(0.205*npixels));
-        src.reset(new mod::DeltaFunction);
+        double rdisk(0.205*npixels);
+        if(profile) {
+            boost::shared_ptr<img::AbsRadialProfile const> profile(new mod::DiskProfile(rdisk));
+            boost::shared_ptr<img::AbsCoordTransform const> transform(new img::IdentityTransform);
+            src.reset(new img::TransformedProfileFunction(profile,transform));            
+        }
+        else {
+            src.reset(new mod::DiskDemo(rdisk));
+        }
+        //src.reset(new mod::DeltaFunction);
         
         // create the psf model
         double sigma(0.105*npixels);
@@ -89,7 +97,7 @@ int main(int argc, char **argv) {
         else {
             psf.reset(new mod::GaussianDemo(sigma));
         }
-        //psf.reset(new mod::DeltaFunction);
+        psf.reset(new mod::DeltaFunction);
     
         // create the pixelization engine
         if(midpoint) {
