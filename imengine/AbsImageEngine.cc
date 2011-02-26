@@ -10,7 +10,7 @@ namespace local = imengine;
 
 local::AbsImageEngine::AbsImageEngine(local::AbsPixelFunction& source, 
 local::AbsPixelFunction& psf) :
-_source(source), _psf(psf), _initialized(false), _imageGrid(0), _workspace(0)
+_source(source), _psf(psf), _initialized(false)
 {
 }
 
@@ -19,11 +19,8 @@ local::AbsImageEngine::~AbsImageEngine() {
 }
 
 void local::AbsImageEngine::_reset() {
-    if(_initialized) {
-        delete _imageGrid;
-        delete _workspace;
-    }    
 }
+
 void local::AbsImageEngine::initialize(int pixelsPerSide, double pixelScale) {
     assert(pixelsPerSide > 0);
     assert(pixelScale > 0);

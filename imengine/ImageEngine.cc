@@ -29,10 +29,10 @@ local::ImageEngine<T>::~ImageEngine() {
 template <class T>
 void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
     AbsImageEngine::initialize(pixelsPerSide,pixelScale);
-    _imageGrid = createGrid();
-    assert(0 != _imageGrid);
+    _imageGrid.reset(createGrid());
+    assert(0 != _imageGrid.get());
     // create a private workspace with the same dimensions as the image grid
-    _workspace = _imageGrid->createWorkspace();
+    _workspace.reset(_imageGrid->createWorkspace());
     // build discrete Fourier transform grids (linked to the workspace) for
     // the source and psf models
     _sourceTransform = new T(*_workspace);

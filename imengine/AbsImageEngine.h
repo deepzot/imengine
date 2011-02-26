@@ -4,6 +4,7 @@
 #define IMENGINE_ABS_IMAGE_ENGINE
 
 #include "boost/utility.hpp"
+#include "boost/smart_ptr.hpp"
 
 namespace imengine {
     class AbsPixelFunction;
@@ -30,9 +31,9 @@ namespace imengine {
         virtual InterpolationData *createGrid() = 0;
         // Estimates the signal in pixel (i,j) using the tabulated values in _imageData
         virtual double estimatePixelValue(int i, int j) = 0;
-        InterpolationData *_imageGrid, *_workspace;
         double _scaleSquared;
         AbsPixelFunction &_source, &_psf;
+        boost::shared_ptr<InterpolationData> _imageGrid,_workspace;
 	private:
         void _reset();
         int _pixelsPerSide;
