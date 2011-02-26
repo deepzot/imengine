@@ -29,5 +29,6 @@
 
 // Radial profile transforms
 #include "imengine/IdentityTransform.h"
+#include "imengine/EllipticityTransform.h"
 
 #endif // IMENGINE
