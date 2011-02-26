@@ -11,7 +11,7 @@ local::EllipticityTransform::EllipticityTransform(double e1, double e2) :
 _e1p(1+e1),_e1m(1-e1),_e2(e2)
 {
     _detM = 1 - e1*e1 - e2*e2;
-    assert(0 != _detM);
+    assert(0 < _detM);
 }
 
 local::EllipticityTransform::~EllipticityTransform() { }

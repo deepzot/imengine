@@ -15,8 +15,6 @@ boost::shared_ptr<AbsRadialProfile const> profile,
 boost::shared_ptr<AbsCoordTransform const> transform) :
 _radialProfile(profile), _coordTransform(transform)
 {
-    _determinant = _coordTransform->determinant();
-    assert(0 < _determinant);
 }
 
 local::TransformedProfileFunction::~TransformedProfileFunction() {
@@ -40,6 +38,6 @@ void local::TransformedProfileFunction::doTransform() {
 void local::TransformedProfileFunction::tabulator(double kx, double ky,
 local::TransformData::Complex& value) {
     double kappa(_coordTransform->transformedWaveNumber(kx,ky));
-    value[0] = _radialProfile->radialIntegral(kappa)/_determinant;
+    value[0] = _radialProfile->radialIntegral(kappa);
     value[1] = 0;
 }

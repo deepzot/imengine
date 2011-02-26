@@ -31,7 +31,6 @@ namespace imengine {
 	private:
         boost::shared_ptr<AbsRadialProfile const> _radialProfile;
         boost::shared_ptr<AbsCoordTransform const> _coordTransform;
-        double _determinant;
         TransformData *_transformData;
 	}; // TransformedProfileFunction
 } // imengine

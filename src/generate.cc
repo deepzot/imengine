@@ -79,7 +79,8 @@ int main(int argc, char **argv) {
         double rdisk(0.205*npixels);
         if(profile) {
             boost::shared_ptr<img::AbsRadialProfile const> profile(new mod::DiskProfile(rdisk));
-            boost::shared_ptr<img::AbsCoordTransform const> transform(new img::IdentityTransform);
+            //boost::shared_ptr<img::AbsCoordTransform const> transform(new img::IdentityTransform);
+            boost::shared_ptr<img::AbsCoordTransform const> transform(new img::EllipticityTransform(0.2,-0.4));
             src.reset(new img::TransformedProfileFunction(profile,transform));            
         }
         else {
