@@ -4,7 +4,7 @@
 #define IMENGINE_TRANSFORMED_PROFILE_FUNCTION
 
 #include "imengine/AbsPixelFunction.h"
-#include "imengine/TransformData.h"
+#include "imengine/types.h"
 
 #include "boost/smart_ptr.hpp"
 
@@ -23,8 +23,8 @@ namespace imengine {
         // the transform object passed to initTransform(). The transform is defined as:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
         virtual void doTransform();
-        
-        void tabulator(double kx, double ky, TransformData::Complex& value);
+        // Tabulates values of our DFT
+        void tabulator(double kx, double ky, Complex& value);
 	private:
         boost::shared_ptr<AbsRadialProfile const> _radialProfile;
         boost::shared_ptr<AbsCoordTransform const> _coordTransform;

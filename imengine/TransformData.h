@@ -4,6 +4,7 @@
 #define IMENGINE_TRANSFORM_DATA
 
 #include "imengine/DataGrid.h"
+#include "imengine/types.h"
 
 #include "boost/function.hpp"
 #include "boost/smart_ptr.hpp"
@@ -18,10 +19,6 @@ namespace imengine {
 	    // Creates a new transform data grid for the specified real-space target grid
         TransformData(boost::shared_ptr<InterpolationData> target);
 		virtual ~TransformData();
-
-        // Defines the representation of complex transform data (using the convention
-        // that [0] = real and [1] = imag)
-        typedef double Complex[2];
 
 		// Returns the real and imaginary components of element (i,j)
 		// with 0 <= i,j < getGridSize(). There is no method to return a complex<double>

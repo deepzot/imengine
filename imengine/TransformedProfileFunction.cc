@@ -3,6 +3,7 @@
 #include "imengine/TransformedProfileFunction.h"
 #include "imengine/AbsRadialProfile.h"
 #include "imengine/AbsCoordTransform.h"
+#include "imengine/TransformData.h"
 
 #include "boost/bind.hpp"
 
@@ -30,8 +31,7 @@ void local::TransformedProfileFunction::doTransform() {
         boost::bind(&local::TransformedProfileFunction::tabulator,this,_1,_2,_3));
 }
 
-void local::TransformedProfileFunction::tabulator(double kx, double ky,
-local::TransformData::Complex& value) {
+void local::TransformedProfileFunction::tabulator(double kx, double ky, local::Complex& value) {
     double kappa(_coordTransform->transformedWaveNumber(kx,ky));
     value[0] = _radialProfile->radialIntegral(kappa);
     value[1] = 0;

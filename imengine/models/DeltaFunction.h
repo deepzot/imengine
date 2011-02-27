@@ -4,7 +4,7 @@
 #define IMENGINE_MODELS_DELTA_FUNCTION
 
 #include "imengine/AbsPixelFunction.h"
-#include "imengine/TransformData.h"
+#include "imengine/types.h"
 
 namespace imengine {
 namespace models {
@@ -19,7 +19,7 @@ namespace models {
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
         virtual void doTransform();
         // Helper function that initializes our k-space transform
-        static void setValueToOne(double kx, double ky, imengine::TransformData::Complex& value);
+        static void setValueToOne(double kx, double ky, Complex& value);
 	private:
 	}; // DeltaFunction
 }} // imengine::models
