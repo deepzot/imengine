@@ -21,6 +21,7 @@
 
 // Source and PSF models
 #include "imengine/TransformedProfileFunction.h"
+#include "imengine/models/MoffatProfile.h"
 #include "imengine/models/ExponentialProfile.h"
 #include "imengine/models/GaussianProfile.h"
 #include "imengine/models/DiskProfile.h"
