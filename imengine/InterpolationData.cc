@@ -1,8 +1,7 @@
 // Created 14-Jan-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/InterpolationData.h"
-
-#include "fftw3.h"
+#include "imengine/fftw.h"
 
 #include <cassert>
 #include <iostream>
@@ -15,7 +14,7 @@ double gridX, double gridY)
 {
     assert(pad >= 0 && pad < gridSize);
     // use FFTW allocator for best SIMD alignment
-    _data = (Real*)fftw_malloc(sizeof(Real)*gridSize*gridSize);
+    _data = (Real*)FFTW(malloc)(sizeof(Real)*gridSize*gridSize);
 }
 
 local::InterpolationData::~InterpolationData() {

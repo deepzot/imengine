@@ -4,8 +4,7 @@
 #define IMENGINE_FAST_TRANSFORM
 
 #include "imengine/TransformData.h"
-
-#include "fftw3.h"
+#include "imengine/fftw.h"
 
 namespace imengine {
 	class FastTransform : public TransformData {
@@ -22,7 +21,7 @@ namespace imengine {
         // data[m,n] = Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
         virtual void inverseTransform();
 	private:
-        fftw_plan _forwardPlan, _inversePlan;
+        FFTW(plan) _forwardPlan, _inversePlan;
 	}; // FastTransform
 } // imengine
 

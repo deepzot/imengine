@@ -9,10 +9,10 @@ local::FastTransform::FastTransform(boost::shared_ptr<InterpolationData> target)
 : TransformData(target), _forwardPlan(0), _inversePlan(0)
 {
     int strategy = FFTW_MEASURE; // FFTW_ESTIMATE
-    _forwardPlan = fftw_plan_dft_r2c_2d(_gridSize,_gridSize,
-        getTargetDataPtr(),(fftw_complex*)getDataPtr(),strategy);
-    _inversePlan = fftw_plan_dft_c2r_2d(_gridSize,_gridSize,
-        (fftw_complex*)getDataPtr(),getTargetDataPtr(),strategy);
+    _forwardPlan = FFTW(plan_dft_r2c_2d)(_gridSize,_gridSize,
+        getTargetDataPtr(),(FFTW(complex)*)getDataPtr(),strategy);
+    _inversePlan = FFTW(plan_dft_c2r_2d)(_gridSize,_gridSize,
+        (FFTW(complex)*)getDataPtr(),getTargetDataPtr(),strategy);
 }
 
 local::FastTransform::~FastTransform() {
