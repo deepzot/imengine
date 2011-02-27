@@ -19,7 +19,6 @@ double gridX, double gridY)
 
 local::InterpolationData::~InterpolationData() {
     FFTW(free)(_data);
-    std::cout << "InterpolationData says bye!" << std::endl;
 }
 
 void local::InterpolationData::setValue(int i, int j, Real value) {

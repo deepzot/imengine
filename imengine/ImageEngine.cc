@@ -6,7 +6,6 @@
 #include "imengine/AbsImageWriter.h"
 
 #include <cassert>
-#include <iostream>
 
 namespace local = imengine;
 
@@ -18,7 +17,6 @@ local::ImageEngine<T>::ImageEngine(local::AbsPixelFunction& source, local::AbsPi
 
 template <class T>
 local::ImageEngine<T>::~ImageEngine() {
-    std::cout << "ImageEngine<T> says bye!" << std::endl;
 }
 
 template <class T>
