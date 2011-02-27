@@ -18,7 +18,7 @@ double gridX, double gridY)
 }
 
 local::InterpolationData::~InterpolationData() {
-    fftw_free(_data);
+    FFTW(free)(_data);
     std::cout << "InterpolationData says bye!" << std::endl;
 }
 

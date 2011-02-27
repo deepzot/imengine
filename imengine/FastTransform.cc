@@ -16,14 +16,14 @@ local::FastTransform::FastTransform(boost::shared_ptr<InterpolationData> target)
 }
 
 local::FastTransform::~FastTransform() {
-    if(0 != _forwardPlan) fftw_destroy_plan(_forwardPlan);
-    if(0 != _inversePlan) fftw_destroy_plan(_inversePlan);
+    if(0 != _forwardPlan) FFTW(destroy_plan)(_forwardPlan);
+    if(0 != _inversePlan) FFTW(destroy_plan)(_inversePlan);
 }
 
 void local::FastTransform::setToTransform() {
-    fftw_execute(_forwardPlan);
+    FFTW(execute)(_forwardPlan);
 }
 
 void local::FastTransform::inverseTransform() {
-    fftw_execute(_inversePlan);
+    FFTW(execute)(_inversePlan);
 }

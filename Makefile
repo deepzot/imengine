@@ -34,6 +34,11 @@ MODULES := models
 # location of the FFTW3 installation to use
 FFTW3 := /Users/david/Clib/fftw-3.2.2
 
+# select the DFT precision to use (see notes in fftw.h for details)
+FFTW3LIB := fftw3   # double
+#FFTW3LIB := fftw3f  # float
+#FFTW3LIB := fftw3l  # long double
+
 # location of the boost installation to use
 BOOST := /Users/david/Clib/boost_1_45_0
 
@@ -42,7 +47,7 @@ GSL := /Users/david/Clib/gsl-1.14
 
 # compile and link options
 CXXFLAGS := -I. -I$(GSL) -I$(BOOST) -I$(FFTW3)/api -O3
-LDFLAGS := -L. -l$(PKG) -L$(GSL) -lgsl $(BOOST)/stage/lib/libboost_program_options.a -L$(FFTW3)/.libs -lfftw3
+LDFLAGS := -L. -l$(PKG) -L$(GSL) -lgsl $(BOOST)/stage/lib/libboost_program_options.a -L$(FFTW3)/.libs -l$(FFTW3LIB)
 
 # sources under src/ to build as executables in bin/ linked against the library
 BIN_SRCS := $(wildcard src/*.cc)

@@ -23,7 +23,7 @@ DataGrid(target->getGridSize(),target->getGridSpacing()), _target(target)
 }
 
 local::TransformData::~TransformData() {
-    fftw_free(_data);
+    FFTW(free)(_data);
     std::cout << "TransformData says bye!" << std::endl;
 }
 
