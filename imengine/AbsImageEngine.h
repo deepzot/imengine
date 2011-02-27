@@ -31,9 +31,11 @@ namespace imengine {
         virtual InterpolationData *createGrid() = 0;
         // Estimates the signal in pixel (i,j) using the tabulated values in _imageData
         virtual double estimatePixelValue(int i, int j) = 0;
+        
         double _scaleSquared;
         AbsPixelFunction &_source, &_psf;
         boost::shared_ptr<InterpolationData> _imageGrid,_workspace;
+
 	private:
         void _reset();
         int _pixelsPerSide;
@@ -44,7 +46,7 @@ namespace imengine {
     inline int AbsImageEngine::getPixelsPerSide() const { return _pixelsPerSide; }    
     inline double AbsImageEngine::getPixelScale() const { return _pixelScale; }
     inline bool AbsImageEngine::isInitialized() const { return _initialized; }
-    
+        
 } // imengine
 
 #endif // IMENGINE_ABS_IMAGE_ENGINE
