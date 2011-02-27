@@ -7,7 +7,7 @@
 
 namespace local = imengine;
 
-local::SlowTransform::SlowTransform(InterpolationData &target)
+local::SlowTransform::SlowTransform(boost::shared_ptr<InterpolationData> target)
 : TransformData(target)
 {
 }
@@ -42,7 +42,7 @@ void local::SlowTransform::setToTransform() {
             double re(0), im(0);
             for(int n = 0; n < _gridSize; n++) {
                 for(int m = 0; m < _gridSize; m++) {
-                    double value = getTarget().getValue(m,n);
+                    double value = getTargetValue(m,n);
                     double theta = dtheta*(m*i + n*j);
                     re += value*std::cos(theta);
                     im += value*std::sin(theta);

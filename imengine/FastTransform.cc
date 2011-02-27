@@ -5,7 +5,7 @@
 
 namespace local = imengine;
 
-local::FastTransform::FastTransform(InterpolationData &target)
+local::FastTransform::FastTransform(boost::shared_ptr<InterpolationData> target)
 : TransformData(target), _forwardPlan(0), _inversePlan(0)
 {
     int strategy = FFTW_MEASURE; // FFTW_ESTIMATE

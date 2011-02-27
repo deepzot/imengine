@@ -35,13 +35,13 @@ void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
     _workspace.reset(_imageGrid->createWorkspace());
     // build discrete Fourier transform grids (linked to the workspace) for
     // the source and psf models
-    _sourceTransform = new T(*_workspace);
-    _psfTransform = new T(*_workspace);
+    _sourceTransform = new T(_workspace);
+    _psfTransform = new T(_workspace);
     // link the source and psf grids to their pixel functions
     _source.initTransform(_sourceTransform);
     _psf.initTransform(_psfTransform);
     // build a discrete Fourier transform grid for the final image
-    _imageTransform = new T(*_imageGrid);
+    _imageTransform = new T(_imageGrid);
 }
 
 template <class T>

@@ -11,8 +11,8 @@
 
 namespace local = imengine;
 
-local::TransformData::TransformData(InterpolationData &target) :
-DataGrid(target.getGridSize(),target.getGridSpacing()), _target(target)
+local::TransformData::TransformData(boost::shared_ptr<InterpolationData> target) :
+DataGrid(target->getGridSize(),target->getGridSpacing()), _target(target)
 {
     double twopi = 8*std::atan(1.0);
     _dk = twopi/(_gridSize*_gridSpacing);
@@ -72,12 +72,16 @@ void local::TransformData::tabulate(local::TransformData::Tabulator tabulator) {
     }
 }
 
+double local::TransformData::getTargetValue(int i, int j) const {
+    _target->getValue(i,j);
+}
+
 void local::TransformData::setTargetValue(int i, int j, double value) {
-    getTarget().setValue(i,j,value);
+    _target->setValue(i,j,value);
 }
 
 double *local::TransformData::getTargetDataPtr() {
-    return getTarget()._data;
+    return _target->_data;
 }
 
 void local::TransformData::setToProduct(local::TransformData const& t1,

@@ -11,7 +11,7 @@ namespace imengine {
 	class FastTransform : public TransformData {
 	public:
 	    // Implements discrete Fourier transforms using the optimized FFTW library
-		FastTransform(InterpolationData &target);
+		FastTransform(boost::shared_ptr<InterpolationData> target);
 		virtual ~FastTransform();
         // Sets our contents to the discrete Fourier transform of our target InterpolationData
         // object. Normalization is defined by:

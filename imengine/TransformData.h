@@ -6,6 +6,7 @@
 #include "imengine/DataGrid.h"
 
 #include "boost/function.hpp"
+#include "boost/smart_ptr.hpp"
 
 #include <cassert>
 
@@ -15,7 +16,7 @@ namespace imengine {
 	class TransformData : public DataGrid {
 	public:
 	    // Creates a new transform data grid for the specified real-space target grid
-        TransformData(InterpolationData &target);
+        TransformData(boost::shared_ptr<InterpolationData> target);
 		virtual ~TransformData();
 
         // Defines the representation of complex transform data (using the convention
@@ -35,6 +36,9 @@ namespace imengine {
         //
         typedef boost::function<void (double,double,Complex&)> Tabulator;
         void tabulate(Tabulator tabulator);
+        
+        // reads a value from the target InterpolationGrid
+        double getTargetValue(int i, int j) const;
         
         // writes a real value into the target InterpolationGrid
         void setTargetValue(int i, int j, double value);
@@ -72,17 +76,14 @@ namespace imengine {
         double const& real(int i, int j) const;
         double const& imag(int i, int j) const;
 
-        // returns a reference to our target
-        InterpolationData &getTarget();
-
         // returns a pointer to our transform data array
         double *getDataPtr();
 
         // returns a pointer to the target data array
         double *getTargetDataPtr();
-        
+
     private:
-        InterpolationData &_target;
+        boost::shared_ptr<InterpolationData> _target;
         double *_data;
         double _dk;
 	}; // TransformData
@@ -122,10 +123,6 @@ namespace imengine {
     
     inline double *TransformData::getDataPtr() {
         return _data;
-    }
-    
-    inline InterpolationData &TransformData::getTarget() {
-        return _target;
     }
     
 } // imengine

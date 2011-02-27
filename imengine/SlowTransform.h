@@ -9,7 +9,7 @@ namespace imengine {
 	class SlowTransform : public TransformData {
 	public:
 	    // Implements discrete Fourier transforms using explicit summation formulas
-		SlowTransform(InterpolationData &target);
+		SlowTransform(boost::shared_ptr<InterpolationData> target);
 		virtual ~SlowTransform();
         // Sets our contents to the discrete Fourier transform of our target InterpolationData
         // object. Normalization is defined by:
