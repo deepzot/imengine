@@ -4,6 +4,7 @@
 #define IMENGINE_INTERPOLATION_DATA
 
 #include "imengine/DataGrid.h"
+#include "imengine/types.h"
 
 namespace imengine {
     // Stores a grid of image function values to support pixelation.
@@ -22,13 +23,13 @@ namespace imengine {
         double getGridY() const;
 
         // Returns the value associated with grid point (i,j)
-        double getValue(int i, int j) const;
+        Real getValue(int i, int j) const;
         
 		// Sets the value associated with grid point (i,j) (no range checks on i,j)
-        void setValue(int i, int j, double value);
+        void setValue(int i, int j, Real value);
 		
         // Returns the absolute value associated with pixel coord (x,y) (no range checks on x,y)
-        double getValueForPixel(int x, int y) const;
+        Real getValueForPixel(int x, int y) const;
         
         // dumps grid values to std::cout in row-wise order
         void dump() const;
@@ -39,18 +40,18 @@ namespace imengine {
 	private:
         int _pad;
         double _gridX, _gridY;
-        double *_data;
+        Real *_data;
 	}; // InterpolationData
 	
     inline double InterpolationData::getGridX() const { return _gridX; }
     inline double InterpolationData::getGridY() const { return _gridY; }
 
-    inline double InterpolationData::getValue(int i, int j) const {
+    inline Real InterpolationData::getValue(int i, int j) const {
         return _data[i + _gridSize*j];
     }
 
-	inline double InterpolationData::getValueForPixel(int x, int y) const {
-        double value(_data[getIndex(x + _pad) + _gridSize*getIndex(y + _pad)]);
+	inline Real InterpolationData::getValueForPixel(int x, int y) const {
+        Real value(_data[getIndex(x + _pad) + _gridSize*getIndex(y + _pad)]);
         return value > 0 ? +value : -value;
 	}
 } // imengine

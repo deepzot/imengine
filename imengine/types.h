@@ -8,7 +8,7 @@ namespace imengine {
     // Defines the representation of real and complex discrete Fourier transform data.
     
     typedef double Real;
-    typedef double Complex[2];  // [0]=re, [1]=im
+    typedef Real Complex[2];  // [0]=re, [1]=im
 
 } // imengine
 

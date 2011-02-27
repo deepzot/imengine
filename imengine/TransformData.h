@@ -21,10 +21,10 @@ namespace imengine {
 		virtual ~TransformData();
 
 		// Returns the real and imaginary components of element (i,j)
-		// with 0 <= i,j < getGridSize(). There is no method to return a complex<double>
+		// with 0 <= i,j < getGridSize(). There is no method to return a complex<Real>
 		// since, in general, this would require creating the returned object.
-        double const getReal(int i, int j) const;
-        double const getImag(int i, int j) const;
+        Real const getReal(int i, int j) const;
+        Real const getImag(int i, int j) const;
         
         // Assigns a complete set of values by repeatedly calling the function provided.
         // The provided function should be compatible with the following declaration:
@@ -35,13 +35,13 @@ namespace imengine {
         void tabulate(Tabulator tabulator);
         
         // reads a value from the target InterpolationGrid
-        double getTargetValue(int i, int j) const;
+        Real getTargetValue(int i, int j) const;
         
         // writes a real value into the target InterpolationGrid
-        void setTargetValue(int i, int j, double value);
+        void setTargetValue(int i, int j, Real value);
         
         // calculates and returns re*re + im*im (no range checks on i,j)
-        double absSquared(int i, int j) const;
+        Real absSquared(int i, int j) const;
 
         // returns the wavenumber associated an index value (no range check on i)
         double waveNumber(int i) const;
@@ -68,48 +68,48 @@ namespace imengine {
 
 	protected:
 		// accesses the real/imag parts of transform data (no range checks on i,j)
-        double& real(int i, int j);
-        double& imag(int i, int j);
-        double const& real(int i, int j) const;
-        double const& imag(int i, int j) const;
+        Real& real(int i, int j);
+        Real& imag(int i, int j);
+        Real const& real(int i, int j) const;
+        Real const& imag(int i, int j) const;
 
         // returns a pointer to our transform data array
-        double *getDataPtr();
+        Real *getDataPtr();
 
         // returns a pointer to the target data array
-        double *getTargetDataPtr();
+        Real *getTargetDataPtr();
 
     private:
         boost::shared_ptr<InterpolationData> _target;
-        double *_data;
+        Real *_data;
         double _dk;
 	}; // TransformData
 
-    inline double& TransformData::real(int i, int j) {
+    inline Real& TransformData::real(int i, int j) {
         assert(i >= 0 && i < _break1);
         assert(j >= 0 && j < _gridSize);
         return _data[2*(i + _break1*j)];
     }
-    inline double& TransformData::imag(int i, int j) {
+    inline Real& TransformData::imag(int i, int j) {
         assert(i >= 0 && i < _break1);
         assert(j >= 0 && j < _gridSize);
         return _data[2*(i + _break1*j)+1];
     }
-    inline double const& TransformData::real(int i, int j) const {
+    inline Real const& TransformData::real(int i, int j) const {
         assert(i >= 0 && i < _break1);
         assert(j >= 0 && j < _gridSize);
         return _data[2*(i + _break1*j)];
     }
-    inline double const& TransformData::imag(int i, int j) const {
+    inline Real const& TransformData::imag(int i, int j) const {
         assert(i >= 0 && i < _break1);
         assert(j >= 0 && j < _gridSize);
         return _data[2*(i + _break1*j)+1];
     }
     
-    inline double TransformData::absSquared(int i, int j) const {
+    inline Real TransformData::absSquared(int i, int j) const {
         assert(i >= 0 && i < _gridSize);
         assert(j >= 0 && j < _gridSize);
-        double re(getReal(i,j)), im(getImag(i,j));
+        Real re(getReal(i,j)), im(getImag(i,j));
         return re*re + im*im;
     }
 
@@ -118,7 +118,7 @@ namespace imengine {
         return _dk*(i < _break1 ? i : i-_gridSize);
     }
     
-    inline double *TransformData::getDataPtr() {
+    inline Real *TransformData::getDataPtr() {
         return _data;
     }
     

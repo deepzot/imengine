@@ -15,7 +15,7 @@ double gridX, double gridY)
 {
     assert(pad >= 0 && pad < gridSize);
     // use FFTW allocator for best SIMD alignment
-    _data = (double*)fftw_malloc(gridSize*gridSize*sizeof(double));
+    _data = (Real*)fftw_malloc(sizeof(Real)*gridSize*gridSize);
 }
 
 local::InterpolationData::~InterpolationData() {
@@ -23,7 +23,7 @@ local::InterpolationData::~InterpolationData() {
     std::cout << "InterpolationData says bye!" << std::endl;
 }
 
-void local::InterpolationData::setValue(int i, int j, double value) {
+void local::InterpolationData::setValue(int i, int j, Real value) {
     assert(i >= 0 && i < _gridSize);
     assert(j >= 0 && j < _gridSize);
     _data[i + _gridSize*j] = value;

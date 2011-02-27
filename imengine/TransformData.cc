@@ -18,8 +18,8 @@ DataGrid(target->getGridSize(),target->getGridSpacing()), _target(target)
     double twopi = 8*std::atan(1.0);
     _dk = twopi/(_gridSize*_gridSpacing);
     // use FFTW allocator for best SIMD alignment
-    assert(sizeof(Complex) == sizeof(fftw_complex));
-    _data = (double*)fftw_malloc(sizeof(Complex)*_gridSize*_break1);
+    assert(sizeof(Complex) == 2*sizeof(Real));
+    _data = (Real*)fftw_malloc(sizeof(Complex)*_gridSize*_break1);
 }
 
 local::TransformData::~TransformData() {
@@ -27,7 +27,7 @@ local::TransformData::~TransformData() {
     std::cout << "TransformData says bye!" << std::endl;
 }
 
-double const local::TransformData::getReal(int i, int j) const {
+local::Real const local::TransformData::getReal(int i, int j) const {
     assert(i >= 0 && i < _gridSize);
     assert(j >= 0 && j < _gridSize);
     int N(_gridSize);
@@ -45,7 +45,7 @@ double const local::TransformData::getReal(int i, int j) const {
     }
 }
 
-double const local::TransformData::getImag(int i, int j) const {
+local::Real const local::TransformData::getImag(int i, int j) const {
     assert(i >= 0 && i < _gridSize);
     assert(j >= 0 && j < _gridSize);
     int N(_gridSize);
@@ -74,15 +74,15 @@ void local::TransformData::tabulate(local::TransformData::Tabulator tabulator) {
     }
 }
 
-double local::TransformData::getTargetValue(int i, int j) const {
+local::Real local::TransformData::getTargetValue(int i, int j) const {
     _target->getValue(i,j);
 }
 
-void local::TransformData::setTargetValue(int i, int j, double value) {
+void local::TransformData::setTargetValue(int i, int j, Real value) {
     _target->setValue(i,j,value);
 }
 
-double *local::TransformData::getTargetDataPtr() {
+local::Real *local::TransformData::getTargetDataPtr() {
     return _target->_data;
 }
 
@@ -93,17 +93,17 @@ local::TransformData const& t2, double dx, double dy) {
     double norm = _gridSpacing*_gridSpacing;
     for(int j = 0; j < _gridSize; ++j) {
         for(int i = 0; i < _break1; ++i) {
-            double re1(t1.real(i,j)),im1(t1.imag(i,j)),re2(t2.real(i,j)),im2(t2.imag(i,j));
-            double re = norm*(re1*re2 - im1*im2);
-            double im = norm*(re1*im2 + im1*re2);
+            Real re1(t1.real(i,j)),im1(t1.imag(i,j)),re2(t2.real(i,j)),im2(t2.imag(i,j));
+            Real re = norm*(re1*re2 - im1*im2);
+            Real im = norm*(re1*im2 + im1*re2);
             if(translated) {
-                double theta = -(waveNumber(i)*dx + waveNumber(j)*dy);
+                Real theta = -(waveNumber(i)*dx + waveNumber(j)*dy);
                 // coerce the symmetry required for a real-valued inverse DFT
                 if(2*i == _gridSize && j >= _break1) {
                     theta = -(-waveNumber(i)*dx + waveNumber(j)*dy);
                 }
-                double costh = std::cos(theta);
-                double sinth = std::sin(theta);
+                Real costh = std::cos(theta);
+                Real sinth = std::sin(theta);
                 real(i,j) = re*costh - im*sinth;
                 imag(i,j) = re*sinth + im*costh;
             }
