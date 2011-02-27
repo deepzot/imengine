@@ -3,8 +3,6 @@
 #include "imengine/GenericPixelFunction.h"
 #include "imengine/TransformData.h"
 
-#include <cassert>
-
 namespace local = imengine;
 
 local::GenericPixelFunction::GenericPixelFunction() :
@@ -13,11 +11,6 @@ AbsPixelFunction()
 }
 
 local::GenericPixelFunction::~GenericPixelFunction() {
-}
-
-void local::GenericPixelFunction::initTransform(TransformData* transformData) {
-    assert(0 != transformData);
-    _transformData = transformData;
 }
 
 void local::GenericPixelFunction::doTransform() {

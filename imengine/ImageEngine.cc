@@ -12,18 +12,13 @@ namespace local = imengine;
 
 template <class T>
 local::ImageEngine<T>::ImageEngine(local::AbsPixelFunction& source, local::AbsPixelFunction& psf)
-: AbsImageEngine(source,psf),
-_sourceTransform(0), _psfTransform(0), _imageTransform(0)
+: AbsImageEngine(source,psf)
 {
 }
 
 template <class T>
 local::ImageEngine<T>::~ImageEngine() {
-    if(0 != _imageTransform) {
-        delete _sourceTransform;
-        delete _psfTransform;
-        delete _imageTransform;
-    }
+    std::cout << "ImageEngine<T> says bye!" << std::endl;
 }
 
 template <class T>
@@ -35,13 +30,13 @@ void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
     _workspace.reset(_imageGrid->createWorkspace());
     // build discrete Fourier transform grids (linked to the workspace) for
     // the source and psf models
-    _sourceTransform = new T(_workspace);
-    _psfTransform = new T(_workspace);
+    _sourceTransform.reset(new T(_workspace));
+    _psfTransform.reset(new T(_workspace));
     // link the source and psf grids to their pixel functions
     _source.initTransform(_sourceTransform);
     _psf.initTransform(_psfTransform);
     // build a discrete Fourier transform grid for the final image
-    _imageTransform = new T(_imageGrid);
+    _imageTransform.reset(new T(_imageGrid));
 }
 
 template <class T>

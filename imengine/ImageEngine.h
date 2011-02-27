@@ -5,6 +5,8 @@
 
 #include "imengine/AbsImageEngine.h"
 
+#include "boost/smart_ptr.hpp"
+
 namespace imengine {
     class AbsPixelFunction;
     class InterpolationData;
@@ -23,7 +25,7 @@ namespace imengine {
         virtual double generate(AbsImageWriter &writer, double dx = 0, double dy = 0);
     protected:
 	private:
-        T *_sourceTransform, *_psfTransform, *_imageTransform;
+        boost::shared_ptr<T> _sourceTransform, _psfTransform, _imageTransform;
 	}; // ImageEngine
 } // imengine
 

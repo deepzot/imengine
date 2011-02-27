@@ -8,6 +8,7 @@
 #include <cassert>
 #include <cmath>
 #include <cstdio>
+#include <iostream>
 
 namespace local = imengine;
 
@@ -23,6 +24,7 @@ DataGrid(target->getGridSize(),target->getGridSpacing()), _target(target)
 
 local::TransformData::~TransformData() {
     fftw_free(_data);
+    std::cout << "TransformData says bye!" << std::endl;
 }
 
 double const local::TransformData::getReal(int i, int j) const {

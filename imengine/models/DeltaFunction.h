@@ -14,17 +14,13 @@ namespace models {
 		virtual ~DeltaFunction();
 		// Returns the function value
         virtual double operator()(double x, double y) const;
-        // Performs one-time initializations before subsequent calls to doTransform.
-        // Implementation should save the pointer but does not own it.
-        virtual void initTransform(imengine::TransformData *transformData);
         // Computes the function's discrete Fourier transform and saves the results in
         // the transform object passed to initTransform(). The transform is defined as:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
         virtual void doTransform();
-        // ...
+        // Helper function that initializes our k-space transform
         static void setValueToOne(double kx, double ky, imengine::TransformData::Complex& value);
 	private:
-        TransformData *_transformData;
 	}; // DeltaFunction
 }} // imengine::models
 
