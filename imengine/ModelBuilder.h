@@ -3,15 +3,17 @@
 #ifndef IMENGINE_MODEL_BUILDER
 #define IMENGINE_MODEL_BUILDER
 
+#include "boost/smart_ptr.hpp"
+
 #include <string>
 
 namespace imengine {
-    //class std::string;
+    class AbsPixelFunction;
 	class ModelBuilder {
 	public:
 		ModelBuilder();
 		virtual ~ModelBuilder();
-        void parse(std::string const &input);
+        boost::shared_ptr<AbsPixelFunction> parse(std::string const &input);
 	private:
 	}; // ModelBuilder
 } // imengine
