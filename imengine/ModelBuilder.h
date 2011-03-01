@@ -8,12 +8,12 @@
 #include <string>
 
 namespace imengine {
-    class AbsPixelFunction;
+    class AbsRadialProfile;
 	class ModelBuilder {
 	public:
 		ModelBuilder();
 		virtual ~ModelBuilder();
-        boost::shared_ptr<AbsPixelFunction> parse(std::string const &input);
+        boost::shared_ptr<AbsRadialProfile> parse(std::string const &input);
 	private:
 	}; // ModelBuilder
 } // imengine

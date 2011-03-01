@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     // configure command-line options processing using the boost program_options library
     int npixels;
     double dx,dy,scale;
-    std::string outfile;
+    std::string outfile,psfString;
     po::options_description cli;
     cli.add_options()
         ("help,h", "Prints this info and exit.")
@@ -33,6 +33,7 @@ int main(int argc, char **argv) {
         ("dx",po::value<double>(&dx)->default_value(0.),"Horizontal source shift.")
         ("dy",po::value<double>(&dy)->default_value(0.),"Vertical source shift.")
         ("scale",po::value<double>(&scale)->default_value(1.),"Pixel scale.")
+        ("psf",po::value<std::string>(&psfString)->default_value("gauss[1]"),"PSF module to use.")
         ;
 
     // do the command line parsing now
@@ -74,7 +75,11 @@ int main(int argc, char **argv) {
     boost::scoped_ptr<img::AbsImageEngine> engine;
     boost::scoped_ptr<img::AbsPixelFunction> src,psf;
 
-    try {
+    img::ModelBuilder builder;
+
+    try {        
+        boost::shared_ptr<img::AbsRadialProfile> tmp(builder.parse(psfString));
+        
         // create the source model
         double rdisk(0.205*npixels);
         if(profile) {

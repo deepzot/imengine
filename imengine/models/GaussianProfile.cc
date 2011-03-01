@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <iostream>
 
 namespace local = imengine::models;
 
@@ -14,9 +15,11 @@ local::GaussianProfile::GaussianProfile(double sigma) {
     _sigsqby2 = sigsq/2;
     double twopi(8*std::atan(1.0));
     _norm = 1/(twopi*sigsq);
+    std::cout << "GaussianProfile(" << sigma << ")" << std::endl;
 }
 
 local::GaussianProfile::~GaussianProfile() {
+    std::cout << "GaussianProfile::dtor" << std::endl;
 }
 
 double local::GaussianProfile::operator()(double r) const {

@@ -33,4 +33,7 @@
 #include "imengine/IdentityTransform.h"
 #include "imengine/EllipticityTransform.h"
 
+// Model building support
+#include "imengine/ModelBuilder.h"
+
 #endif // IMENGINE

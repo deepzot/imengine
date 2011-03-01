@@ -13,43 +13,68 @@
 #include "imengine/IdentityTransform.h"
 #include "imengine/EllipticityTransform.h"
 
+#include "boost/config/warning_disable.hpp"
 #include "boost/spirit/include/qi.hpp"
 #include "boost/spirit/include/phoenix_core.hpp"
 #include "boost/spirit/include/phoenix_operator.hpp"
 
+#include "boost/spirit/home/phoenix/object/construct.hpp" // better path to use?
+#include "boost/spirit/home/phoenix/object/new.hpp" // better path to use?
+
+#include <iostream>
+
 namespace local = imengine;
-namespace models = imengine::models;
+
+namespace img = imengine;
+namespace mod = imengine::models;
 namespace qi = boost::spirit::qi;
+
+namespace imengine {
+namespace parser {
+    
+    template <typename Iterator>
+    struct Grammar : qi::grammar<Iterator, boost::shared_ptr<img::AbsRadialProfile>()>
+    {
+        Grammar() : Grammar::base_type(profile)
+        {
+            using qi::lit;
+            using qi::_val;
+            using qi::_a;
+            using qi::_b;
+            using qi::_1;
+            using qi::double_;
+            using boost::phoenix::construct;
+            using boost::phoenix::new_;
+            using boost::shared_ptr;
+            
+            profile %= gauss;
+            
+            gauss = ("gauss[" >> double_[_a=_1] >> ']')
+                [_val = construct<shared_ptr<img::AbsRadialProfile> >(new_<mod::GaussianProfile>(_a))];
+        }
+        double arg1,arg2;
+        qi::rule<Iterator, boost::shared_ptr<img::AbsRadialProfile>()> profile;
+        qi::rule<Iterator, boost::shared_ptr<img::AbsRadialProfile>(), qi::locals<double> >
+            gauss;
+    };
+    
+}} // imengine::parser
 
 local::ModelBuilder::ModelBuilder() { }
 
 local::ModelBuilder::~ModelBuilder() { }
 
-boost::shared_ptr<local::AbsPixelFunction> local::ModelBuilder::parse(std::string const &input) {
+boost::shared_ptr<img::AbsRadialProfile> local::ModelBuilder::parse(std::string const &input) {
 
-    boost::shared_ptr<AbsPixelFunction> model;
-    double arg1,arg2;
+    std::cout << "ModelBuilder::parsing '" << input << "'..." << std::endl;
 
-    using boost::spirit::qi::double_;
-    using boost::spirit::qi::char_;
-    using boost::spirit::qi::_1;
-    using boost::phoenix::ref;
+    typedef std::string::const_iterator iterator_type;
+    iterator_type iter(input.begin()),end(input.end());
+    img::parser::Grammar<iterator_type> parser;
+    boost::shared_ptr<img::AbsRadialProfile> result;
 
-    bool ok = qi::phrase_parse(input.begin(),input.end(),
-        // --- begin grammar --------------
-        (
-            "gauss[" >> double_[ref(arg1) = _1] >> ']'
-            //[model.reset((AbsPixelFunction*)(new models::GaussianProfile(_1)))]
-        ),
-        // --- end grammar ----------------
-        boost::spirit::ascii::space);
-    
-    // return an empty model pointer if the parser failed
-    if(!ok /*|| begin != input.end()*/) {
-        model.reset();
-        return model;
-    }
-    
-    model.reset(new models::DeltaFunction);
-    return model;
+    bool ok = qi::parse(iter, end, parser, result);
+
+    if(!ok || iter != end) result.reset();
+    return result;
 }
