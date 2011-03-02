@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
     img::ModelBuilder builder;
 
     try {        
-        boost::shared_ptr<img::AbsRadialProfile> tmp(builder.parse(psfString));
+        boost::shared_ptr<img::AbsPixelFunction> tmp(builder.parse(psfString));
         
         // create the source model
         double rdisk(0.205*npixels);

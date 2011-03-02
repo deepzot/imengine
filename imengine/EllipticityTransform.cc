@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <cassert>
+#include <iostream>
 
 namespace local = imengine;
 
@@ -12,9 +13,12 @@ _e1p(1+e1),_e1m(1-e1),_e2(e2)
 {
     _detM = 1 - e1*e1 - e2*e2;
     assert(0 < _detM);
+    std::cout << "EllipticityTransform(" << e1 << ',' << e2 << ')' << std::endl;
 }
 
-local::EllipticityTransform::~EllipticityTransform() { }
+local::EllipticityTransform::~EllipticityTransform() {
+    std::cout << "EllipticityTransform::dtor" << std::endl;
+}
 
 double local::EllipticityTransform::determinant() const {
     return _detM;

@@ -8,6 +8,7 @@
 #include "boost/bind.hpp"
 
 #include <cassert>
+#include <iostream>
 
 namespace local = imengine;
 
@@ -16,9 +17,11 @@ boost::shared_ptr<AbsRadialProfile const> profile,
 boost::shared_ptr<AbsCoordTransform const> transform) :
 _radialProfile(profile), _coordTransform(transform)
 {
+    std::cout << "TransformedProfileFunction(...)" << std::endl;
 }
 
 local::TransformedProfileFunction::~TransformedProfileFunction() {
+    std::cout << "TransformedProfileFunction::dtor" << std::endl;
 }
 
 double local::TransformedProfileFunction::operator()(double x, double y) const {
