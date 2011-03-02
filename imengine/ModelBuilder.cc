@@ -108,7 +108,7 @@ local::ModelBuilder::~ModelBuilder() { }
 
 boost::shared_ptr<img::AbsPixelFunction> local::ModelBuilder::parse(std::string const &input) {
 
-    std::cout << "ModelBuilder::parsing '" << input << "'..." << std::endl;
+    //std::cout << "ModelBuilder::parsing '" << input << "'..." << std::endl;
 
     typedef std::string::const_iterator iterator_type;
     iterator_type iter(input.begin()),end(input.end());
