@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     // configure command-line options processing using the boost program_options library
     int npixels;
     double dx,dy,scale;
-    std::string outfile,psfString;
+    std::string outfile,srcString,psfString;
     po::options_description cli;
     cli.add_options()
         ("help,h", "Prints this info and exit.")
@@ -33,6 +33,7 @@ int main(int argc, char **argv) {
         ("dx",po::value<double>(&dx)->default_value(0.),"Horizontal source shift.")
         ("dy",po::value<double>(&dy)->default_value(0.),"Vertical source shift.")
         ("scale",po::value<double>(&scale)->default_value(1.),"Pixel scale.")
+        ("src",po::value<std::string>(&srcString)->default_value("disk[1]"),"Source module to use.")
         ("psf",po::value<std::string>(&psfString)->default_value("gauss[1]"),"PSF module to use.")
         ;
 
@@ -72,14 +73,23 @@ int main(int argc, char **argv) {
     }
     bool profile(vm.count("profile"));
 
-    boost::scoped_ptr<img::AbsImageEngine> engine;
-    boost::scoped_ptr<img::AbsPixelFunction> src,psf;
+    try {
+        // create the source and psf models
+        img::ModelBuilder builder;
+        boost::shared_ptr<img::AbsPixelFunction> src(builder.parse(srcString));
+        if(0 == src.get()) {
+            std::cerr << "Unable to parse source model specification '" << srcString
+                << "'." << std::endl;
+            return -2;
+        }
+        boost::shared_ptr<img::AbsPixelFunction> psf(builder.parse(psfString));
+        if(0 == src.get()) {
+            std::cerr << "Unable to parse psf model specification '" << psfString
+                << "'." << std::endl;
+            return -2;
+        }
 
-    img::ModelBuilder builder;
-
-    try {        
-        boost::shared_ptr<img::AbsPixelFunction> tmp(builder.parse(psfString));
-        
+/**        
         // create the source model
         double rdisk(0.205*npixels);
         if(profile) {
@@ -104,22 +114,24 @@ int main(int argc, char **argv) {
             psf.reset(new mod::GaussianDemo(sigma));
         }
         psf.reset(new mod::DeltaFunction);
+**/
     
         // create the pixelization engine
+        boost::scoped_ptr<img::AbsImageEngine> engine;
         if(midpoint) {
             engine.reset(slow ?
-                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::SlowTransform>(*src,*psf)) :
-                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::FastTransform>(*src,*psf)));
+                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::SlowTransform>(src,psf)) :
+                (img::AbsImageEngine*)(new img::MidpointImageEngine<img::FastTransform>(src,psf)));
         }
         else if(bilinear) {
             engine.reset(slow ?
-                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(*src,*psf)) :
-                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(*src,*psf)));
+                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf)) :
+                (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf)));
         }
         else if(bicubic) {
             engine.reset(slow ?
-                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(*src,*psf)) :
-                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(*src,*psf)));
+                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(src,psf)) :
+                (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(src,psf)));
         }
     
         // generate the image
@@ -130,7 +142,7 @@ int main(int argc, char **argv) {
     catch(std::exception const &e) {
         std::cerr << "Internal error while generating the image:" << std::endl
             << e.what() << std::endl;
-        return -2;
+        return -3;
     }    
     
     // cleanup and exit without error

@@ -9,8 +9,8 @@ local::DeltaFunction::DeltaFunction() { }
 
 local::DeltaFunction::~DeltaFunction() { }
 
-void local::DeltaFunction::doTransform() {
-    _transformData->tabulate(&local::DeltaFunction::setValueToOne);
+void local::DeltaFunction::doTransform(boost::shared_ptr<TransformData> transformData) {
+    transformData->tabulate(&local::DeltaFunction::setValueToOne);
 }
 
 double local::DeltaFunction::operator()(double x, double y) const {

@@ -14,7 +14,8 @@ namespace imengine {
 	class AbsImageEngine : boost::noncopyable {
 	public:
 	    // Creates a new engine for the specified source and psf functions.
-		AbsImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf);
+		AbsImageEngine(boost::shared_ptr<AbsPixelFunction> source,
+		    boost::shared_ptr<AbsPixelFunction> psf);
 		virtual ~AbsImageEngine();
 		// Read-only accessors
         int getPixelsPerSide() const;
@@ -33,11 +34,10 @@ namespace imengine {
         virtual double estimatePixelValue(int i, int j) = 0;
         
         double _scaleSquared;
-        AbsPixelFunction &_source, &_psf;
+        boost::shared_ptr<AbsPixelFunction> _source, _psf;
         boost::shared_ptr<InterpolationData> _imageGrid,_workspace;
 
 	private:
-        void _reset();
         int _pixelsPerSide;
         double _pixelScale;
         bool _initialized;

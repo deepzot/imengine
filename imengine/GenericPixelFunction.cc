@@ -13,17 +13,17 @@ AbsPixelFunction()
 local::GenericPixelFunction::~GenericPixelFunction() {
 }
 
-void local::GenericPixelFunction::doTransform() {
+void local::GenericPixelFunction::doTransform(boost::shared_ptr<TransformData> transformData) {
     // tabulate function values on a (x,y) grid
-    int ngrid = _transformData->getGridSize();
+    int ngrid = transformData->getGridSize();
     for(int j = 0; j < ngrid; j++) {
-        double y = _transformData->getY(j);
+        double y = transformData->getY(j);
         for(int i = 0; i < ngrid; i++) {
-            double x = _transformData->getX(i);
+            double x = transformData->getX(i);
             double value = (*this)(x,y);
-            _transformData->setTargetValue(i,j,value);
+            transformData->setTargetValue(i,j,value);
         }
     }
     // calculate the discrete Fourier transform of the tabulated data
-    _transformData->setToTransform();
+    transformData->setToTransform();
 }

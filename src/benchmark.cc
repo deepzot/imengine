@@ -5,6 +5,7 @@
 #include <math.h> // for erf
 #include <sys/resource.h>
 
+#include <boost/smart_ptr.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
@@ -50,8 +51,8 @@ TrialResults trial(int scaleUp, int trials, bool slow) {
     TrialResults results;
     // initialize the models
 //    mod::DiskDemo src(scaleUp);
-    mod::GaussianDemo src(scaleUp/2.);
-    mod::GaussianDemo psf(scaleUp/2.);
+    boost::shared_ptr<img::AbsPixelFunction> src(new mod::GaussianDemo(scaleUp/2.));
+    boost::shared_ptr<img::AbsPixelFunction> psf(new mod::GaussianDemo(scaleUp/2.));
     // create a fast/slow bilinear engine
     img::AbsImageEngine *engine = slow ?
         (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(src,psf)) :

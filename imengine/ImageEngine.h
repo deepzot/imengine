@@ -16,7 +16,8 @@ namespace imengine {
 	public:
 	    // Creates a new engine for the specified source and psf functions to generate
 	    // square images of pixelsPerSide x pixelsPerSide pixels of dimension pixelScale.
-		ImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf);
+		ImageEngine(boost::shared_ptr<AbsPixelFunction> source,
+		    boost::shared_ptr<AbsPixelFunction> psf);
 		virtual ~ImageEngine();
         // (Re)initializes the engine for the specified pixel grid size and scale
         virtual void initialize(int pixelsPerSide, double pixelScale = 1);

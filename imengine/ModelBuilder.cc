@@ -9,6 +9,8 @@
 #include "imengine/models/GaussianProfile.h"
 #include "imengine/models/DiskProfile.h"
 #include "imengine/models/DeltaFunction.h"
+#include "imengine/models/GaussianDemo.h"
+#include "imengine/models/DiskDemo.h"
 
 #include "imengine/IdentityTransform.h"
 #include "imengine/EllipticityTransform.h"
@@ -78,15 +80,20 @@ namespace parser {
                 [_val = construct<AbsRadialProfilePtr>(new_<mod::MoffatProfile>(_a,_b))];
                 
             // standalone pixel functions
-            standalone %= delta;
+            standalone = delta | gdemo | ddemo;
             delta = lit("delta")
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::DeltaFunction>())];
+            gdemo = ("gdemo[" >> double_[_a=_1] >> ']')
+                [_val = construct<AbsPixelFunctionPtr>(new_<mod::GaussianDemo>(_a))];
+            ddemo = ("ddemo[" >> double_[_a=_1] >> ']')
+                [_val = construct<AbsPixelFunctionPtr>(new_<mod::DiskDemo>(_a))];
         }
 
         AbsCoordTransformPtr identity;
 
         qi::rule<Iterator, AbsPixelFunctionPtr()> model;
         qi::rule<Iterator, AbsPixelFunctionPtr()> standalone,delta;
+        qi::rule<Iterator, AbsPixelFunctionPtr(), qi::locals<double> > gdemo,ddemo;
         qi::rule<Iterator, AbsCoordTransformPtr(), qi::locals<double,double> > ellipticity;
         qi::rule<Iterator, AbsRadialProfilePtr()> profile;
         qi::rule<Iterator, AbsRadialProfilePtr(), qi::locals<double> > gauss,disk,exp;

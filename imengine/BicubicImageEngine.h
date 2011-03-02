@@ -11,7 +11,8 @@ namespace imengine {
     // at the pixel corners.
 	template <class T> class BicubicImageEngine : public ImageEngine<T> {
 	public:
-		BicubicImageEngine(AbsPixelFunction &source, AbsPixelFunction &psf);
+		BicubicImageEngine(boost::shared_ptr<AbsPixelFunction> source,
+		    boost::shared_ptr<AbsPixelFunction> psf);
 		virtual ~BicubicImageEngine();
     protected:
         virtual InterpolationData *createGrid();

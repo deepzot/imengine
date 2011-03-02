@@ -10,7 +10,8 @@
 namespace local = imengine;
 
 template <class T>
-local::ImageEngine<T>::ImageEngine(local::AbsPixelFunction& source, local::AbsPixelFunction& psf)
+local::ImageEngine<T>::ImageEngine(boost::shared_ptr<local::AbsPixelFunction> source,
+    boost::shared_ptr<local::AbsPixelFunction> psf)
 : AbsImageEngine(source,psf)
 {
 }
@@ -31,8 +32,8 @@ void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
     _sourceTransform.reset(new T(_workspace));
     _psfTransform.reset(new T(_workspace));
     // link the source and psf grids to their pixel functions
-    _source.initTransform(_sourceTransform);
-    _psf.initTransform(_psfTransform);
+    _source->initTransform(_sourceTransform);
+    _psf->initTransform(_psfTransform);
     // build a discrete Fourier transform grid for the final image
     _imageTransform.reset(new T(_imageGrid));
 }
@@ -42,8 +43,8 @@ double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx,
     assert(isInitialized());
     // calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source)
-    _source.doTransform();
-    _psf.doTransform();
+    _source->doTransform(_sourceTransform);
+    _psf->doTransform(_psfTransform);
     // combine the source and PSF in Fourier space
     dx -= _imageGrid->getGridX();
     dy -= _imageGrid->getGridY();

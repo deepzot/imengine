@@ -29,8 +29,9 @@ double local::TransformedProfileFunction::operator()(double x, double y) const {
     return (*_radialProfile)(r);
 }
 
-void local::TransformedProfileFunction::doTransform() {
-    _transformData->tabulate(
+void local::TransformedProfileFunction::doTransform(
+boost::shared_ptr<TransformData> transformData) {
+    transformData->tabulate(
         boost::bind(&local::TransformedProfileFunction::tabulator,this,_1,_2,_3));
 }
 

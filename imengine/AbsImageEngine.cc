@@ -8,23 +8,17 @@
 
 namespace local = imengine;
 
-local::AbsImageEngine::AbsImageEngine(local::AbsPixelFunction& source, 
-local::AbsPixelFunction& psf) :
-_source(source), _psf(psf), _initialized(false)
+local::AbsImageEngine::AbsImageEngine(boost::shared_ptr<local::AbsPixelFunction> source,
+    boost::shared_ptr<local::AbsPixelFunction> psf)
+: _source(source), _psf(psf), _initialized(false)
 {
 }
 
-local::AbsImageEngine::~AbsImageEngine() {
-    _reset();
-}
-
-void local::AbsImageEngine::_reset() {
-}
+local::AbsImageEngine::~AbsImageEngine() { }
 
 void local::AbsImageEngine::initialize(int pixelsPerSide, double pixelScale) {
     assert(pixelsPerSide > 0);
     assert(pixelScale > 0);
-    _reset();
     _pixelsPerSide = pixelsPerSide;
     _pixelScale = pixelScale;
     _scaleSquared = pixelScale*pixelScale;

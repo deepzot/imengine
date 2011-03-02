@@ -15,14 +15,11 @@ namespace imengine {
 		// Returns the function value
         virtual double operator()(double x, double y) const = 0;
         // Performs one-time initializations before subsequent calls to doTransform.
-        // Default implementation makes a protected copy of the shared ptr.
         virtual void initTransform(boost::shared_ptr<TransformData> transformData);
         // Computes the function's discrete Fourier transform and saves the results in
-        // the transform object passed to initTransform(). The transform is defined as:
+        // the specified transform object. The transform is defined as:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
-        virtual void doTransform() = 0;
-	protected:
-        boost::shared_ptr<TransformData> _transformData;
+        virtual void doTransform(boost::shared_ptr<TransformData> transformData) = 0;
 	}; // AbsPixelFunction
 } // imengine
 

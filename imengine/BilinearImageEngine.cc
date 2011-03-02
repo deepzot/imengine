@@ -6,8 +6,9 @@
 namespace local = imengine;
 
 template <class T>
-local::BilinearImageEngine<T>::BilinearImageEngine(local::AbsPixelFunction& source, 
-local::AbsPixelFunction& psf) :
+local::BilinearImageEngine<T>::BilinearImageEngine(
+boost::shared_ptr<local::AbsPixelFunction> source,
+boost::shared_ptr<local::AbsPixelFunction> psf) :
 ImageEngine<T>(source,psf)
 {
 }
