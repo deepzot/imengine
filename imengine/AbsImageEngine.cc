@@ -8,8 +8,7 @@
 
 namespace local = imengine;
 
-local::AbsImageEngine::AbsImageEngine(boost::shared_ptr<local::AbsPixelFunction> source,
-    boost::shared_ptr<local::AbsPixelFunction> psf)
+local::AbsImageEngine::AbsImageEngine(AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf)
 : _source(source), _psf(psf), _initialized(false)
 {
 }

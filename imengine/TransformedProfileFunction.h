@@ -5,29 +5,24 @@
 
 #include "imengine/AbsPixelFunction.h"
 #include "imengine/types.h"
-
-#include "boost/smart_ptr.hpp"
+#include "imengine/ptr_types.h"
 
 namespace imengine {
-    class AbsRadialProfile;
-    class AbsCoordTransform;
 	class TransformedProfileFunction : public AbsPixelFunction {
 	public:
-		TransformedProfileFunction(
-		    boost::shared_ptr<AbsRadialProfile const> profile,
-		    boost::shared_ptr<AbsCoordTransform const> transform);
+		TransformedProfileFunction(AbsRadialProfilePtr profile, AbsCoordTransformPtr transform);
 		virtual ~TransformedProfileFunction();
 		// Returns the function value
         virtual double operator()(double x, double y) const;
         // Computes the function's discrete Fourier transform and saves the results in
         // the specified transform object. The transform is defined as:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
-        virtual void doTransform(boost::shared_ptr<TransformData> transformData);
+        virtual void doTransform(TransformDataPtr transformData);
         // Tabulates values of our DFT
         void tabulator(double kx, double ky, Complex& value);
 	private:
-        boost::shared_ptr<AbsRadialProfile const> _radialProfile;
-        boost::shared_ptr<AbsCoordTransform const> _coordTransform;
+        AbsRadialProfilePtr _radialProfile;
+        AbsCoordTransformPtr _coordTransform;
 	}; // TransformedProfileFunction
 } // imengine
 

@@ -3,6 +3,7 @@
 #include "imengine/ImageEngine.h"
 #include "imengine/AbsPixelFunction.h"
 #include "imengine/InterpolationData.h"
+#include "imengine/TransformData.h"
 #include "imengine/AbsImageWriter.h"
 
 #include <cassert>
@@ -10,8 +11,7 @@
 namespace local = imengine;
 
 template <class T>
-local::ImageEngine<T>::ImageEngine(boost::shared_ptr<local::AbsPixelFunction> source,
-    boost::shared_ptr<local::AbsPixelFunction> psf)
+local::ImageEngine<T>::ImageEngine(AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf)
 : AbsImageEngine(source,psf)
 {
 }

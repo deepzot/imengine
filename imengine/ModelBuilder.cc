@@ -3,15 +3,18 @@
 #include "imengine/ModelBuilder.h"
 
 #include "imengine/AbsPixelFunction.h"
+#include "imengine/models/DeltaFunction.h"
+#include "imengine/models/GaussianDemo.h"
+#include "imengine/models/DiskDemo.h"
 #include "imengine/TransformedProfileFunction.h"
+
+#include "imengine/AbsRadialProfile.h"
 #include "imengine/models/MoffatProfile.h"
 #include "imengine/models/ExponentialProfile.h"
 #include "imengine/models/GaussianProfile.h"
 #include "imengine/models/DiskProfile.h"
-#include "imengine/models/DeltaFunction.h"
-#include "imengine/models/GaussianDemo.h"
-#include "imengine/models/DiskDemo.h"
 
+#include "imengine/AbsCoordTransform.h"
 #include "imengine/IdentityTransform.h"
 #include "imengine/EllipticityTransform.h"
 
@@ -35,12 +38,8 @@ namespace imengine {
 namespace parser {
     
     template <typename Iterator>
-    struct Grammar : qi::grammar<Iterator, boost::shared_ptr<img::AbsPixelFunction>()>
+    struct Grammar : qi::grammar<Iterator, AbsPixelFunctionPtr()>
     {
-        typedef boost::shared_ptr<img::AbsCoordTransform> AbsCoordTransformPtr;
-        typedef boost::shared_ptr<img::AbsRadialProfile> AbsRadialProfilePtr;
-        typedef boost::shared_ptr<img::AbsPixelFunction> AbsPixelFunctionPtr;
-
         Grammar() : Grammar::base_type(model), identity(new img::IdentityTransform)
         {
             using qi::lit;
@@ -91,13 +90,13 @@ namespace parser {
 
         AbsCoordTransformPtr identity;
 
-        qi::rule<Iterator, AbsPixelFunctionPtr()> model;
-        qi::rule<Iterator, AbsPixelFunctionPtr()> standalone,delta;
-        qi::rule<Iterator, AbsPixelFunctionPtr(), qi::locals<double> > gdemo,ddemo;
-        qi::rule<Iterator, AbsCoordTransformPtr(), qi::locals<double,double> > ellipticity;
-        qi::rule<Iterator, AbsRadialProfilePtr()> profile;
-        qi::rule<Iterator, AbsRadialProfilePtr(), qi::locals<double> > gauss,disk,exp;
-        qi::rule<Iterator, AbsRadialProfilePtr(), qi::locals<double,double> > moffat;
+        qi::rule<Iterator, img::AbsPixelFunctionPtr()> model;
+        qi::rule<Iterator, img::AbsPixelFunctionPtr()> standalone,delta;
+        qi::rule<Iterator, img::AbsPixelFunctionPtr(), qi::locals<double> > gdemo,ddemo;
+        qi::rule<Iterator, img::AbsCoordTransformPtr(), qi::locals<double,double> > ellipticity;
+        qi::rule<Iterator, img::AbsRadialProfilePtr()> profile;
+        qi::rule<Iterator, img::AbsRadialProfilePtr(), qi::locals<double> > gauss,disk,exp;
+        qi::rule<Iterator, img::AbsRadialProfilePtr(), qi::locals<double,double> > moffat;
     };
     
 }} // imengine::parser
@@ -106,14 +105,14 @@ local::ModelBuilder::ModelBuilder() { }
 
 local::ModelBuilder::~ModelBuilder() { }
 
-boost::shared_ptr<img::AbsPixelFunction> local::ModelBuilder::parse(std::string const &input) {
+local::AbsPixelFunctionPtr local::ModelBuilder::parse(std::string const &input) {
 
     //std::cout << "ModelBuilder::parsing '" << input << "'..." << std::endl;
 
     typedef std::string::const_iterator iterator_type;
     iterator_type iter(input.begin()),end(input.end());
     img::parser::Grammar<iterator_type> parser;
-    boost::shared_ptr<img::AbsPixelFunction> result;
+    AbsPixelFunctionPtr result;
 
     bool ok = qi::parse(iter, end, parser, result);
 

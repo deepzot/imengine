@@ -3,19 +3,17 @@
 #ifndef IMENGINE_ABS_IMAGE_ENGINE
 #define IMENGINE_ABS_IMAGE_ENGINE
 
+#include "imengine/ptr_types.h"
+
 #include "boost/utility.hpp"
-#include "boost/smart_ptr.hpp"
 
 namespace imengine {
-    class AbsPixelFunction;
-    class InterpolationData;
     class AbsImageWriter;
     // Generates pixelized images of a source convoluted with a psf.
 	class AbsImageEngine : boost::noncopyable {
 	public:
 	    // Creates a new engine for the specified source and psf functions.
-		AbsImageEngine(boost::shared_ptr<AbsPixelFunction> source,
-		    boost::shared_ptr<AbsPixelFunction> psf);
+		AbsImageEngine(AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf);
 		virtual ~AbsImageEngine();
 		// Read-only accessors
         int getPixelsPerSide() const;
@@ -34,8 +32,8 @@ namespace imengine {
         virtual double estimatePixelValue(int i, int j) = 0;
         
         double _scaleSquared;
-        boost::shared_ptr<AbsPixelFunction> _source, _psf;
-        boost::shared_ptr<InterpolationData> _imageGrid,_workspace;
+        AbsPixelFunctionPtr _source, _psf;
+        InterpolationDataPtr _imageGrid,_workspace;
 
 	private:
         int _pixelsPerSide;

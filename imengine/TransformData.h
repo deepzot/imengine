@@ -5,19 +5,18 @@
 
 #include "imengine/DataGrid.h"
 #include "imengine/types.h"
+#include "imengine/ptr_types.h"
 
 #include "boost/function.hpp"
-#include "boost/smart_ptr.hpp"
 
 #include <cassert>
 
 namespace imengine {
-    class InterpolationData;
     // Stores complex discrete Fourier transform values on a square grid
 	class TransformData : public DataGrid {
 	public:
 	    // Creates a new transform data grid for the specified real-space target grid
-        TransformData(boost::shared_ptr<InterpolationData> target);
+        TransformData(InterpolationDataPtr target);
 		virtual ~TransformData();
 
 		// Returns the real and imaginary components of element (i,j)
@@ -80,7 +79,7 @@ namespace imengine {
         Real *getTargetDataPtr();
 
     private:
-        boost::shared_ptr<InterpolationData> _target;
+        InterpolationDataPtr _target;
         Real *_data;
         double _dk;
 	}; // TransformData

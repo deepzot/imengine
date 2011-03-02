@@ -13,8 +13,7 @@
 namespace local = imengine;
 
 local::TransformedProfileFunction::TransformedProfileFunction(
-boost::shared_ptr<AbsRadialProfile const> profile,
-boost::shared_ptr<AbsCoordTransform const> transform) :
+AbsRadialProfilePtr profile,AbsCoordTransformPtr transform) :
 _radialProfile(profile), _coordTransform(transform)
 {
     //std::cout << "TransformedProfileFunction(...)" << std::endl;
@@ -29,8 +28,7 @@ double local::TransformedProfileFunction::operator()(double x, double y) const {
     return (*_radialProfile)(r);
 }
 
-void local::TransformedProfileFunction::doTransform(
-boost::shared_ptr<TransformData> transformData) {
+void local::TransformedProfileFunction::doTransform(TransformDataPtr transformData) {
     transformData->tabulate(
         boost::bind(&local::TransformedProfileFunction::tabulator,this,_1,_2,_3));
 }

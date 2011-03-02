@@ -25,7 +25,6 @@ int main(int argc, char **argv) {
         ("midpoint", "Uses the midpoint method for pixelization.")
         ("bilinear", "Uses bilinear interpolation for pixelization (this is the default).")
         ("bicubic", "Uses bicubic interpolation for pixelization.")
-        ("profile", "Uses analytic profiles.")
         ("slow", "Uses un-optimized discrete Fourier transforms.")
         ("fast", "Uses optimized fast Fourier transforms.")
         ("npixels,n", po::value<int>(&npixels)->default_value(48),
@@ -71,7 +70,6 @@ int main(int argc, char **argv) {
         std::cerr << "Only one speed can be specified (fast,slow)" << std::endl;
         return 4;
     }
-    bool profile(vm.count("profile"));
 
     try {
         // create the source and psf models
@@ -89,33 +87,6 @@ int main(int argc, char **argv) {
             return -2;
         }
 
-/**        
-        // create the source model
-        double rdisk(0.205*npixels);
-        if(profile) {
-            boost::shared_ptr<img::AbsRadialProfile const> profile(new mod::DiskProfile(rdisk));
-            //boost::shared_ptr<img::AbsCoordTransform const> transform(new img::IdentityTransform);
-            boost::shared_ptr<img::AbsCoordTransform const> transform(new img::EllipticityTransform(0.2,-0.4));
-            src.reset(new img::TransformedProfileFunction(profile,transform));            
-        }
-        else {
-            src.reset(new mod::DiskDemo(rdisk));
-        }
-        //src.reset(new mod::DeltaFunction);
-        
-        // create the psf model
-        double sigma(0.105*npixels);
-        if(profile) {
-            boost::shared_ptr<img::AbsRadialProfile const> profile(new mod::GaussianProfile(sigma));
-            boost::shared_ptr<img::AbsCoordTransform const> transform(new img::IdentityTransform);
-            psf.reset(new img::TransformedProfileFunction(profile,transform));
-        }
-        else {
-            psf.reset(new mod::GaussianDemo(sigma));
-        }
-        psf.reset(new mod::DeltaFunction);
-**/
-    
         // create the pixelization engine
         boost::scoped_ptr<img::AbsImageEngine> engine;
         if(midpoint) {

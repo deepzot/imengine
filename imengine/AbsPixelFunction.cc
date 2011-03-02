@@ -10,6 +10,6 @@ local::AbsPixelFunction::AbsPixelFunction() { }
 
 local::AbsPixelFunction::~AbsPixelFunction() { }
 
-void local::AbsPixelFunction::initTransform(boost::shared_ptr<TransformData> transformData) {
+void local::AbsPixelFunction::initTransform(TransformDataPtr transformData) {
     assert(0 != transformData.get());
 }

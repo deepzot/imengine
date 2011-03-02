@@ -10,7 +10,7 @@
 
 namespace local = imengine;
 
-local::TransformData::TransformData(boost::shared_ptr<InterpolationData> target) :
+local::TransformData::TransformData(InterpolationDataPtr target) :
 DataGrid(target->getGridSize(),target->getGridSpacing()), _target(target)
 {
     double twopi = 8*std::atan(1.0);
