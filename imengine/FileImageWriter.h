@@ -11,11 +11,11 @@ namespace imengine {
     // Writes pixel values to the named file (or else stdout) with one line per row
 	class FileImageWriter : public AbsImageWriter {
 	public:
-		FileImageWriter(const char *filename = "");
+		FileImageWriter(std::string const &filename = "");
 		virtual ~FileImageWriter();
-        void open(int size, double scale);
-        void write(int x, int y, double value);
-        void close();
+        virtual void open(int size, double scale);
+        virtual void write(int x, int y, double value);
+        virtual void close();
 	private:
         std::string _filename;
         std::ostream *_os;

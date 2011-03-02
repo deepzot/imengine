@@ -8,7 +8,7 @@
 
 namespace local = imengine;
 
-local::FileImageWriter::FileImageWriter(const char *filename)
+local::FileImageWriter::FileImageWriter(std::string const &filename)
 : AbsImageWriter(), _filename(filename), _os(0)
 { }
 
