@@ -23,7 +23,12 @@ void local::PngImageWriter::open(int size, double scale) {
     // this should never happen if open/close calls are balanced
     assert(0 == _file);
     // (re)open our named file
-    _file = std::fopen(_filename.c_str(),"wb");
+    if(0 == _filename.length()) {
+        _file = stdout;
+    }
+    else {
+        _file = std::fopen(_filename.c_str(),"wb");
+    }
 }
 
 void local::PngImageWriter::close() {
@@ -86,7 +91,9 @@ void local::PngImageWriter::close() {
     png_free(png_ptr, row_pointers);
     png_destroy_write_struct(&png_ptr, &info_ptr);
     // close our file now
-    std::fclose(_file);
+    if(_file != stdout) {
+        std::fclose(_file);
+    }
     _file = 0;
     ArrayImageWriter::close();
 }

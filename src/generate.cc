@@ -22,6 +22,7 @@ int main(int argc, char **argv) {
         ("help,h", "Prints this info and exit.")
         ("output,o", po::value<std::string>(&outfile)->default_value(""),
             "Output file for writing image data (defaults to stdout).")
+        ("png", "Writes a 16-bit grayscale png image.")
         ("midpoint", "Uses the midpoint method for pixelization.")
         ("bilinear", "Uses bilinear interpolation for pixelization (this is the default).")
         ("bicubic", "Uses bicubic interpolation for pixelization.")
@@ -70,6 +71,7 @@ int main(int argc, char **argv) {
         std::cerr << "Only one speed can be specified (fast,slow)" << std::endl;
         return 4;
     }
+    bool png(vm.count("png"));
 
     try {
         // create the source and psf models
@@ -109,8 +111,7 @@ int main(int argc, char **argv) {
         boost::scoped_ptr<img::AbsImageWriter> writer;
         std::string pngend(".png");
         int outlen(outfile.length()),endlen(pngend.length());
-        if(outlen >= endlen && 0 == outfile.compare(outlen-endlen,endlen,pngend)) {
-            std::cout << "writing a PNG file..." << std::endl;
+        if(png || (outlen >= endlen && 0 == outfile.compare(outlen-endlen,endlen,pngend))) {
             writer.reset(new img::PngImageWriter(outfile));
         }
         else {
