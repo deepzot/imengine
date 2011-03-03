@@ -45,9 +45,14 @@ BOOST := /Users/david/Clib/boost_1_45_0
 # location of the Gnu scientific library installation to use
 GSL := /Users/david/Clib/gsl-1.14
 
+# location of the PNG library installation to use. note that libpng should be installed with:
+# ./configure CPPFLAGS=-DPNG_SETJMP_NOT_SUPPORTED
+PNG := /Users/david/Clib/libpng-1.5.1
+
 # compile and link options
-CXXFLAGS := -I. -I$(GSL) -I$(BOOST) -I$(FFTW3)/api -O3
-LDFLAGS := -L. -l$(PKG) -L$(GSL) -lgsl $(BOOST)/stage/lib/libboost_program_options.a -L$(FFTW3)/.libs -l$(FFTW3LIB)
+CXXFLAGS := -I. -I$(GSL) -I$(BOOST) -I$(FFTW3)/api -I$(PNG) -O3
+LDFLAGS := -L. -l$(PKG) -L$(GSL) -lgsl $(BOOST)/stage/lib/libboost_program_options.a \
+-L$(FFTW3)/.libs -l$(FFTW3LIB) -L$(PNG)/png/lib -lpng15
 
 # sources under src/ to build as executables in bin/ linked against the library
 BIN_SRCS := $(wildcard src/*.cc)
