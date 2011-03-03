@@ -9,7 +9,7 @@
 namespace local = imengine;
 
 local::PngImageWriter::PngImageWriter(std::string const &filename)
-: AbsImageWriter(), _filename(filename), _file(0)
+: ArrayImageWriter(), _filename(filename), _file(0)
 {
 }
 
@@ -19,11 +19,11 @@ local::PngImageWriter::~PngImageWriter() {
 }
 
 void local::PngImageWriter::open(int size, double scale) {
+    ArrayImageWriter::open(size,scale);
     // this should never happen if open/close calls are balanced
     assert(0 == _file);
     // (re)open our named file
     _file = std::fopen(_filename.c_str(),"wb");
-    _lastX = size-1;
     // create a png_struct
     png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp)0, 0, 0);
     if(!png_ptr) {
@@ -44,18 +44,21 @@ void local::PngImageWriter::open(int size, double scale) {
         PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 }
 
-void local::PngImageWriter::write(int x, int y, double value) {
-    // this should never happen if open/close calls are balanced
-    assert(0 != _file);
-    //*_os << ' ' << value;
-    if(x == _lastX) {
-        //*_os << std::endl;
-    }
-}
-
 void local::PngImageWriter::close() {
     // this should never happen if open/close calls are balanced
     assert(0 != _file);
+    // scan through the image data to find its min/max limits
+    double min(getValue(0,0)),max(min);
+    int N(getSize());
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            double value(getValue(i,j));
+            if(value < min) min = value;
+            if(value > max) max = value;
+        }
+    }
+    // close our file now
     std::fclose(_file);
     _file = 0;
+    ArrayImageWriter::close();
 }

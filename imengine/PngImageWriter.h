@@ -3,13 +3,13 @@
 #ifndef IMENGINE_PNG_IMAGE_WRITER
 #define IMENGINE_PNG_IMAGE_WRITER
 
-#include "imengine/AbsImageWriter.h"
+#include "imengine/ArrayImageWriter.h"
 
 #include <string>
 #include <cstdio>
 
 namespace imengine {
-	class PngImageWriter : public AbsImageWriter {
+	class PngImageWriter : public ArrayImageWriter {
 	public:
 		PngImageWriter(std::string const &filename);
 		virtual ~PngImageWriter();
@@ -19,7 +19,6 @@ namespace imengine {
 	private:
         std::string _filename;
         std::FILE *_file;
-        int _lastX;
 	}; // PngImageWriter
 } // imengine
 
