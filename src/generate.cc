@@ -104,11 +104,22 @@ int main(int argc, char **argv) {
                 (img::AbsImageEngine*)(new img::BicubicImageEngine<img::SlowTransform>(src,psf)) :
                 (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(src,psf)));
         }
-    
+
+        // select an appropriate image writer
+        boost::scoped_ptr<img::AbsImageWriter> writer;
+        std::string pngend(".png");
+        int outlen(outfile.length()),endlen(pngend.length());
+        if(outlen >= endlen && 0 == outfile.compare(outlen-endlen,endlen,pngend)) {
+            std::cout << "writing a PNG file..." << std::endl;
+            writer.reset(new img::PngImageWriter(outfile));
+        }
+        else {
+            writer.reset(new img::FileImageWriter(outfile));
+        }
+
         // generate the image
-        img::FileImageWriter writer(outfile.c_str());
         engine->initialize(npixels,scale);
-        engine->generate(writer,dx,dy);
+        engine->generate(*writer,dx,dy);
     }
     catch(std::exception const &e) {
         std::cerr << "Internal error while generating the image:" << std::endl

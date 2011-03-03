@@ -16,8 +16,9 @@
 
 // Image writers
 #include "imengine/SilentImageWriter.h"
-#include "imengine/FileImageWriter.h"
 #include "imengine/ArrayImageWriter.h"
+#include "imengine/FileImageWriter.h"
+#include "imengine/PngImageWriter.h"
 
 // Source and PSF models
 #include "imengine/TransformedProfileFunction.h"
