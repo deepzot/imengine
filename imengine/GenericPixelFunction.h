@@ -5,6 +5,8 @@
 
 #include "imengine/AbsPixelFunction.h"
 
+#include "imengine/ptr_types.h"
+
 namespace imengine {
 	class GenericPixelFunction : public AbsPixelFunction {
 	public:
@@ -15,7 +17,7 @@ namespace imengine {
         // Computes the function's discrete Fourier transform and saves the results in
         // the specified transform object. The transform is defined as:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
-        virtual void doTransform(boost::shared_ptr<TransformData> transformData);
+        virtual void doTransform(TransformDataPtr transformData);
 	private:
 	}; // GenericPixelFunction
 } // imengine

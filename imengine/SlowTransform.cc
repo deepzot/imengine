@@ -7,7 +7,7 @@
 
 namespace local = imengine;
 
-local::SlowTransform::SlowTransform(boost::shared_ptr<InterpolationData> target)
+local::SlowTransform::SlowTransform(InterpolationDataPtr target)
 : TransformData(target)
 {
 }

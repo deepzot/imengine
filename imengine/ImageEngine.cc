@@ -45,11 +45,12 @@ double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx,
     // only applied to the source)
     _source->doTransform(_sourceTransform);
     _psf->doTransform(_psfTransform);
+    ////_psfTransform->dump();
     // combine the source and PSF in Fourier space
     dx -= _imageGrid->getGridX();
     dy -= _imageGrid->getGridY();
     _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,dx,dy);
-    //_imageTransform->dump();
+    ////_imageTransform->dump();
     // build a grid of real-space convoluted image data
     _imageTransform->inverseTransform();
     // initialize our writer

@@ -73,7 +73,7 @@ void local::TransformData::tabulate(local::TransformData::Tabulator tabulator) {
 }
 
 local::Real local::TransformData::getTargetValue(int i, int j) const {
-    _target->getValue(i,j);
+    return _target->getValue(i,j);
 }
 
 void local::TransformData::setTargetValue(int i, int j, Real value) {

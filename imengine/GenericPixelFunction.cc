@@ -13,7 +13,7 @@ AbsPixelFunction()
 local::GenericPixelFunction::~GenericPixelFunction() {
 }
 
-void local::GenericPixelFunction::doTransform(boost::shared_ptr<TransformData> transformData) {
+void local::GenericPixelFunction::doTransform(TransformDataPtr transformData) {
     // tabulate function values on a (x,y) grid
     int ngrid = transformData->getGridSize();
     for(int j = 0; j < ngrid; j++) {
