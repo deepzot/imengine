@@ -28,6 +28,7 @@ double local::MoffatProfile::operator()(double r) const {
 }
 
 double local::MoffatProfile::radialIntegral(double kappa) const {
+    if(0 == kappa) return 1;
     double kr(kappa*_rd);
     return _integralNorm*std::pow(kr,_beta-1)*boost::math::cyl_bessel_k(_nu,kr);
 }

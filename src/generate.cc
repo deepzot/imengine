@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
         ("bilinear", "Uses bilinear interpolation for pixelization (this is the default).")
         ("bicubic", "Uses bicubic interpolation for pixelization.")
         ("slow", "Uses un-optimized discrete Fourier transforms.")
-        ("fast", "Uses optimized fast Fourier transforms.")
+        ("fast", "Uses optimized fast Fourier transforms (default).")
         ("npixels,n", po::value<int>(&npixels)->default_value(48),
             "Number of pixels per side for final square image.")
         ("dx",po::value<double>(&dx)->default_value(0.),"Horizontal source shift.")
@@ -76,13 +76,13 @@ int main(int argc, char **argv) {
     try {
         // create the source and psf models
         img::ModelBuilder builder;
-        boost::shared_ptr<img::AbsPixelFunction> src(builder.parse(srcString));
+        img::AbsPixelFunctionPtr src(builder.parse(srcString));
         if(0 == src.get()) {
             std::cerr << "Unable to parse source model specification '" << srcString
                 << "'." << std::endl;
             return -2;
         }
-        boost::shared_ptr<img::AbsPixelFunction> psf(builder.parse(psfString));
+        img::AbsPixelFunctionPtr psf(builder.parse(psfString));
         if(0 == src.get()) {
             std::cerr << "Unable to parse psf model specification '" << psfString
                 << "'." << std::endl;

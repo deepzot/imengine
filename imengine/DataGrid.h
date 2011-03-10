@@ -3,10 +3,12 @@
 #ifndef IMENGINE_DATA_GRID
 #define IMENGINE_DATA_GRID
 
+#include "boost/utility.hpp"
+
 namespace imengine {
     // Represents an "exploded" grid of data where the origin is mapped to each corner,
     // following the usual convention for discrete Fourier tranforms.
-	class DataGrid {
+	class DataGrid : boost::noncopyable {
 	public:
 	    // Creates a new data grid with the specified size, spacing, and coordinate offset
 		DataGrid(int gridSize, double gridSpacing);

@@ -5,10 +5,12 @@
 
 #include "imengine/ptr_types.h"
 
+#include "boost/utility.hpp"
+
 namespace imengine {
     class TransformData;
     // Declares the abstract interface for a real-valued function on a 2D pixel space.
-	class AbsPixelFunction {
+	class AbsPixelFunction : boost::noncopyable {
 	public:
 		AbsPixelFunction();
 		virtual ~AbsPixelFunction();
