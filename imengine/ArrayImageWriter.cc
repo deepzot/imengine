@@ -54,7 +54,7 @@ bool verbose, double abstol, double reltol)
                 maxDelta = delta;
             }
             if(delta > abstol) {
-                if(verbose) {
+                if(false && verbose) {
                     std::cout << "compareImages: |v1-v2| > " << abstol << " at (x,y) = ("
                         << x << ',' << y << ")" << std::endl;
                 }
@@ -66,7 +66,7 @@ bool verbose, double abstol, double reltol)
                     maxFrac = frac;
                 }
                 if(frac > reltol) {
-                    if(verbose) {
+                    if(false && verbose) {
                         std::cout << "compareImages: |v1-v2|/|v1+v2| > " << reltol
                             << " at (x,y) = (" << x << ',' << y << ")" << std::endl;
                     }
