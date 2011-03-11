@@ -31,15 +31,11 @@ boost::variate_generator<boost::mt19937&, boost::uniform_real<> > offset(gen, pd
 // initialize array image writers
 img::ArrayImageWriter slowResult,fastResult,profileResult;
 
-void checkResults(bool verbose = true, double abstol = 1e-14, double reltol = 1e-8) {
-    bool pass1 = img::compareImages(slowResult,fastResult,verbose,abstol,reltol);
-    if(!pass1) {
-        std::cout << "Fast and slow methods give different results!" << std::endl;
-    }
-    bool pass2 = img::compareImages(fastResult,profileResult,verbose,abstol,reltol);
-    if(!pass2) {
-        std::cout << "Fast and profile methods give different results!" << std::endl;
-    }
+void checkResults(bool verbose = true, double abstol = 1e-14, double reltol = 1e-7) {
+    std::cout << "Comparing fast and slow methods:" << std::endl;
+    img::compareImages(slowResult,fastResult,verbose,abstol,reltol);
+    std::cout << "Comparing fast and profile methods:" << std::endl;
+    img::compareImages(fastResult,profileResult,verbose,abstol,reltol);
 }
 
 struct TrialResults {
