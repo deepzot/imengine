@@ -32,7 +32,7 @@ namespace imengine {
         bool verbose = false, double abstol = 1e-14, double reltol = 1e-10);
 	
     inline int ArrayImageWriter::getSize() const { return _size; }
-    
+
     inline double ArrayImageWriter::getValue(int x, int y) const {
         return (0 != _data) ? _data[x + y*_size] : 0;
     }

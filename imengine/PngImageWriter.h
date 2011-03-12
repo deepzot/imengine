@@ -5,8 +5,9 @@
 
 #include "imengine/ArrayImageWriter.h"
 
+#include "boost/function.hpp"
+
 #include <string>
-#include <cstdio>
 
 namespace imengine {
 	class PngImageWriter : public ArrayImageWriter {
@@ -17,8 +18,14 @@ namespace imengine {
         virtual void close();
 	private:
         std::string _filename;
-        std::FILE *_file;
 	}; // PngImageWriter
+	
+	// Writes a square (size x size pixels) PNG image to the specified file or stdout.
+	// The format is 16-bit grayscale, with the input data mapped so that its maximum
+	// value corresponds to full white (and zero is full black).
+    typedef boost::function<double (int,int)> ImageDataAccessor;
+    void writePngImage(std::string const &filename, int size, ImageDataAccessor accessor);
+    
 } // imengine
 
 #endif // IMENGINE_PNG_IMAGE_WRITER

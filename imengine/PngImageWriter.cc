@@ -4,39 +4,44 @@
 
 #include "png/include/png.h"
 
+#include "boost/bind.hpp"
+
 #include <cassert>
+#include <cstdio>
 
 namespace local = imengine;
 
 local::PngImageWriter::PngImageWriter(std::string const &filename)
-: ArrayImageWriter(), _filename(filename), _file(0)
+: ArrayImageWriter(), _filename(filename)
 {
 }
 
 local::PngImageWriter::~PngImageWriter() {
-    // this should never happen if open/close calls are balanced
-    assert(0 == _file);
 }
 
 void local::PngImageWriter::open(int size, double scale) {
     ArrayImageWriter::open(size,scale);
-    // this should never happen if open/close calls are balanced
-    assert(0 == _file);
-    // (re)open our named file
-    if(0 == _filename.length()) {
-        _file = stdout;
-    }
-    else {
-        _file = std::fopen(_filename.c_str(),"wb");
-    }
 }
 
 void local::PngImageWriter::close() {
-    // this should never happen if open/close calls are balanced
-    assert(0 != _file);
+    writePngImage(_filename, getSize(),
+        boost::bind(&local::PngImageWriter::getValue,this,_1,_2));
+    ArrayImageWriter::close();
+}
+
+void local::writePngImage(std::string const &filename, int N, ImageDataAccessor getValue) {
+
+    // open the specified file or stdout
+    std::FILE *_file;
+    if(0 == filename.length()) {
+        _file = stdout;
+    }
+    else {
+        _file = std::fopen(filename.c_str(),"wb");
+    }
+
     // scan through the image data to find its min/max limits
     double max(getValue(0,0));
-    int N(getSize());
     for(int j = 0; j < N; j++) {
         for(int i = 0; i < N; i++) {
             double value(getValue(i,j));
@@ -95,5 +100,4 @@ void local::PngImageWriter::close() {
         std::fclose(_file);
     }
     _file = 0;
-    ArrayImageWriter::close();
 }
