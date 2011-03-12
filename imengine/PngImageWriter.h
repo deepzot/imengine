@@ -23,7 +23,7 @@ namespace imengine {
 	// Writes a square (size x size pixels) PNG image to the specified file or stdout.
 	// The format is 16-bit grayscale, with the input data mapped so that its maximum
 	// value corresponds to full white (and zero is full black).
-    typedef boost::function<double (int,int)> ImageDataAccessor;
+    typedef boost::function<float (int,int)> ImageDataAccessor;
     void writePngImage(std::string const &filename, int size, ImageDataAccessor accessor);
     
 } // imengine

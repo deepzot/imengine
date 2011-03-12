@@ -41,10 +41,10 @@ void local::writePngImage(std::string const &filename, int N, ImageDataAccessor 
     }
 
     // scan through the image data to find its min/max limits
-    double max(getValue(0,0));
+    float max(getValue(0,0));
     for(int j = 0; j < N; j++) {
         for(int i = 0; i < N; i++) {
-            double value(getValue(i,j));
+            float value(getValue(i,j));
             if(value > max) max = value;
         }
     }
@@ -78,7 +78,7 @@ void local::writePngImage(std::string const &filename, int N, ImageDataAccessor 
         png_bytep row(row_pointers[j2]);
         for (int i = 0; i < N; i++) {
             // scale pixel value to 16-bit range
-            double value(getValue(i,j));
+            float value(getValue(i,j));
             int ivalue = (int)(value*scale+0.5);
             // store 16-bit value in big-endian order
             *row++ = (png_byte)((ivalue & 0xff00) >> 8);
