@@ -33,10 +33,6 @@ namespace imengine {
 	
     inline int ArrayImageWriter::getSize() const { return _size; }
 
-    inline double ArrayImageWriter::getValue(int x, int y) const {
-        return (0 != _data) ? _data[x + y*_size] : 0;
-    }
-
 } // imengine
 
 #endif // IMENGINE_ARRAY_IMAGE_WRITER

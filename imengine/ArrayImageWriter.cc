@@ -31,6 +31,10 @@ void local::ArrayImageWriter::write(int x, int y, double value) {
 
 void local::ArrayImageWriter::close() { }
 
+double local::ArrayImageWriter::getValue(int x, int y) const {
+    return (0 != _data) ? _data[x + y*_size] : 0;
+}
+
 bool local::compareImages(ArrayImageWriter const &first, ArrayImageWriter const &second,
 bool verbose, double abstol, double reltol)
 {

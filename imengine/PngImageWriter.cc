@@ -76,10 +76,11 @@ void local::writePngImage(std::string const &filename, int N, ImageDataAccessor 
         int j2(N-1-j);
         row_pointers[j2] = (png_byte*)png_malloc(png_ptr, 2*N*png_sizeof(png_byte));
         png_bytep row(row_pointers[j2]);
+        int ivalue;
         for (int i = 0; i < N; i++) {
             // scale pixel value to 16-bit range
             float value(getValue(i,j));
-            int ivalue = (int)(value*scale+0.5);
+            ivalue = (value < 0) ? 0 : (int)(value*scale+0.5);
             // store 16-bit value in big-endian order
             *row++ = (png_byte)((ivalue & 0xff00) >> 8);
             *row++ = (png_byte)(ivalue & 0xff);
