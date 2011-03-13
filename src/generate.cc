@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
     std::string outfile,srcString,psfString;
     po::options_description cli;
     cli.add_options()
-        ("help,h", "Prints this info and exit.")
+        ("help,h", "Prints this info and exits.")
         ("output,o", po::value<std::string>(&outfile)->default_value(""),
             "Output file for writing image data (defaults to stdout).")
         ("png", "Writes a 16-bit grayscale png image.")
