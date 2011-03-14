@@ -89,8 +89,10 @@ void local::writePngImage(std::string const &filename, ImageDataAccessor getValu
         png_bytep row(row_pointers[j2]);
         int ivalue;
         for (int i = 0; i < size; i++) {
-            // scale pixel value to 16-bit range
+            // scale pixel value to 16-bit range            
             float value(getValue(i,j) - mapMin);
+            if(value < 0) value = 0;
+            if(value > range) value = range;
             ivalue = static_cast<int>(value*scale+0.5);
             assert(ivalue >= 0 && ivalue < (1<<16));
             // store 16-bit value in big-endian order
