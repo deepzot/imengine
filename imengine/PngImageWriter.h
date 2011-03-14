@@ -7,6 +7,7 @@
 
 #include "boost/function.hpp"
 
+#include <cfloat>
 #include <string>
 
 namespace imengine {
@@ -24,7 +25,8 @@ namespace imengine {
 	// The format is 16-bit grayscale, with the input data mapped so that its maximum
 	// value corresponds to full white, and any values <= 0 are mapped to black.
     typedef boost::function<float (int,int)> ImageDataAccessor;
-    void writePngImage(std::string const &filename, int size, ImageDataAccessor accessor);
+    void writePngImage(std::string const &filename, ImageDataAccessor accessor,
+        int size, float mapMin = -FLT_MAX, float mapMax = +FLT_MAX);
     
 } // imengine
 
