@@ -11,8 +11,8 @@
 
 namespace local = imengine;
 
-local::PngImageWriter::PngImageWriter(std::string const &filename)
-: ArrayImageWriter(), _filename(filename)
+local::PngImageWriter::PngImageWriter(std::string const &filename, float mapMin, float mapMax)
+: ArrayImageWriter(), _filename(filename), _mapMin(mapMin), _mapMax(mapMax)
 {
 }
 
@@ -25,7 +25,7 @@ void local::PngImageWriter::open(int size, double scale) {
 
 void local::PngImageWriter::close() {
     writePngImage(_filename, boost::bind(&local::PngImageWriter::getValue,this,_1,_2),
-        getSize());
+        getSize(), _mapMin, _mapMax);
     ArrayImageWriter::close();
 }
 
