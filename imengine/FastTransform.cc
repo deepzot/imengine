@@ -2,6 +2,7 @@
 
 #include "imengine/FastTransform.h"
 #include "imengine/InterpolationData.h"
+#include "imengine/fftw.h"
 
 namespace local = imengine;
 
@@ -16,14 +17,14 @@ local::FastTransform::FastTransform(boost::shared_ptr<InterpolationData> target)
 }
 
 local::FastTransform::~FastTransform() {
-    if(0 != _forwardPlan) FFTW(destroy_plan)(_forwardPlan);
-    if(0 != _inversePlan) FFTW(destroy_plan)(_inversePlan);
+    if(0 != _forwardPlan) FFTW(destroy_plan)((FFTW(plan))_forwardPlan);
+    if(0 != _inversePlan) FFTW(destroy_plan)((FFTW(plan))_inversePlan);
 }
 
 void local::FastTransform::setToTransform() {
-    FFTW(execute)(_forwardPlan);
+    FFTW(execute)((FFTW(plan))_forwardPlan);
 }
 
 void local::FastTransform::inverseTransform() {
-    FFTW(execute)(_inversePlan);
+    FFTW(execute)((FFTW(plan))_inversePlan);
 }
