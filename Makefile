@@ -35,27 +35,17 @@ MODULES := models
 # External Library Configuration
 # ------------------------------------------------------------------------------------
 
-# location of the FFTW3 installation to use
-FFTW3 := /Users/david/Clib/fftw-3.2.2
-
-# select the FFTW3 precision to use (see notes in fftw.h for details)
+# Select the FFTW3 precision to use (see notes in fftw.h for details).
+# Note that the float and long double libraries require separate builds.
 FFTW3LIB := fftw3   # double
 #FFTW3LIB := fftw3f  # float
 #FFTW3LIB := fftw3l  # long double
 
-# location of the boost installation to use
-BOOST := /Users/david/Clib/boost_1_45_0
-
-# location of the Gnu scientific library installation to use
-GSL := /Users/david/Clib/gsl-1.14
-
 # Note that libpng should be installed with:
 # ./configure CPPFLAGS=-DPNG_SETJMP_NOT_SUPPORTED
 
-# compile and link options
-EXT_CXXFLAGS := -I$(GSL) -I$(FFTW3)/api -I$(PNG) -I/usr/local/include
-EXT_LDFLAGS := -L$(GSL) -lgsl -L$(FFTW3)/.libs -l$(FFTW3LIB) \
--L/usr/local/lib -lboost_program_options -lpng
+EXT_CXXFLAGS := -I/usr/local/include
+EXT_LDFLAGS :=  -L/usr/local/lib -l$(FFTW3LIB) -lboost_program_options -lgsl -lpng
 
 # ------------------------------------------------------------------------------------
 
