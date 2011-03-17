@@ -31,10 +31,14 @@ PKG := imengine
 # (handling of these loosely inspired by http://aegis.sourceforge.net/auug97.pdf)
 MODULES := models
 
+# ------------------------------------------------------------------------------------
+# External Library Configuration
+# ------------------------------------------------------------------------------------
+
 # location of the FFTW3 installation to use
 FFTW3 := /Users/david/Clib/fftw-3.2.2
 
-# select the DFT precision to use (see notes in fftw.h for details)
+# select the FFTW3 precision to use (see notes in fftw.h for details)
 FFTW3LIB := fftw3   # double
 #FFTW3LIB := fftw3f  # float
 #FFTW3LIB := fftw3l  # long double
@@ -45,14 +49,19 @@ BOOST := /Users/david/Clib/boost_1_45_0
 # location of the Gnu scientific library installation to use
 GSL := /Users/david/Clib/gsl-1.14
 
-# location of the PNG library installation to use. note that libpng should be installed with:
+# Note that libpng should be installed with:
 # ./configure CPPFLAGS=-DPNG_SETJMP_NOT_SUPPORTED
-PNG := /Users/david/Clib/libpng-1.5.1
 
 # compile and link options
-CXXFLAGS := -I. -I$(GSL) -I$(BOOST) -I$(FFTW3)/api -I$(PNG) -O3
-LDFLAGS := -L. -l$(PKG) -L$(GSL) -lgsl $(BOOST)/stage/lib/libboost_program_options.a \
--L$(FFTW3)/.libs -l$(FFTW3LIB) -L$(PNG)/png/lib -lpng15
+EXT_CXXFLAGS := -I$(GSL) -I$(FFTW3)/api -I$(PNG) -I/usr/local/include
+EXT_LDFLAGS := -L$(GSL) -lgsl -L$(FFTW3)/.libs -l$(FFTW3LIB) \
+-L/usr/local/lib -lboost_program_options -lpng
+
+# ------------------------------------------------------------------------------------
+
+# compile and link options (might want to add debug/optimization flags here)
+CXXFLAGS := -O3 -I. $(EXT_CXXFLAGS)
+LDFLAGS := -L. -l$(PKG) $(EXT_LDFLAGS)
 
 # sources under src/ to build as executables in bin/ linked against the library
 BIN_SRCS := $(wildcard src/*.cc)

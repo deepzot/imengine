@@ -2,7 +2,7 @@
 
 #include "imengine/PngImageWriter.h"
 
-#include "png/include/png.h"
+#include "png.h"
 
 #include "boost/bind.hpp"
 
