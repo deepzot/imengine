@@ -44,8 +44,8 @@ FFTW3LIB := fftw3   # double
 # Note that libpng should be installed with:
 # ./configure CPPFLAGS=-DPNG_SETJMP_NOT_SUPPORTED
 
-EXT_CXXFLAGS := -I/usr/local/include
-EXT_LDFLAGS :=  -L/usr/local/lib -l$(FFTW3LIB) -lboost_program_options -lgsl -lpng
+EXT_CXXFLAGS :=
+EXT_LDFLAGS := -l$(FFTW3LIB) -lboost_program_options -lgsl -lpng
 
 # ------------------------------------------------------------------------------------
 
