@@ -65,9 +65,13 @@ TrialResults trial(int scaleUp, int trials, bool slow, bool profile) {
     }
 
     // create a fast/slow bilinear engine
-    img::AbsImageEngine *engine = slow ?
-        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::SlowTransform>(src,psf)) :
-        (img::AbsImageEngine*)(new img::BilinearImageEngine<img::FastTransform>(src,psf));
+    boost::scoped_ptr<img::AbsImageEngine> engine;
+    if(slow) {
+        engine.reset(new img::BilinearImageEngine<img::SlowTransform>(src,psf));
+    }
+    else {
+        engine.reset(new img::BilinearImageEngine<img::FastTransform>(src,psf));
+    }
 
     // initialize the engine
     engine->initialize(6*scaleUp,1);
@@ -111,8 +115,6 @@ TrialResults trial(int scaleUp, int trials, bool slow, bool profile) {
     nsumsq /= trials;
     results.mean = (double)nsum;
     results.rms = (nsumsq > nsum*nsum) ? (double)std::sqrt(nsumsq - nsum*nsum) : 0;
-    // clean up
-    delete engine;
     return results;
 }
 
