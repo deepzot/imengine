@@ -4,20 +4,23 @@
 
 #include <cmath>
 #include <cassert>
-#include <iostream>
 
 namespace local = imengine;
 
-local::EllipticityTransform::EllipticityTransform(double e1, double e2) :
-_e1p(1+e1),_e1m(1-e1),_e2(e2)
+local::EllipticityTransform::EllipticityTransform(double e1, double e2)
 {
-    _detM = 1 - e1*e1 - e2*e2;
-    assert(0 < _detM);
-    //std::cout << "EllipticityTransform(" << e1 << ',' << e2 << ')' << std::endl;
+    setParameters(e1,e2);
 }
 
 local::EllipticityTransform::~EllipticityTransform() {
-    //std::cout << "EllipticityTransform::dtor" << std::endl;
+}
+
+void local::EllipticityTransform::setParameters(double e1, double e2) {
+    _e1p = 1 + e1;
+    _e1m = 1 - e1;
+    _e2 = e2;
+    _detM = 1 - e1*e1 - e2*e2;
+    assert(0 < _detM);
 }
 
 double local::EllipticityTransform::determinant() const {

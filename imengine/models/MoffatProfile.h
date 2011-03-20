@@ -17,8 +17,10 @@ namespace models {
         virtual double operator()(double r) const;
         // Evaluates this profile's real-valued radial integral for the specified kappa.
         virtual double radialIntegral(double kappa) const;
+        // Sets the parameter values to use.
+        void setParameters(double fwhm, double beta);
 	private:
-        double _beta, _nu, _rd, _norm, _integralNorm;
+        double _pi, _beta, _nu, _rd, _norm, _integralNorm;
 	}; // MoffatProfile
 }} // imengine::models
 

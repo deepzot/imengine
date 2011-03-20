@@ -17,6 +17,8 @@ namespace imengine {
         // Calculates the magnitude |M^(-1)t(kx,ky)| of (kx,ky) transformed by the
         // transpose of the inverse transform
         virtual double transformedWaveNumber(double kx, double ky) const;
+        // Sets the ellipticity parameter values to use.
+        void setParameters(double e1, double e2);
 	private:
         double _e1m,_e1p,_e2,_detM;
 	}; // EllipticityTransform
