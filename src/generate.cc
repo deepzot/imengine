@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "imengine.h"
+#include "imengine/imengine.h"
 
 #include "boost/smart_ptr.hpp"
 #include "boost/program_options.hpp"

@@ -2,9 +2,9 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.67])
-AC_INIT([imengine], [0.6])
+AC_INIT([imengine], [0.8])
 AM_INIT_AUTOMAKE([foreign])
-AC_CONFIG_SRCDIR([imengine.h])
+AC_CONFIG_SRCDIR([imengine/imengine.h])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for library functions.

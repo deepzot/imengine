@@ -10,7 +10,7 @@
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
 
-#include "imengine.h"
+#include "imengine/imengine.h"
 
 namespace img = imengine;
 namespace mod = imengine::models;

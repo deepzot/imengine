@@ -39,3 +39,32 @@ libimengine_a_SOURCES = imengine/AbsCoordTransform.cc \
 	imengine/BilinearImageEngine.cc \
 	imengine/InterpolationData.cc \
 	imengine/models/GaussianProfile.cc
+
+nobase_include_HEADERS = \
+	imengine/imengine.h \
+	imengine/AbsCoordTransform.h \
+	imengine/AbsImageEngine.h \
+	imengine/AbsImageWriter.h \
+	imengine/AbsPixelFunction.h \
+	imengine/AbsRadialProfile.h \
+	imengine/ArrayImageWriter.h \
+	imengine/BicubicImageEngine.h \
+	imengine/BilinearImageEngine.h \
+	imengine/DataGrid.h \
+	imengine/EllipticityTransform.h \
+	imengine/FastTransform.h \
+	imengine/FileImageWriter.h \
+	imengine/GenericPixelFunction.h \
+	imengine/IdentityTransform.h \
+	imengine/ImageEngine.h \
+	imengine/InterpolationData.h \
+	imengine/MidpointImageEngine.h \
+	imengine/ModelBuilder.h \
+	imengine/PngImageWriter.h \
+	imengine/SilentImageWriter.h \
+	imengine/SlowTransform.h \
+	imengine/TransformData.h \
+	imengine/TransformedProfileFunction.h \
+	imengine/fftw.h \
+	imengine/ptr_types.h \
+	imengine/types.h
