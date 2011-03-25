@@ -93,7 +93,8 @@ am_libimengine_a_OBJECTS = AbsCoordTransform.$(OBJEXT) \
 	TransformedProfileFunction.$(OBJEXT) \
 	BicubicImageEngine.$(OBJEXT) ImageEngine.$(OBJEXT) \
 	GaussianDemo.$(OBJEXT) BilinearImageEngine.$(OBJEXT) \
-	InterpolationData.$(OBJEXT) GaussianProfile.$(OBJEXT)
+	InterpolationData.$(OBJEXT) GaussianProfile.$(OBJEXT) \
+	OversamplingImageEngine.$(OBJEXT)
 libimengine_a_OBJECTS = $(am_libimengine_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
 am_imbenchmark_OBJECTS = imbenchmark.$(OBJEXT)
@@ -257,7 +258,8 @@ libimengine_a_SOURCES = imengine/AbsCoordTransform.cc \
 	imengine/models/GaussianDemo.cc \
 	imengine/BilinearImageEngine.cc \
 	imengine/InterpolationData.cc \
-	imengine/models/GaussianProfile.cc
+	imengine/models/GaussianProfile.cc \
+	imengine/OversamplingImageEngine.cc
 
 nobase_include_HEADERS = \
 	imengine/imengine.h \
@@ -287,6 +289,7 @@ nobase_include_HEADERS = \
 	imengine/SlowTransform.h \
 	imengine/TransformData.h \
 	imengine/TransformedProfileFunction.h \
+	imengine/OversamplingImageEngine.h \
 	imengine/models/DeltaFunction.h \
 	imengine/models/DiskDemo.h \
 	imengine/models/DiskProfile.h \
@@ -462,6 +465,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MidpointImageEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModelBuilder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MoffatProfile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OversamplingImageEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PngImageWriter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SilentImageWriter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SlowTransform.Po@am__quote@
@@ -903,6 +907,20 @@ GaussianProfile.obj: imengine/models/GaussianProfile.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/GaussianProfile.cc' object='GaussianProfile.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GaussianProfile.obj `if test -f 'imengine/models/GaussianProfile.cc'; then $(CYGPATH_W) 'imengine/models/GaussianProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/GaussianProfile.cc'; fi`
+
+OversamplingImageEngine.o: imengine/OversamplingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT OversamplingImageEngine.o -MD -MP -MF $(DEPDIR)/OversamplingImageEngine.Tpo -c -o OversamplingImageEngine.o `test -f 'imengine/OversamplingImageEngine.cc' || echo '$(srcdir)/'`imengine/OversamplingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/OversamplingImageEngine.Tpo $(DEPDIR)/OversamplingImageEngine.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/OversamplingImageEngine.cc' object='OversamplingImageEngine.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o OversamplingImageEngine.o `test -f 'imengine/OversamplingImageEngine.cc' || echo '$(srcdir)/'`imengine/OversamplingImageEngine.cc
+
+OversamplingImageEngine.obj: imengine/OversamplingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT OversamplingImageEngine.obj -MD -MP -MF $(DEPDIR)/OversamplingImageEngine.Tpo -c -o OversamplingImageEngine.obj `if test -f 'imengine/OversamplingImageEngine.cc'; then $(CYGPATH_W) 'imengine/OversamplingImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/OversamplingImageEngine.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/OversamplingImageEngine.Tpo $(DEPDIR)/OversamplingImageEngine.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/OversamplingImageEngine.cc' object='OversamplingImageEngine.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o OversamplingImageEngine.obj `if test -f 'imengine/OversamplingImageEngine.cc'; then $(CYGPATH_W) 'imengine/OversamplingImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/OversamplingImageEngine.cc'; fi`
 
 imbenchmark.o: src/imbenchmark.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imbenchmark.o -MD -MP -MF $(DEPDIR)/imbenchmark.Tpo -c -o imbenchmark.o `test -f 'src/imbenchmark.cc' || echo '$(srcdir)/'`src/imbenchmark.cc

@@ -38,7 +38,8 @@ libimengine_a_SOURCES = imengine/AbsCoordTransform.cc \
 	imengine/models/GaussianDemo.cc \
 	imengine/BilinearImageEngine.cc \
 	imengine/InterpolationData.cc \
-	imengine/models/GaussianProfile.cc
+	imengine/models/GaussianProfile.cc \
+	imengine/OversamplingImageEngine.cc
 
 nobase_include_HEADERS = \
 	imengine/imengine.h \
@@ -68,6 +69,7 @@ nobase_include_HEADERS = \
 	imengine/SlowTransform.h \
 	imengine/TransformData.h \
 	imengine/TransformedProfileFunction.h \
+	imengine/OversamplingImageEngine.h \
 	imengine/models/DeltaFunction.h \
 	imengine/models/DiskDemo.h \
 	imengine/models/DiskProfile.h \
