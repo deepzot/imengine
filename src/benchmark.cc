@@ -94,8 +94,10 @@ TrialResults trial(int scaleUp, int trials, bool slow, bool profile) {
     // run timed trials with the slow engine
     double norm;
     long double nsum(0),nsumsq(0);
+#ifdef HAVE_GETRUSAGE
     struct rusage before,after;
     getrusage(RUSAGE_SELF,&before);
+#endif
     for(int n = 0; n < trials; n++) {
         // generate an image with dx,dy offsets
         double dx(offset()),dy(offset());
@@ -108,8 +110,12 @@ TrialResults trial(int scaleUp, int trials, bool slow, bool profile) {
         nsumsq += delta*delta;
     }
     // calculate the average trial time in usecs
+#ifdef HAVE_GETRUSAGE
     getrusage(RUSAGE_SELF,&after);
     results.speed = elapsed(before,after)/trials;
+#else
+    results.speed = 0;
+#endif
     // calculate the mean and rms normalization
     nsum /= trials;
     nsumsq /= trials;
