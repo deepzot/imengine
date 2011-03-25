@@ -1,6 +1,0 @@
-# ignore everything here
-*
-# except a .gitignore file (which we use to force git to create this otherwise empty dir)
-!.gitignore
-# also don't ignore the contents of any subdirs
-!*/
