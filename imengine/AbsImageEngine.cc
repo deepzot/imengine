@@ -20,6 +20,6 @@ void local::AbsImageEngine::initialize(int pixelsPerSide, double pixelScale) {
     assert(pixelScale > 0);
     _pixelsPerSide = pixelsPerSide;
     _pixelScale = pixelScale;
-    _scaleSquared = pixelScale*pixelScale;
+    _pixelScaleSquared = pixelScale*pixelScale;
     _initialized = true;    
 }

@@ -14,7 +14,7 @@ namespace po = boost::program_options;
 
 int main(int argc, char **argv) {
     // configure command-line options processing using the boost program_options library
-    int npixels;
+    int npixels,oversampling;
     double dx,dy,scale;
     std::string outfile,srcString,psfString;
     po::options_description cli;
@@ -33,8 +33,12 @@ int main(int argc, char **argv) {
         ("dx",po::value<double>(&dx)->default_value(0.),"Horizontal source shift.")
         ("dy",po::value<double>(&dy)->default_value(0.),"Vertical source shift.")
         ("scale",po::value<double>(&scale)->default_value(1.),"Pixel scale.")
-        ("src",po::value<std::string>(&srcString)->default_value("disk[1]"),"Source module to use.")
-        ("psf",po::value<std::string>(&psfString)->default_value("gauss[1]"),"PSF module to use.")
+        ("oversampling",po::value<int>(&oversampling)->default_value(1),
+            "Number of subpixels to sub-divide each pixel side into.")
+        ("src",po::value<std::string>(&srcString)->default_value("disk[1]"),
+            "Source module to use.")
+        ("psf",po::value<std::string>(&psfString)->default_value("gauss[1]"),
+            "PSF module to use.")
         ;
 
     // do the command line parsing now

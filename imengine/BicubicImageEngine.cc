@@ -20,7 +20,7 @@ local::InterpolationData* local::BicubicImageEngine<T>::createGrid() {
     // Put a grid point at the corners of each pixel
     int size = this->getPixelsPerSide() + 3;
     double scale = this->getPixelScale();
-    _norm1 = this->_scaleSquared/(576*size*size);
+    _norm1 = this->getPixelScaleSquared()/(576*size*size);
     _norm13 = -13*_norm1;
     _norm169 = 169*_norm1;
     // for an odd number of pixels, the grid is already centered on the pixel array but
