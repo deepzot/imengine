@@ -1,9 +1,9 @@
-bin_PROGRAMS = benchmark generate
-benchmark_SOURCES = src/benchmark.cc
-generate_SOURCES = src/generate.cc
+bin_PROGRAMS = imbenchmark imgenerate
+imbenchmark_SOURCES = src/imbenchmark.cc
+imgenerate_SOURCES = src/imgenerate.cc
 
-benchmark_DEPENDENCIES = $(lib_LIBRARIES)
-generate_DEPENDENCIES = $(lib_LIBRARIES)
+imbenchmark_DEPENDENCIES = $(lib_LIBRARIES)
+imgenerate_DEPENDENCIES = $(lib_LIBRARIES)
 
 # compile and link options
 LDADD = -L. -limengine
@@ -42,6 +42,9 @@ libimengine_a_SOURCES = imengine/AbsCoordTransform.cc \
 
 nobase_include_HEADERS = \
 	imengine/imengine.h \
+	imengine/types.h \
+	imengine/ptr_types.h \
+	imengine/fftw.h \
 	imengine/AbsCoordTransform.h \
 	imengine/AbsImageEngine.h \
 	imengine/AbsImageWriter.h \
@@ -65,6 +68,10 @@ nobase_include_HEADERS = \
 	imengine/SlowTransform.h \
 	imengine/TransformData.h \
 	imengine/TransformedProfileFunction.h \
-	imengine/fftw.h \
-	imengine/ptr_types.h \
-	imengine/types.h
+	imengine/models/DeltaFunction.h \
+	imengine/models/DiskDemo.h \
+	imengine/models/DiskProfile.h \
+	imengine/models/ExponentialProfile.h \
+	imengine/models/GaussianDemo.h \
+	imengine/models/GaussianProfile.h \
+	imengine/models/MoffatProfile.h

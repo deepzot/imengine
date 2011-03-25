@@ -34,7 +34,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = benchmark$(EXEEXT) generate$(EXEEXT)
+bin_PROGRAMS = imbenchmark$(EXEEXT) imgenerate$(EXEEXT)
 subdir = .
 DIST_COMMON = $(am__configure_deps) $(nobase_include_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
@@ -96,12 +96,12 @@ am_libimengine_a_OBJECTS = AbsCoordTransform.$(OBJEXT) \
 	InterpolationData.$(OBJEXT) GaussianProfile.$(OBJEXT)
 libimengine_a_OBJECTS = $(am_libimengine_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
-am_benchmark_OBJECTS = benchmark.$(OBJEXT)
-benchmark_OBJECTS = $(am_benchmark_OBJECTS)
-benchmark_LDADD = $(LDADD)
-am_generate_OBJECTS = generate.$(OBJEXT)
-generate_OBJECTS = $(am_generate_OBJECTS)
-generate_LDADD = $(LDADD)
+am_imbenchmark_OBJECTS = imbenchmark.$(OBJEXT)
+imbenchmark_OBJECTS = $(am_imbenchmark_OBJECTS)
+imbenchmark_LDADD = $(LDADD)
+am_imgenerate_OBJECTS = imgenerate.$(OBJEXT)
+imgenerate_OBJECTS = $(am_imgenerate_OBJECTS)
+imgenerate_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -111,10 +111,10 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-SOURCES = $(libimengine_a_SOURCES) $(benchmark_SOURCES) \
-	$(generate_SOURCES)
-DIST_SOURCES = $(libimengine_a_SOURCES) $(benchmark_SOURCES) \
-	$(generate_SOURCES)
+SOURCES = $(libimengine_a_SOURCES) $(imbenchmark_SOURCES) \
+	$(imgenerate_SOURCES)
+DIST_SOURCES = $(libimengine_a_SOURCES) $(imbenchmark_SOURCES) \
+	$(imgenerate_SOURCES)
 HEADERS = $(nobase_include_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -220,10 +220,10 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-benchmark_SOURCES = src/benchmark.cc
-generate_SOURCES = src/generate.cc
-benchmark_DEPENDENCIES = $(lib_LIBRARIES)
-generate_DEPENDENCIES = $(lib_LIBRARIES)
+imbenchmark_SOURCES = src/imbenchmark.cc
+imgenerate_SOURCES = src/imgenerate.cc
+imbenchmark_DEPENDENCIES = $(lib_LIBRARIES)
+imgenerate_DEPENDENCIES = $(lib_LIBRARIES)
 
 # compile and link options
 LDADD = -L. -limengine
@@ -261,6 +261,9 @@ libimengine_a_SOURCES = imengine/AbsCoordTransform.cc \
 
 nobase_include_HEADERS = \
 	imengine/imengine.h \
+	imengine/types.h \
+	imengine/ptr_types.h \
+	imengine/fftw.h \
 	imengine/AbsCoordTransform.h \
 	imengine/AbsImageEngine.h \
 	imengine/AbsImageWriter.h \
@@ -284,9 +287,13 @@ nobase_include_HEADERS = \
 	imengine/SlowTransform.h \
 	imengine/TransformData.h \
 	imengine/TransformedProfileFunction.h \
-	imengine/fftw.h \
-	imengine/ptr_types.h \
-	imengine/types.h
+	imengine/models/DeltaFunction.h \
+	imengine/models/DiskDemo.h \
+	imengine/models/DiskProfile.h \
+	imengine/models/ExponentialProfile.h \
+	imengine/models/GaussianDemo.h \
+	imengine/models/GaussianProfile.h \
+	imengine/models/MoffatProfile.h
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -417,12 +424,12 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-benchmark$(EXEEXT): $(benchmark_OBJECTS) $(benchmark_DEPENDENCIES) 
-	@rm -f benchmark$(EXEEXT)
-	$(CXXLINK) $(benchmark_OBJECTS) $(benchmark_LDADD) $(LIBS)
-generate$(EXEEXT): $(generate_OBJECTS) $(generate_DEPENDENCIES) 
-	@rm -f generate$(EXEEXT)
-	$(CXXLINK) $(generate_OBJECTS) $(generate_LDADD) $(LIBS)
+imbenchmark$(EXEEXT): $(imbenchmark_OBJECTS) $(imbenchmark_DEPENDENCIES) 
+	@rm -f imbenchmark$(EXEEXT)
+	$(CXXLINK) $(imbenchmark_OBJECTS) $(imbenchmark_LDADD) $(LIBS)
+imgenerate$(EXEEXT): $(imgenerate_OBJECTS) $(imgenerate_DEPENDENCIES) 
+	@rm -f imgenerate$(EXEEXT)
+	$(CXXLINK) $(imgenerate_OBJECTS) $(imgenerate_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -460,8 +467,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SlowTransform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformedProfileFunction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/benchmark.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/generate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imbenchmark.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imgenerate.Po@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -897,33 +904,33 @@ GaussianProfile.obj: imengine/models/GaussianProfile.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GaussianProfile.obj `if test -f 'imengine/models/GaussianProfile.cc'; then $(CYGPATH_W) 'imengine/models/GaussianProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/GaussianProfile.cc'; fi`
 
-benchmark.o: src/benchmark.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT benchmark.o -MD -MP -MF $(DEPDIR)/benchmark.Tpo -c -o benchmark.o `test -f 'src/benchmark.cc' || echo '$(srcdir)/'`src/benchmark.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/benchmark.Tpo $(DEPDIR)/benchmark.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/benchmark.cc' object='benchmark.o' libtool=no @AMDEPBACKSLASH@
+imbenchmark.o: src/imbenchmark.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imbenchmark.o -MD -MP -MF $(DEPDIR)/imbenchmark.Tpo -c -o imbenchmark.o `test -f 'src/imbenchmark.cc' || echo '$(srcdir)/'`src/imbenchmark.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/imbenchmark.Tpo $(DEPDIR)/imbenchmark.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imbenchmark.cc' object='imbenchmark.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o benchmark.o `test -f 'src/benchmark.cc' || echo '$(srcdir)/'`src/benchmark.cc
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imbenchmark.o `test -f 'src/imbenchmark.cc' || echo '$(srcdir)/'`src/imbenchmark.cc
 
-benchmark.obj: src/benchmark.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT benchmark.obj -MD -MP -MF $(DEPDIR)/benchmark.Tpo -c -o benchmark.obj `if test -f 'src/benchmark.cc'; then $(CYGPATH_W) 'src/benchmark.cc'; else $(CYGPATH_W) '$(srcdir)/src/benchmark.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/benchmark.Tpo $(DEPDIR)/benchmark.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/benchmark.cc' object='benchmark.obj' libtool=no @AMDEPBACKSLASH@
+imbenchmark.obj: src/imbenchmark.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imbenchmark.obj -MD -MP -MF $(DEPDIR)/imbenchmark.Tpo -c -o imbenchmark.obj `if test -f 'src/imbenchmark.cc'; then $(CYGPATH_W) 'src/imbenchmark.cc'; else $(CYGPATH_W) '$(srcdir)/src/imbenchmark.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/imbenchmark.Tpo $(DEPDIR)/imbenchmark.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imbenchmark.cc' object='imbenchmark.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o benchmark.obj `if test -f 'src/benchmark.cc'; then $(CYGPATH_W) 'src/benchmark.cc'; else $(CYGPATH_W) '$(srcdir)/src/benchmark.cc'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imbenchmark.obj `if test -f 'src/imbenchmark.cc'; then $(CYGPATH_W) 'src/imbenchmark.cc'; else $(CYGPATH_W) '$(srcdir)/src/imbenchmark.cc'; fi`
 
-generate.o: src/generate.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT generate.o -MD -MP -MF $(DEPDIR)/generate.Tpo -c -o generate.o `test -f 'src/generate.cc' || echo '$(srcdir)/'`src/generate.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/generate.Tpo $(DEPDIR)/generate.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generate.cc' object='generate.o' libtool=no @AMDEPBACKSLASH@
+imgenerate.o: src/imgenerate.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imgenerate.o -MD -MP -MF $(DEPDIR)/imgenerate.Tpo -c -o imgenerate.o `test -f 'src/imgenerate.cc' || echo '$(srcdir)/'`src/imgenerate.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/imgenerate.Tpo $(DEPDIR)/imgenerate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imgenerate.cc' object='imgenerate.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o generate.o `test -f 'src/generate.cc' || echo '$(srcdir)/'`src/generate.cc
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imgenerate.o `test -f 'src/imgenerate.cc' || echo '$(srcdir)/'`src/imgenerate.cc
 
-generate.obj: src/generate.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT generate.obj -MD -MP -MF $(DEPDIR)/generate.Tpo -c -o generate.obj `if test -f 'src/generate.cc'; then $(CYGPATH_W) 'src/generate.cc'; else $(CYGPATH_W) '$(srcdir)/src/generate.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/generate.Tpo $(DEPDIR)/generate.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/generate.cc' object='generate.obj' libtool=no @AMDEPBACKSLASH@
+imgenerate.obj: src/imgenerate.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imgenerate.obj -MD -MP -MF $(DEPDIR)/imgenerate.Tpo -c -o imgenerate.obj `if test -f 'src/imgenerate.cc'; then $(CYGPATH_W) 'src/imgenerate.cc'; else $(CYGPATH_W) '$(srcdir)/src/imgenerate.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/imgenerate.Tpo $(DEPDIR)/imgenerate.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imgenerate.cc' object='imgenerate.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o generate.obj `if test -f 'src/generate.cc'; then $(CYGPATH_W) 'src/generate.cc'; else $(CYGPATH_W) '$(srcdir)/src/generate.cc'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imgenerate.obj `if test -f 'src/imgenerate.cc'; then $(CYGPATH_W) 'src/imgenerate.cc'; else $(CYGPATH_W) '$(srcdir)/src/imgenerate.cc'; fi`
 install-nobase_includeHEADERS: $(nobase_include_HEADERS)
 	@$(NORMAL_INSTALL)
 	test -z "$(includedir)" || $(MKDIR_P) "$(DESTDIR)$(includedir)"
