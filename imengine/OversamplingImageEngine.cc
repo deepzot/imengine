@@ -4,6 +4,8 @@
 
 namespace local = imengine;
 
-local::OversamplingImageEngine::OversamplingImageEngine() { }
+local::OversamplingImageEngine::OversamplingImageEngine(AbsImageEnginePtr engine, int subpixels)
+{
+}
 
 local::OversamplingImageEngine::~OversamplingImageEngine() { }

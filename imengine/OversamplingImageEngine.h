@@ -3,10 +3,15 @@
 #ifndef IMENGINE_OVERSAMPLING_IMAGE_ENGINE
 #define IMENGINE_OVERSAMPLING_IMAGE_ENGINE
 
+#include "imengine/AbsImageEngine.h"
+#include "imengine/ptr_types.h"
+
 namespace imengine {
-	class OversamplingImageEngine {
+	class OversamplingImageEngine : public AbsImageEngine {
 	public:
-		OversamplingImageEngine();
+	    // Create an engine that oversamples the specified engine by subdividing each
+	    // pixel into the specified number of subpixels along each axis.
+		OversamplingImageEngine(AbsImageEnginePtr engine, int subpixels);
 		virtual ~OversamplingImageEngine();
 	private:
 	}; // OversamplingImageEngine

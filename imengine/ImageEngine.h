@@ -20,6 +20,13 @@ namespace imengine {
 		// the pixel sum
         virtual double generate(AbsImageWriter &writer, double dx = 0, double dy = 0);
     protected:
+        // Returns a pointer to a newly created InterpolationData with parameters appropriate
+        // for the requested pixel size and pixelation method
+        virtual InterpolationData *createGrid() = 0;
+        // Estimates the signal in pixel (i,j) using the tabulated values in _imageData
+        virtual double estimatePixelValue(int i, int j) = 0;
+        AbsPixelFunctionPtr _source, _psf;
+        InterpolationDataPtr _imageGrid,_workspace;
 	private:
         TransformDataPtr _sourceTransform, _psfTransform, _imageTransform;
 	}; // ImageEngine

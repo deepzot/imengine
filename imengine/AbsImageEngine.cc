@@ -8,8 +8,8 @@
 
 namespace local = imengine;
 
-local::AbsImageEngine::AbsImageEngine(AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf)
-: _source(source), _psf(psf), _initialized(false)
+local::AbsImageEngine::AbsImageEngine()
+: _initialized(false)
 {
 }
 

@@ -12,12 +12,14 @@ namespace imengine {
     class TransformData;
     class AbsCoordTransform;
     class AbsRadialProfile;
+    class AbsImageEngine;
     
     typedef boost::shared_ptr<AbsPixelFunction> AbsPixelFunctionPtr;
     typedef boost::shared_ptr<InterpolationData> InterpolationDataPtr;
     typedef boost::shared_ptr<TransformData> TransformDataPtr;
     typedef boost::shared_ptr<AbsCoordTransform> AbsCoordTransformPtr;
     typedef boost::shared_ptr<AbsRadialProfile> AbsRadialProfilePtr;
+    typedef boost::shared_ptr<AbsImageEngine> AbsImageEnginePtr;
 
 } // imengine
 

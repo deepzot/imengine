@@ -12,7 +12,7 @@ namespace local = imengine;
 
 template <class T>
 local::ImageEngine<T>::ImageEngine(AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf)
-: AbsImageEngine(source,psf)
+: _source(source), _psf(psf)
 {
 }
 

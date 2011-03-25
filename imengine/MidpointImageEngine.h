@@ -10,8 +10,7 @@ namespace imengine {
     // function at the midpoint of each pixel. This is a fast but low accuracy method.
 	template <class T> class MidpointImageEngine : public ImageEngine<T> {
 	public:
-		MidpointImageEngine(boost::shared_ptr<AbsPixelFunction> source,
-		    boost::shared_ptr<AbsPixelFunction> psf);
+		MidpointImageEngine(AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf);
 		virtual ~MidpointImageEngine();
     protected:
         virtual InterpolationData *createGrid();
