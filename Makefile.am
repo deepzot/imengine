@@ -9,37 +9,40 @@ imgenerate_DEPENDENCIES = $(lib_LIBRARIES)
 LDADD = -L. -limengine
 
 lib_LIBRARIES = libimengine.a
-libimengine_a_SOURCES = imengine/AbsCoordTransform.cc \
-	imengine/DataGrid.cc \
-	imengine/MidpointImageEngine.cc \
-	imengine/models/MoffatProfile.cc \
+libimengine_a_SOURCES = \
+	imengine/AbsCoordTransform.cc \
 	imengine/AbsImageEngine.cc \
-	imengine/EllipticityTransform.cc \
-	imengine/ModelBuilder.cc \
-	imengine/PngImageWriter.cc \
+	imengine/AbsImageFilter.cc \
 	imengine/AbsImageWriter.cc \
-	imengine/FastTransform.cc \
-	imengine/models/DeltaFunction.cc \
-	imengine/SilentImageWriter.cc \
 	imengine/AbsPixelFunction.cc \
-	imengine/FileImageWriter.cc \
-	imengine/models/DiskDemo.cc \
-	imengine/SlowTransform.cc \
 	imengine/AbsRadialProfile.cc \
-	imengine/GenericPixelFunction.cc \
-	imengine/models/DiskProfile.cc \
-	imengine/TransformData.cc \
 	imengine/ArrayImageWriter.cc \
-	imengine/IdentityTransform.cc \
-	imengine/models/ExponentialProfile.cc \
-	imengine/TransformedProfileFunction.cc \
 	imengine/BicubicImageEngine.cc \
-	imengine/ImageEngine.cc \
-	imengine/models/GaussianDemo.cc \
 	imengine/BilinearImageEngine.cc \
+	imengine/DataGrid.cc \
+	imengine/EllipticityTransform.cc \
+	imengine/FastTransform.cc \
+	imengine/FileImageWriter.cc \
+	imengine/GenericPixelFunction.cc \
+	imengine/IdentityTransform.cc \
+	imengine/ImageEngine.cc \
+	imengine/ImageResponseModel.cc \
 	imengine/InterpolationData.cc \
+	imengine/MidpointImageEngine.cc \
+	imengine/ModelBuilder.cc \
+	imengine/OversamplingImageEngine.cc \
+	imengine/PngImageWriter.cc \
+	imengine/SilentImageWriter.cc \
+	imengine/SlowTransform.cc \
+	imengine/TransformData.cc \
+	imengine/TransformedProfileFunction.cc \
+	imengine/models/DeltaFunction.cc \
+	imengine/models/DiskDemo.cc \
+	imengine/models/DiskProfile.cc \
+	imengine/models/ExponentialProfile.cc \
+	imengine/models/GaussianDemo.cc \
 	imengine/models/GaussianProfile.cc \
-	imengine/OversamplingImageEngine.cc
+	imengine/models/MoffatProfile.cc
 
 nobase_include_HEADERS = \
 	imengine/imengine.h \
@@ -70,6 +73,8 @@ nobase_include_HEADERS = \
 	imengine/TransformData.h \
 	imengine/TransformedProfileFunction.h \
 	imengine/OversamplingImageEngine.h \
+	imengine/AbsImageFilter.cc \
+	imengine/ImageResponseModel.cc \
 	imengine/models/DeltaFunction.h \
 	imengine/models/DiskDemo.h \
 	imengine/models/DiskProfile.h \

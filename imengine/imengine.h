@@ -15,11 +15,12 @@
 #include "imengine/BicubicImageEngine.h"
 #include "imengine/OversamplingImageEngine.h"
 
-// Image writers
+// Image writers and filter
 #include "imengine/SilentImageWriter.h"
 #include "imengine/ArrayImageWriter.h"
 #include "imengine/FileImageWriter.h"
 #include "imengine/PngImageWriter.h"
+#include "imengine/ImageResponseModel.h"
 
 // Source and PSF models
 #include "imengine/TransformedProfileFunction.h"
