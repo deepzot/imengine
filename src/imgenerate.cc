@@ -5,7 +5,6 @@
 
 #include "imengine/imengine.h"
 
-#include "boost/smart_ptr.hpp"
 #include "boost/program_options.hpp"
 
 namespace img = imengine;
@@ -15,7 +14,7 @@ namespace po = boost::program_options;
 int main(int argc, char **argv) {
     // configure command-line options processing using the boost program_options library
     int npixels,oversampling;
-    double dx,dy,scale;
+    double dx,dy,scale,total,offset,gain,noiseRMS;
     std::string outfile,srcString,psfString;
     po::options_description cli;
     cli.add_options()
@@ -35,6 +34,14 @@ int main(int argc, char **argv) {
         ("scale",po::value<double>(&scale)->default_value(1.),"Pixel scale.")
         ("oversampling",po::value<int>(&oversampling)->default_value(1),
             "Divides each pixel into N x N subpixels.")
+        ("total",po::value<double>(&total)->default_value(1.),
+            "Total pixel sum of generated image.")
+        ("offset",po::value<double>(&offset)->default_value(0.),
+            "Amount to offset generated pixel values by.")
+        ("gain",po::value<double>(&gain)->default_value(0.),
+            "Signal size per pixel to use for generating Poisson fluctuations.")
+        ("noiseRMS",po::value<double>(&noiseRMS)->default_value(0.),
+            "RMS of uncorrelated Gaussian noise to add to each pixel.")
         ("printsum","Prints the pixel sum of the generated image.")
         ("src",po::value<std::string>(&srcString)->default_value("disk[1]"),
             "Source module to use.")
@@ -80,6 +87,18 @@ int main(int argc, char **argv) {
         std::cerr << "Option oversampling must have a value > 0" << std::endl;
         return 5;
     }
+    if(total <= 0) {
+        std::cerr << "Option total must have a value > 0" << std::endl;
+        return 6;
+    }
+    if(gain < 0) {
+        std::cerr << "Option gain must have a value >= 0" << std::endl;
+        return 6;
+    }
+    if(noiseRMS < 0) {
+        std::cerr << "Option noiseRMS must have a value >= 0" << std::endl;
+        return 6;
+    }
     bool png(vm.count("png"));
 
     try {
@@ -123,7 +142,7 @@ int main(int argc, char **argv) {
         }
 
         // select an appropriate image writer
-        boost::scoped_ptr<img::AbsImageWriter> writer;
+        img::AbsImageWriterPtr writer;
         std::string pngend(".png");
         int outlen(outfile.length()),endlen(pngend.length());
         if(png || (outlen >= endlen && 0 == outfile.compare(outlen-endlen,endlen,pngend))) {
@@ -132,6 +151,9 @@ int main(int argc, char **argv) {
         else {
             writer.reset(new img::FileImageWriter(outfile));
         }
+
+        // filter the image with the specified response model
+        writer.reset(new img::ImageResponseModel(writer,total,offset,gain,noiseRMS));
 
         // generate the image
         engine->initialize(npixels,scale);

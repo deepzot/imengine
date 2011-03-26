@@ -18,4 +18,6 @@ void local::AbsImageFilter::write(int x, int y, double value) {
     _writer->write(x, y, filter(x, y, value));
 }
 
-void local::AbsImageFilter::close() { }
+void local::AbsImageFilter::close() {
+    _writer->close();
+}
