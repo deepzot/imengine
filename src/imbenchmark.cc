@@ -5,10 +5,10 @@
 #include <math.h> // for erf
 #include <sys/resource.h>
 
-#include <boost/smart_ptr.hpp>
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/variate_generator.hpp>
+#include "boost/smart_ptr.hpp"
+#include "boost/random/mersenne_twister.hpp"
+#include "boost/random/uniform_real.hpp"
+#include "boost/random/variate_generator.hpp"
 
 #include "imengine/imengine.h"
 
