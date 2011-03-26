@@ -18,9 +18,10 @@ local::BicubicImageEngine<T>::~BicubicImageEngine() { }
 template <class T>
 local::InterpolationData* local::BicubicImageEngine<T>::createGrid() {
     // Put a grid point at the corners of each pixel
-    int size = this->getPixelsPerSide() + 3;
-    double scale = this->getPixelScale();
-    _norm1 = this->getPixelScaleSquared()/(576*size*size);
+    int size(this->getPixelsPerSide() + 3);
+    double scale(this->getPixelScale());
+    double tmp(24*size*scale);
+    _norm1 = 1/(tmp*tmp);
     _norm13 = -13*_norm1;
     _norm169 = 169*_norm1;
     // for an odd number of pixels, the grid is already centered on the pixel array but
@@ -28,7 +29,7 @@ local::InterpolationData* local::BicubicImageEngine<T>::createGrid() {
     double offset = (size % 2) ? 0 : -scale/2;
     // add padding around the grid so we can estimate partial derivatives at
     // the outer pixel corners
-    return new local::InterpolationData(size,1,scale,offset,offset);
+    return new InterpolationData(size,1,scale,offset,offset);
 }
 
 template <class T>

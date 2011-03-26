@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
         ("dy",po::value<double>(&dy)->default_value(0.),"Vertical source shift.")
         ("scale",po::value<double>(&scale)->default_value(1.),"Pixel scale.")
         ("oversampling",po::value<int>(&oversampling)->default_value(1),
-            "Number of subpixels to sub-divide each pixel side into.")
+            "Divides each pixel into N x N subpixels.")
         ("src",po::value<std::string>(&srcString)->default_value("disk[1]"),
             "Source module to use.")
         ("psf",po::value<std::string>(&psfString)->default_value("gauss[1]"),
@@ -75,6 +75,10 @@ int main(int argc, char **argv) {
         std::cerr << "Only one speed can be specified (fast,slow)" << std::endl;
         return 4;
     }
+    if(oversampling < 1) {
+        std::cerr << "Option oversampling must have a value > 0" << std::endl;
+        return 5;
+    }
     bool png(vm.count("png"));
 
     try {
@@ -94,7 +98,7 @@ int main(int argc, char **argv) {
         }
 
         // create the pixelization engine
-        boost::scoped_ptr<img::AbsImageEngine> engine;
+        img::AbsImageEnginePtr engine;
         if(midpoint) {
             engine.reset(slow ?
                 (img::AbsImageEngine*)(new img::MidpointImageEngine<img::SlowTransform>(src,psf)) :
@@ -111,6 +115,12 @@ int main(int argc, char **argv) {
                 (img::AbsImageEngine*)(new img::BicubicImageEngine<img::FastTransform>(src,psf)));
         }
 
+        // use oversampling?
+        if(oversampling > 1) {
+            // original engine shared ptr is kept alive by the new oversampling engine
+            engine.reset(new img::OversamplingImageEngine(engine,oversampling));
+        }
+
         // select an appropriate image writer
         boost::scoped_ptr<img::AbsImageWriter> writer;
         std::string pngend(".png");
@@ -124,7 +134,8 @@ int main(int argc, char **argv) {
 
         // generate the image
         engine->initialize(npixels,scale);
-        engine->generate(*writer,dx,dy);
+        double sum(engine->generate(*writer,dx,dy));
+        std::cout << "sum = " << sum << std::endl;
     }
     catch(std::exception const &e) {
         std::cerr << "Internal error while generating the image:" << std::endl

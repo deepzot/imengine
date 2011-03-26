@@ -18,13 +18,14 @@ local::BilinearImageEngine<T>::~BilinearImageEngine() { }
 template <class T>
 local::InterpolationData* local::BilinearImageEngine<T>::createGrid() {
     // Put a grid point at the corners of each pixel
-    int size = this->getPixelsPerSide() + 1;
-    double scale = this->getPixelScale();
-    _norm = this->getPixelScaleSquared()/(4*size*size);
+    int size(this->getPixelsPerSide() + 1);
+    double scale(this->getPixelScale());
+    double tmp(2*size*scale);
+    _norm = 1/(tmp*tmp);
     // for an odd number of pixels, the grid is already centered on the pixel array but
     // an even number of pixels requires a half-pixel offset
     double offset = (size % 2) ? 0 : -scale/2;
-    return new local::InterpolationData(size,0,scale,offset,offset);
+    return new InterpolationData(size,0,scale,offset,offset);
 }
 
 template <class T>

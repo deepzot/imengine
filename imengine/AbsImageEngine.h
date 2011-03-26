@@ -16,7 +16,6 @@ namespace imengine {
 		// Read-only accessors
         int getPixelsPerSide() const;
         double getPixelScale() const;
-        double getPixelScaleSquared() const;
         bool isInitialized() const;
         // (Re)initializes the engine for the specified pixel grid size and scale
         virtual void initialize(int pixelsPerSide, double pixelScale = 1);
@@ -25,13 +24,12 @@ namespace imengine {
         virtual double generate(AbsImageWriter &writer, double dx = 0, double dy = 0) = 0;
 	private:
         int _pixelsPerSide;
-        double _pixelScale, _pixelScaleSquared;
+        double _pixelScale;
         bool _initialized;
 	}; // AbsImageEngine
 	
     inline int AbsImageEngine::getPixelsPerSide() const { return _pixelsPerSide; }    
     inline double AbsImageEngine::getPixelScale() const { return _pixelScale; }
-    inline double AbsImageEngine::getPixelScaleSquared() const { return _pixelScaleSquared; }
     inline bool AbsImageEngine::isInitialized() const { return _initialized; }
         
 } // imengine

@@ -7,6 +7,7 @@
 #include "imengine/ptr_types.h"
 
 namespace imengine {
+    class ArrayImageWriter;
 	class OversamplingImageEngine : public AbsImageEngine {
 	public:
 	    // Create an engine that oversamples the specified engine by subdividing each
@@ -19,6 +20,7 @@ namespace imengine {
 		// the pixel sum
         virtual double generate(AbsImageWriter &writer, double dx = 0, double dy = 0);
 	private:
+        boost::scoped_ptr<ArrayImageWriter> _subpixelData;
         AbsImageEnginePtr _engine;
         int _subpixels;
 	}; // OversamplingImageEngine
