@@ -30,11 +30,12 @@ void local::FileImageWriter::open(int size, double scale) {
     _lastX = size-1;
 }
 
-void local::FileImageWriter::write(int x, int y, double value) {
+double local::FileImageWriter::write(int x, int y, double value) {
     *_os << ' ' << value;
     if(x == _lastX) {
         *_os << std::endl;
     }
+    return value;
 }
 
 void local::FileImageWriter::close() {

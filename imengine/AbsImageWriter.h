@@ -12,7 +12,8 @@ namespace imengine {
 		// Starts writing a new image with the specified pixel size and scale
         virtual void open(int size, double scale) = 0;
         // Writes a single pixel value. Will be called in row-wise order for each pixel in turn.
-        virtual void write(int x, int y, double value) = 0;
+        // Returns the actual value written.
+        virtual double write(int x, int y, double value) = 0;
         // Ends writing the current image
         virtual void close() = 0;
 	private:

@@ -7,3 +7,5 @@ Is FFTW_MEASURE actually faster than ESTIMATE?
 Implement AddImageNoise --> AbsImageFilter --> AbsImageWriter
 
 Update class diagram and wiki docs
+
+Check if the noise functor in ImageResponseModel is kept alive by assignment.

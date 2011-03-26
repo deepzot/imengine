@@ -25,7 +25,6 @@ local::ImageResponseModel::~ImageResponseModel() { }
 
 double local::ImageResponseModel::filter(int x, int y, double in) const {
     double out(_offset);
-
     // add the signal
     if(_gain > 0) {
         double mean(_total/_gain*in);
@@ -36,11 +35,9 @@ double local::ImageResponseModel::filter(int x, int y, double in) const {
     else {
         out += _total*in;
     }
-
     // add the noise
     if(_noiseRMS > 0) {
         out += noise();
     }
-
     return out;
 }

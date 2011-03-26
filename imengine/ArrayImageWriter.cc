@@ -24,8 +24,9 @@ void local::ArrayImageWriter::open(int size, double scale) {
     _size = size;
 }
 
-void local::ArrayImageWriter::write(int x, int y, double value) {
+double local::ArrayImageWriter::write(int x, int y, double value) {
     _data[x + y*_size] = value;
+    return value;
 }
 
 void local::ArrayImageWriter::close() { }

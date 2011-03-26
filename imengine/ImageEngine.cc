@@ -60,9 +60,7 @@ double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx,
     // estimate the signal in each pixel
     for(int y = 0; y < N; ++y) {
         for(int x = 0; x < N; ++x) {
-            double value = estimatePixelValue(x,y);
-            writer.write(x,y,value);
-            sum += value;
+            sum += writer.write(x,y,estimatePixelValue(x,y));
         }
     }
     writer.close();

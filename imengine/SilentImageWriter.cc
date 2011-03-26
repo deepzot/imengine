@@ -12,6 +12,6 @@ local::SilentImageWriter::~SilentImageWriter() { }
 
 void local::SilentImageWriter::open(int size, double scale) { }
 
-void local::SilentImageWriter::write(int x, int y, double value) { }
+double local::SilentImageWriter::write(int x, int y, double value) { return value; }
 
 void local::SilentImageWriter::close() { }

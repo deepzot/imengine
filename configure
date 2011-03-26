@@ -4190,13 +4190,13 @@ else
   as_fn_error $? "You need libzip-dev" "$LINENO" 5
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lpng12" >&5
-$as_echo_n "checking for main in -lpng12... " >&6; }
-if ${ac_cv_lib_png12_main+:} false; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lpng" >&5
+$as_echo_n "checking for main in -lpng... " >&6; }
+if ${ac_cv_lib_png_main+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lpng12  $LIBS"
+LIBS="-lpng  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -4210,22 +4210,22 @@ return main ();
 }
 _ACEOF
 if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_png12_main=yes
+  ac_cv_lib_png_main=yes
 else
-  ac_cv_lib_png12_main=no
+  ac_cv_lib_png_main=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_png12_main" >&5
-$as_echo "$ac_cv_lib_png12_main" >&6; }
-if test "x$ac_cv_lib_png12_main" = xyes; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_png_main" >&5
+$as_echo "$ac_cv_lib_png_main" >&6; }
+if test "x$ac_cv_lib_png_main" = xyes; then :
   cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBPNG12 1
+#define HAVE_LIBPNG 1
 _ACEOF
 
-  LIBS="-lpng12 $LIBS"
+  LIBS="-lpng $LIBS"
 
 else
   as_fn_error $? "You need libpngXX-dev" "$LINENO" 5

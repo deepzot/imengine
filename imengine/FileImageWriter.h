@@ -14,7 +14,7 @@ namespace imengine {
 		FileImageWriter(std::string const &filename = "");
 		virtual ~FileImageWriter();
         virtual void open(int size, double scale);
-        virtual void write(int x, int y, double value);
+        virtual double write(int x, int y, double value);
         virtual void close();
 	private:
         std::string _filename;

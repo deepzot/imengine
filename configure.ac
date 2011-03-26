@@ -21,7 +21,7 @@ AC_CHECK_LIB([boost_program_options], [main], ,
              AC_MSG_ERROR([You need libboost-program-options-dev]))
 AC_CHECK_LIB([z], [main], ,
              AC_MSG_ERROR([You need libzip-dev]))
-AC_CHECK_LIB([png12], [main], ,
+AC_CHECK_LIB([png], [main], ,
              AC_MSG_ERROR([You need libpngXX-dev]))
 AC_CHECK_LIB([gslcblas], [main], ,
              AC_MSG_ERROR([You need libgsl0-dev]))

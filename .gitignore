@@ -1,6 +1,7 @@
 *.a
 *.tar.gz
 *.png
+*~
 
 # automake puts objs and bins in the directory where configure is run
 *.o
