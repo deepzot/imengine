@@ -4,6 +4,18 @@
 
 namespace local = imengine;
 
-local::AbsImageFilter::AbsImageFilter() { }
+local::AbsImageFilter::AbsImageFilter(AbsImageWriterPtr writer)
+: _writer(writer)
+{ }
 
 local::AbsImageFilter::~AbsImageFilter() { }
+
+void local::AbsImageFilter::open(int size, double scale) {
+    _writer->open(size,scale);
+}
+
+void local::AbsImageFilter::write(int x, int y, double value) {
+    _writer->write(x, y, filter(x, y, value));
+}
+
+void local::AbsImageFilter::close() { }
