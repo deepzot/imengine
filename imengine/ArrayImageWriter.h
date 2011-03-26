@@ -5,6 +5,8 @@
 
 #include "imengine/AbsImageWriter.h"
 
+#include "boost/smart_ptr.hpp"
+
 namespace imengine {
 	class ArrayImageWriter : public AbsImageWriter {
 	public:
@@ -22,7 +24,7 @@ namespace imengine {
         double getValue(int x, int y) const;
 	private:
         int _size;
-        double *_data;
+        boost::scoped_array<double> _data;
 	}; // ArrayImageWriter
 	
 	// Compares two images saved to arrays and returns true if they match within

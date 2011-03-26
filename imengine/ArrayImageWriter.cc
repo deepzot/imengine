@@ -13,16 +13,15 @@ local::ArrayImageWriter::ArrayImageWriter()
 {
 }
 
-local::ArrayImageWriter::~ArrayImageWriter() {
-    if(0 != _data) delete [] _data;
-}
+local::ArrayImageWriter::~ArrayImageWriter() { }
 
 void local::ArrayImageWriter::open(int size, double scale) {
     assert(size > 0);
+    // re-allocate the array from a previous image if it was a different size
+    if(_size == 0 || size != _size) {
+        _data.reset(new double[size*size]);
+    }
     _size = size;
-    // free the array from a previous image
-    if(0 != _data) delete [] _data;
-    _data = new double[size*size];
 }
 
 void local::ArrayImageWriter::write(int x, int y, double value) {
