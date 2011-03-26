@@ -6,6 +6,7 @@
 #include "imengine/AbsImageFilter.h"
 
 #include "boost/random/mersenne_twister.hpp"
+#include "boost/function.hpp"
 
 namespace imengine {
 	class ImageResponseModel : public AbsImageFilter {
@@ -21,6 +22,8 @@ namespace imengine {
 		virtual ~ImageResponseModel();
         // Filters each pixel before writing it by applying our response model.
         virtual double filter(int x, int y, double value) const;
+        // Returns a random noise value sampled from a Gaussian distribution.
+        boost::function<double ()> noise;
 	private:
         double _total, _offset, _gain, _noiseRMS;
         mutable boost::mt19937 _uniform;

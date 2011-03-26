@@ -17,6 +17,8 @@ double total, double offset, double gain, double noiseRMS)
     assert(total > 0);
     assert(gain >= 0);
     assert(noiseRMS >= 0);
+    noise = boost::variate_generator<boost::mt19937&, boost::normal_distribution<> >
+        (_uniform, boost::normal_distribution<>(0,_noiseRMS));
 }
 
 local::ImageResponseModel::~ImageResponseModel() { }
@@ -32,15 +34,12 @@ double local::ImageResponseModel::filter(int x, int y, double in) const {
         out += _gain*poisson();
     }
     else {
-        boost::variate_generator<boost::mt19937&, boost::normal_distribution<> >
-            noise(_uniform, boost::normal_distribution<>(0,_noiseRMS));        
-        out += _total*noise();
+        out += _total*in;
     }
 
     // add the noise
     if(_noiseRMS > 0) {
-        //boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > _normal;
-        out += 0;
+        out += noise();
     }
 
     return out;
