@@ -35,6 +35,7 @@ int main(int argc, char **argv) {
         ("scale",po::value<double>(&scale)->default_value(1.),"Pixel scale.")
         ("oversampling",po::value<int>(&oversampling)->default_value(1),
             "Divides each pixel into N x N subpixels.")
+        ("printsum","Prints the pixel sum of the generated image.")
         ("src",po::value<std::string>(&srcString)->default_value("disk[1]"),
             "Source module to use.")
         ("psf",po::value<std::string>(&psfString)->default_value("gauss[1]"),
@@ -135,7 +136,9 @@ int main(int argc, char **argv) {
         // generate the image
         engine->initialize(npixels,scale);
         double sum(engine->generate(*writer,dx,dy));
-        std::cout << "sum = " << sum << std::endl;
+        if(vm.count("printsum")) {
+            std::cout << "sum = " << sum << std::endl;
+        }
     }
     catch(std::exception const &e) {
         std::cerr << "Internal error while generating the image:" << std::endl
