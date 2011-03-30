@@ -7,9 +7,6 @@ AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([imengine/imengine.h])
 AC_CONFIG_HEADERS([config.h])
 
-# Checks for library functions.
-AC_CHECK_FUNCS([pow sqrt getrusage])
-
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_RANLIB
@@ -17,6 +14,7 @@ AC_PROG_RANLIB
 # Checks for header files.
 
 # Checks for libraries.
+# FIXME: Replace `main' with a function in each library:
 AC_CHECK_LIB([boost_program_options], [main], ,
              AC_MSG_ERROR([You need libboost-program-options-dev]))
 AC_CHECK_LIB([z], [main], ,
@@ -33,6 +31,9 @@ AC_CHECK_LIB([fftw3], [main], ,
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
 AC_C_INLINE
+
+# Checks for library functions.
+AC_CHECK_FUNCS([pow sqrt getrusage])
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
