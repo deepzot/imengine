@@ -73,8 +73,8 @@ nobase_include_HEADERS = \
 	imengine/TransformData.h \
 	imengine/TransformedProfileFunction.h \
 	imengine/OversamplingImageEngine.h \
-	imengine/AbsImageFilter.cc \
-	imengine/ImageResponseModel.cc \
+	imengine/AbsImageFilter.h \
+	imengine/ImageResponseModel.h \
 	imengine/models/DeltaFunction.h \
 	imengine/models/DiskDemo.h \
 	imengine/models/DiskProfile.h \
