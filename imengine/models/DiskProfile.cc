@@ -1,10 +1,10 @@
 // Created 25-Feb-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/models/DiskProfile.h"
+#include "imengine/InvalidValue.h"
 
 #include "gsl/gsl_sf_bessel.h"
 
-#include <cassert>
 #include <cmath>
 
 namespace local = imengine::models;
@@ -12,8 +12,8 @@ namespace local = imengine::models;
 local::DiskProfile::DiskProfile(double radius) :
 _radius(radius)
 {
-    assert(_radius > 0);
-    double pi(4*std::atan(1.0));
+  assertGreaterThan<double>("DiskProfile radius",_radius,0);
+  double pi(4*std::atan(1.0));
     _norm = 1/(pi*_radius*_radius);
 }
 

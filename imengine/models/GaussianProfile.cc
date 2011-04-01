@@ -1,25 +1,22 @@
 // Created 22-Feb-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/models/GaussianProfile.h"
+#include "imengine/InvalidValue.h"
 
-#include <cassert>
 #include <cmath>
-#include <iostream>
 
 namespace local = imengine::models;
 
 local::GaussianProfile::GaussianProfile(double sigma) {
-    assert(sigma > 0);
+    assertGreaterThan<double>("GaussianProfile sigma",sigma,0);
     double sigsq(sigma*sigma);
     _twosigsq = sigsq*2;
     _sigsqby2 = sigsq/2;
     double twopi(8*std::atan(1.0));
     _norm = 1/(twopi*sigsq);
-    //std::cout << "GaussianProfile(" << sigma << ")" << std::endl;
 }
 
 local::GaussianProfile::~GaussianProfile() {
-    //std::cout << "GaussianProfile::dtor" << std::endl;
 }
 
 double local::GaussianProfile::operator()(double r) const {

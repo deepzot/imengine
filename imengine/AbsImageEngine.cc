@@ -3,8 +3,7 @@
 #include "imengine/AbsImageEngine.h"
 #include "imengine/AbsPixelFunction.h"
 #include "imengine/InterpolationData.h"
-
-#include <cassert>
+#include "imengine/InvalidValue.h"
 
 namespace local = imengine;
 
@@ -16,8 +15,8 @@ local::AbsImageEngine::AbsImageEngine()
 local::AbsImageEngine::~AbsImageEngine() { }
 
 void local::AbsImageEngine::initialize(int pixelsPerSide, double pixelScale) {
-    assert(pixelsPerSide > 0);
-    assert(pixelScale > 0);
+    assertGreaterThan<int>("AbsImageEngine pixelsPerSide",pixelsPerSide,0);
+    assertGreaterThan<double>("AbsImageEngine pixelScale",pixelScale,0);
     _pixelsPerSide = pixelsPerSide;
     _pixelScale = pixelScale;
     _initialized = true;    

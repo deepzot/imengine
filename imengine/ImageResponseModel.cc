@@ -1,12 +1,11 @@
 // Created 26-Mar-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/ImageResponseModel.h"
+#include "imengine/InvalidValue.h"
 
 #include "boost/random/poisson_distribution.hpp"
 #include "boost/random/normal_distribution.hpp"
 #include "boost/random/variate_generator.hpp"
-
-#include <cassert>
 
 namespace local = imengine;
 
@@ -14,9 +13,9 @@ local::ImageResponseModel::ImageResponseModel(AbsImageWriterPtr writer,
 double total, double offset, double gain, double noiseRMS)
 : AbsImageFilter(writer), _total(total), _offset(offset), _gain(gain), _noiseRMS(noiseRMS)
 {
-    assert(total > 0);
-    assert(gain >= 0);
-    assert(noiseRMS >= 0);
+    assertGreaterThan<double>("ImageResponseModel total",total,0);
+    assertGreaterThanOrEqualTo<double>("ImageResponseModel gain",gain,0);
+    assertGreaterThanOrEqualTo<double>("ImageResponseModel noiseRMS",noiseRMS,0);
     noise = boost::variate_generator<boost::mt19937&, boost::normal_distribution<> >
         (_uniform, boost::normal_distribution<>(0,_noiseRMS));
 }

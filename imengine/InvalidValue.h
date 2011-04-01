@@ -13,20 +13,25 @@ namespace imengine {
     virtual ~InvalidValue() throw ();
   }; // InvalidValue
 
-  // Checks that min <= value <= max and returns silently, or else throws
-  // an InvalidValue with a helpful message.
-  template <typename T>
-    void assertRange(std::string const &what, T value, T min, T max);
-
   // Checks that min <= value and returns silently, or else throws an
   // InvalidValue with a helpful message.
   template <typename T>
-    void assertMin(std::string const &what, T value, T min);
+    void assertGreaterThanOrEqualTo(std::string const &what, T value, T min);
+
+  // Checks that min < value and returns silently, or else throws an
+  // InvalidValue with a helpful message.
+  template <typename T>
+    void assertGreaterThan(std::string const &what, T value, T min);
 
   // Checks that value <= max and returns silently, or else throws an
   // InvalidValue with a helpful message.
   template <typename T>
-    void assertMax(std::string const &what, T value, T max);
+    void assertLessThanOrEqualTo(std::string const &what, T value, T max);
+
+  // Checks that value < max and returns silently, or else throws an
+  // InvalidValue with a helpful message.
+  template <typename T>
+    void assertLessThan(std::string const &what, T value, T max);
 
 } // imengine
 

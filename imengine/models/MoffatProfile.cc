@@ -1,8 +1,8 @@
 // Created 27-Feb-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/models/MoffatProfile.h"
+#include "imengine/InvalidValue.h"
 
-#include <cassert>
 #include <cmath>
 
 #include "boost/math/special_functions.hpp"
@@ -18,8 +18,8 @@ _pi(4*std::atan(1.0))
 local::MoffatProfile::~MoffatProfile() { }
 
 void local::MoffatProfile::setParameters(double fwhm, double beta) {
-    assert(beta > 1);
-    assert(fwhm > 0);
+    assertGreaterThan<double>("MoffatProfile beta",beta,1);
+    assertGreaterThan<double>("MoffateProfile fwhm",fwhm,0);
     _beta = beta;
     _nu = 1 - beta;
     _rd = fwhm/(2*std::sqrt(std::pow(2,1/beta)-1));

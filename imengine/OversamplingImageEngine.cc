@@ -2,6 +2,7 @@
 
 #include "imengine/OversamplingImageEngine.h"
 #include "imengine/ArrayImageWriter.h"
+#include "imengine/InvalidValue.h"
 
 #include <cassert>
 
@@ -11,7 +12,7 @@ local::OversamplingImageEngine::OversamplingImageEngine(AbsImageEnginePtr engine
 : _subpixelData(new ArrayImageWriter()), _engine(engine), _subpixels(subpixels)
 {
     assert(0 != _engine.get());
-    assert(_subpixels >= 1);
+    assertGreaterThanOrEqualTo<int>("OversamplingImageEngine subpixels",_subpixels,1);
 }
 
 local::OversamplingImageEngine::~OversamplingImageEngine() { }
@@ -28,14 +29,6 @@ double local::OversamplingImageEngine::generate(AbsImageWriter &writer, double d
     double sum(_engine->generate(*_subpixelData,dx,dy));
     // downsample to the final pixels
     int N(_subpixelData->getSize());
-    /**
-    for(int y = 0; y < N; ++y) {
-        for(int x = 0; x < N; ++x) {
-            std::cout << ' ' << _subpixelData->getValue(x,y);
-        }
-        std::cout << std::endl;
-    }
-    **/
     for(int y = 0; y < N; y += _subpixels) {
         for(int x = 0; x < N; x += _subpixels) {
             double value(0);

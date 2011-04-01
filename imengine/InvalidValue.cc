@@ -15,22 +15,7 @@ local::InvalidValue::InvalidValue(std::string const& reason) : RuntimeError(reas
 local::InvalidValue::~InvalidValue() throw () { }
 
 template <typename T>
-void local::assertRange(std::string const &what, T value, T min, T max) {
-  if(value < min || value > max) {
-    std::string reason("Invalid Value: ");
-    reason += what;
-    reason += " = " + boost::lexical_cast<std::string>(value);
-    reason += ", should be in the range [";
-    reason += boost::lexical_cast<std::string>(min);
-    reason += ',';
-    reason += boost::lexical_cast<std::string>(max);
-    reason += ']';
-    throw InvalidValue(reason);
-  }
-}
-
-template <typename T>
-void local::assertMin(std::string const &what, T value, T min) {
+void local::assertGreaterThanOrEqualTo(std::string const &what, T value, T min) {
   if(value < min) {
     std::string reason("Invalid Value: ");
     reason += what;
@@ -42,7 +27,19 @@ void local::assertMin(std::string const &what, T value, T min) {
 }
 
 template <typename T>
-void local::assertMax(std::string const &what, T value, T max) {
+void local::assertGreaterThan(std::string const &what, T value, T min) {
+  if(value <= min) {
+    std::string reason("Invalid Value: ");
+    reason += what;
+    reason += " = " + boost::lexical_cast<std::string>(value);
+    reason += ", should be > ";
+    reason += boost::lexical_cast<std::string>(min);
+    throw InvalidValue(reason);
+  }
+}
+
+template <typename T>
+void local::assertLessThanOrEqualTo(std::string const &what, T value, T max) {
   if(value > max) {
     std::string reason("Invalid Value: ");
     reason += what;
@@ -53,13 +50,28 @@ void local::assertMax(std::string const &what, T value, T max) {
   }
 }
 
+template <typename T>
+void local::assertLessThan(std::string const &what, T value, T max) {
+  if(value >= max) {
+    std::string reason("Invalid Value: ");
+    reason += what;
+    reason += " = " + boost::lexical_cast<std::string>(value);
+    reason += ", should be < ";
+    reason += boost::lexical_cast<std::string>(max);
+    throw InvalidValue(reason);
+  }
+}
+
 // explicit template instantiations for int, double args
 
-template void local::assertRange<int>(std::string const&,int,int,int);
-template void local::assertRange<double>(std::string const&,double,double,double);
+template void local::assertGreaterThan<int>(std::string const&,int,int);
+template void local::assertGreaterThan<double>(std::string const&,double,double);
 
-template void local::assertMin<int>(std::string const&,int,int);
-template void local::assertMin<double>(std::string const&,double,double);
+template void local::assertGreaterThanOrEqualTo<int>(std::string const&,int,int);
+template void local::assertGreaterThanOrEqualTo<double>(std::string const&,double,double);
 
-template void local::assertMax<int>(std::string const&,int,int);
-template void local::assertMax<double>(std::string const&,double,double);
+template void local::assertLessThan<int>(std::string const&,int,int);
+template void local::assertLessThan<double>(std::string const&,double,double);
+
+template void local::assertLessThanOrEqualTo<int>(std::string const&,int,int);
+template void local::assertLessThanOrEqualTo<double>(std::string const&,double,double);
