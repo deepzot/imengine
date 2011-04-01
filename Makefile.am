@@ -36,6 +36,8 @@ libimengine_a_SOURCES = \
 	imengine/SlowTransform.cc \
 	imengine/TransformData.cc \
 	imengine/TransformedProfileFunction.cc \
+	imengine/RuntimeError.cc \
+	imengine/InvalidValue.cc \
 	imengine/models/DeltaFunction.cc \
 	imengine/models/DiskDemo.cc \
 	imengine/models/DiskProfile.cc \
@@ -75,6 +77,8 @@ nobase_include_HEADERS = \
 	imengine/OversamplingImageEngine.h \
 	imengine/AbsImageFilter.h \
 	imengine/ImageResponseModel.h \
+	imengine/RuntimeError.h \
+	imengine/InvalidValue.h \
 	imengine/models/DeltaFunction.h \
 	imengine/models/DiskDemo.h \
 	imengine/models/DiskProfile.h \
