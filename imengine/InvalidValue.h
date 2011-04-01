@@ -13,9 +13,20 @@ namespace imengine {
     virtual ~InvalidValue() throw ();
   }; // InvalidValue
 
-  // Checks that the specified value is within the specified range and returns
-  // silently, or else throws an InvalidValue with a helpful message.
-  void assertRange(int value, int min, int max);
+  // Checks that min <= value <= max and returns silently, or else throws
+  // an InvalidValue with a helpful message.
+  template <typename T>
+    void assertRange(std::string const &what, T value, T min, T max);
+
+  // Checks that min <= value and returns silently, or else throws an
+  // InvalidValue with a helpful message.
+  template <typename T>
+    void assertMin(std::string const &what, T value, T min);
+
+  // Checks that value <= max and returns silently, or else throws an
+  // InvalidValue with a helpful message.
+  template <typename T>
+    void assertMax(std::string const &what, T value, T max);
 
 } // imengine
 

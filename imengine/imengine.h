@@ -39,4 +39,8 @@
 // Model building support
 #include "imengine/ModelBuilder.h"
 
+// Error handling
+#include "imengine/RuntimeError.h"
+#include "imengine/InvalidValue.h"
+
 #endif // IMENGINE
