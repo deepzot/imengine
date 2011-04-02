@@ -1,9 +1,9 @@
 // Created 26-Feb-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/EllipticityTransform.h"
+#include "imengine/InvalidValue.h"
 
 #include <cmath>
-#include <cassert>
 
 namespace local = imengine;
 
@@ -20,7 +20,7 @@ void local::EllipticityTransform::setParameters(double e1, double e2) {
     _e1m = 1 - e1;
     _e2 = e2;
     _detM = 1 - e1*e1 - e2*e2;
-    assert(0 < _detM);
+    assertGreaterThan<double>("EllipticityTransform det(M)",_detM,0);
 }
 
 double local::EllipticityTransform::determinant() const {
