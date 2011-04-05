@@ -21,8 +21,26 @@ namespace imengine {
         // Computes the function's discrete Fourier transform and saves the results in
         // the specified transform object. The transform is defined as:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
+        void computeTransform(TransformDataPtr transformData);
+        // Returns true if the next call to doTransform() would calculate a different
+        // result than the previous call.
+        bool hasChanged() const;
+    protected:
+        // Does the actual work of computeTransform.
         virtual void doTransform(TransformDataPtr transformData) = 0;
+        // Marks this object as changed, i.e., a new call to doTransform is needed.
+        void setChanged();
+    private:
+        bool _hasChanged;
 	}; // AbsPixelFunction
+	
+    inline bool AbsPixelFunction::hasChanged() const { return _hasChanged; }
+    inline void AbsPixelFunction::setChanged() { _hasChanged = true; }
+    inline void AbsPixelFunction::computeTransform(TransformDataPtr transformData) {
+        doTransform(transformData);
+        _hasChanged = false;
+    }
+    
 } // imengine
 
 #endif // IMENGINE_ABS_PIXEL_FUNCTION
