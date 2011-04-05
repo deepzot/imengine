@@ -14,13 +14,15 @@ namespace imengine {
 		virtual ~TransformedProfileFunction();
 		// Returns the function value
         virtual double operator()(double x, double y) const;
+    protected:
         // Computes the function's discrete Fourier transform and saves the results in
         // the specified transform object. The transform is defined as:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
+        // Should normally be called via the public AbsPixelFunction::computeTransform.
         virtual void doTransform(TransformDataPtr transformData);
+	private:
         // Tabulates values of our DFT
         void tabulator(double kx, double ky, Complex& value);
-	private:
         AbsRadialProfilePtr _radialProfile;
         AbsCoordTransformPtr _coordTransform;
 	}; // TransformedProfileFunction

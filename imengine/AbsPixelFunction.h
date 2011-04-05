@@ -3,6 +3,7 @@
 #ifndef IMENGINE_ABS_PIXEL_FUNCTION
 #define IMENGINE_ABS_PIXEL_FUNCTION
 
+#include "imengine/Observer.h"
 #include "imengine/ptr_types.h"
 
 #include "boost/utility.hpp"
@@ -28,19 +29,19 @@ namespace imengine {
     protected:
         // Does the actual work of computeTransform.
         virtual void doTransform(TransformDataPtr transformData) = 0;
-        // Marks this object as changed, i.e., a new call to doTransform is needed.
-        void setChanged();
+        // Allow subclasses to delegate observing duties by sharing our observer.
+        Observer const &getObserver() const;
     private:
-        bool _hasChanged;
+        Observer _observer;
 	}; // AbsPixelFunction
 	
-    inline bool AbsPixelFunction::hasChanged() const { return _hasChanged; }
-    inline void AbsPixelFunction::setChanged() { _hasChanged = true; }
-    inline void AbsPixelFunction::computeTransform(TransformDataPtr transformData) {
-        doTransform(transformData);
-        _hasChanged = false;
-    }
-    
+	inline bool AbsPixelFunction::hasChanged() const {
+        return _observer.hasChanged();
+	}
+	inline Observer const &AbsPixelFunction::getObserver() const {
+        return _observer;
+	}
+	
 } // imengine
 
 #endif // IMENGINE_ABS_PIXEL_FUNCTION

@@ -7,9 +7,7 @@
 
 namespace local = imengine;
 
-local::AbsPixelFunction::AbsPixelFunction()
-: _hasChanged(true)
-{ }
+local::AbsPixelFunction::AbsPixelFunction() { }
 
 local::AbsPixelFunction::~AbsPixelFunction() { }
 
@@ -17,5 +15,10 @@ void local::AbsPixelFunction::initTransform(TransformDataPtr transformData) {
     if(0 == transformData.get()) {
         throw RuntimeError("initTransform called without transform data.");
     }
-    _hasChanged = true;
+    _observer.setChanged(true);
+}
+
+void local::AbsPixelFunction::computeTransform(TransformDataPtr transformData) {
+    doTransform(transformData);
+    _observer.setChanged(false);
 }

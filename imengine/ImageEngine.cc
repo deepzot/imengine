@@ -46,18 +46,21 @@ double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx,
     if(!isInitialized()) {
         throw RuntimeError("ImageEngine must be initialized before generating.");
     }
-    // calculate the discrete Fourier transform of the source and PSF (with any offset
-    // only applied to the source)
-    _source->computeTransform(_sourceTransform);
-    _psf->computeTransform(_psfTransform);
-    ////_psfTransform->dump();
-    // combine the source and PSF in Fourier space
+    // Calculate the discrete Fourier transform of the source and PSF (with any offset
+    // only applied to the source).
+    if(_source->hasChanged()) _source->computeTransform(_sourceTransform);
+    if(_psf->hasChanged()) _psf->computeTransform(_psfTransform);
+    // Map the requested (dx,dy) to our image grid.
     dx -= _imageGrid->getGridX();
     dy -= _imageGrid->getGridY();
-    _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,dx,dy);
-    ////_imageTransform->dump();
-    // build a grid of real-space convoluted image data
-    _imageTransform->inverseTransform();
+    // Has anything changed?
+    if(_source->hasChanged() || _psf->hasChanged() ||
+        !_validLast || (dx != _lastDx) || (dy != _lastDy)) {
+        // combine the source and PSF in Fourier space
+        _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,dx,dy);
+        // build a grid of real-space convoluted image data
+        _imageTransform->inverseTransform();
+    }
     // initialize our writer
     int N(getPixelsPerSide());
     double sum(0);
