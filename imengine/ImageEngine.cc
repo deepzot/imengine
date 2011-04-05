@@ -11,7 +11,7 @@ namespace local = imengine;
 
 template <class T>
 local::ImageEngine<T>::ImageEngine(AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf)
-: _source(source), _psf(psf)
+: _source(source), _psf(psf), _validLast(false)
 {
 }
 
@@ -37,6 +37,8 @@ void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
     _psf->initTransform(_psfTransform);
     // build a discrete Fourier transform grid for the final image
     _imageTransform.reset(new T(_imageGrid));
+    // invalidate our last (dx,dy) values
+    _validLast = false;
 }
 
 template <class T>
@@ -67,6 +69,11 @@ double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx,
         }
     }
     writer.close();
+    // remember these (dx,dy) values
+    _lastDx = dx;
+    _lastDy = dy;
+    _validLast = true;
+    // return the pixel sum of the generated image
     return sum;
 }
 

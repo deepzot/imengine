@@ -29,6 +29,8 @@ namespace imengine {
         InterpolationDataPtr _imageGrid,_workspace;
 	private:
         TransformDataPtr _sourceTransform, _psfTransform, _imageTransform;
+        double _lastDx, _lastDy;
+        bool _validLast;
 	}; // ImageEngine
 } // imengine
 
