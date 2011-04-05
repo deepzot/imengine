@@ -3,8 +3,10 @@
 #ifndef IMENGINE_ABS_COORD_TRANSFORM
 #define IMENGINE_ABS_COORD_TRANSFORM
 
+#include "imengine/ObserverDelegate.h"
+
 namespace imengine {
-	class AbsCoordTransform {
+	class AbsCoordTransform : public ObserverDelegate {
 	public:
 	    // Represents a 2D invertible coordinate transform M
 		AbsCoordTransform();

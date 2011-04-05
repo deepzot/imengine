@@ -14,6 +14,7 @@ namespace imengine {
     class AbsRadialProfile;
     class AbsImageEngine;
     class AbsImageWriter;
+    class Observer;
     
     typedef boost::shared_ptr<AbsPixelFunction> AbsPixelFunctionPtr;
     typedef boost::shared_ptr<InterpolationData> InterpolationDataPtr;
@@ -22,6 +23,7 @@ namespace imengine {
     typedef boost::shared_ptr<AbsRadialProfile> AbsRadialProfilePtr;
     typedef boost::shared_ptr<AbsImageEngine> AbsImageEnginePtr;
     typedef boost::shared_ptr<AbsImageWriter> AbsImageWriterPtr;
+    typedef boost::shared_ptr<Observer> ObserverPtr;
 
 } // imengine
 

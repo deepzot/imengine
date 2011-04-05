@@ -4,11 +4,9 @@
 #include "imengine/AbsRadialProfile.h"
 #include "imengine/AbsCoordTransform.h"
 #include "imengine/TransformData.h"
+#include "imengine/RuntimeError.h"
 
 #include "boost/bind.hpp"
-
-#include <cassert>
-#include <iostream>
 
 namespace local = imengine;
 
@@ -16,11 +14,19 @@ local::TransformedProfileFunction::TransformedProfileFunction(
 AbsRadialProfilePtr profile,AbsCoordTransformPtr transform) :
 _radialProfile(profile), _coordTransform(transform)
 {
-    //std::cout << "TransformedProfileFunction(...)" << std::endl;
+    // check that we have real live workers
+    if(0 == _radialProfile.get()) {
+        throw RuntimeError("TransformedProfileFunction needs a radial profile.");
+    }
+    if(0 == _coordTransform.get()) {
+        throw RuntimeError("TransformedProfileFunction needs a coordinate transform.");
+    }
+    // delegate observing duties to our workers
+    _radialProfile->setObserver(getObserver());
+    _coordTransform->setObserver(getObserver());
 }
 
 local::TransformedProfileFunction::~TransformedProfileFunction() {
-    //std::cout << "TransformedProfileFunction::dtor" << std::endl;
 }
 
 double local::TransformedProfileFunction::operator()(double x, double y) const {

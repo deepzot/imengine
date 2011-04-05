@@ -3,8 +3,10 @@
 #ifndef IMENGINE_ABS_RADIAL_PROFILE
 #define IMENGINE_ABS_RADIAL_PROFILE
 
+#include "imengine/ObserverDelegate.h"
+
 namespace imengine {
-	class AbsRadialProfile {
+	class AbsRadialProfile : public ObserverDelegate {
 	public:
 		AbsRadialProfile();
 		virtual ~AbsRadialProfile();
@@ -12,7 +14,6 @@ namespace imengine {
         virtual double operator()(double r) const = 0;
         // Evaluates this profile's real-valued radial integral for the specified kappa.
         virtual double radialIntegral(double kappa) const = 0;
-	private:
 	}; // AbsRadialProfile
 } // imengine
 
