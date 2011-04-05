@@ -5,8 +5,7 @@
 #include "imengine/InterpolationData.h"
 #include "imengine/TransformData.h"
 #include "imengine/AbsImageWriter.h"
-
-#include <cassert>
+#include "imengine/RuntimeError.h"
 
 namespace local = imengine;
 
@@ -24,7 +23,9 @@ template <class T>
 void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
     AbsImageEngine::initialize(pixelsPerSide,pixelScale);
     _imageGrid.reset(createGrid());
-    assert(0 != _imageGrid.get());
+    if(0 == _imageGrid.get()) {
+        throw RuntimeError("createGrid() failed in ImageEngine::initialize");
+    }
     // create a private workspace with the same dimensions as the image grid
     _workspace.reset(_imageGrid->createWorkspace());
     // build discrete Fourier transform grids (linked to the workspace) for
@@ -40,7 +41,9 @@ void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
 
 template <class T>
 double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx, double dy) {
-    assert(isInitialized());
+    if(!isInitialized()) {
+        throw RuntimeError("ImageEngine must be initialized before generating.");
+    }
     // calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source)
     _source->doTransform(_sourceTransform);
