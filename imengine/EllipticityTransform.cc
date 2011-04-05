@@ -16,11 +16,14 @@ local::EllipticityTransform::~EllipticityTransform() {
 }
 
 void local::EllipticityTransform::setParameters(double e1, double e2) {
+    if(e1 == _e1 && e2 == _e2) return;
+    _e1 = e1;
     _e1p = 1 + e1;
     _e1m = 1 - e1;
     _e2 = e2;
     _detM = 1 - e1*e1 - e2*e2;
     assertGreaterThan<double>("EllipticityTransform det(M)",_detM,0);
+    setChanged();
 }
 
 double local::EllipticityTransform::determinant() const {

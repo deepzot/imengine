@@ -20,7 +20,7 @@ namespace imengine {
         // Sets the ellipticity parameter values to use.
         void setParameters(double e1, double e2);
 	private:
-        double _e1m,_e1p,_e2,_detM;
+        double _e1,_e2,_e1m,_e1p,_detM;
 	}; // EllipticityTransform
 } // imengine
 

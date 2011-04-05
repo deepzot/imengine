@@ -20,7 +20,7 @@ namespace models {
         // Sets the parameter values to use.
         void setParameters(double fwhm, double beta);
 	private:
-        double _pi, _beta, _nu, _rd, _norm, _integralNorm;
+        double _pi, _fwhm, _beta, _nu, _rd, _norm, _integralNorm;
 	}; // MoffatProfile
 }} // imengine::models
 

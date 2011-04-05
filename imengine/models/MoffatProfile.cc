@@ -18,13 +18,16 @@ _pi(4*std::atan(1.0))
 local::MoffatProfile::~MoffatProfile() { }
 
 void local::MoffatProfile::setParameters(double fwhm, double beta) {
+    if(fwhm == _fwhm && beta == _beta) return;
     assertGreaterThan<double>("MoffatProfile beta",beta,1);
     assertGreaterThan<double>("MoffateProfile fwhm",fwhm,0);
+    _fwhm = fwhm;
     _beta = beta;
     _nu = 1 - beta;
     _rd = fwhm/(2*std::sqrt(std::pow(2,1/beta)-1));
     _norm = (beta-1)/(_pi*_rd*_rd);
     _integralNorm = (beta-1)*std::pow(2,2-beta)/boost::math::tgamma(beta);
+    setChanged();
 }
 
 double local::MoffatProfile::operator()(double r) const {
