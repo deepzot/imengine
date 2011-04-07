@@ -16,8 +16,10 @@ namespace models {
         virtual double operator()(double r) const;
         // Evaluates this profile's real-valued radial integral for the specified kappa.
         virtual double radialIntegral(double kappa) const;
+        // Sets the parameter values to use.
+        void setParameters(double alpha);
 	private:
-        double _a,_a2,_a3,_norm;
+        double _a,_a2,_a3,_norm,_twopi;
 	}; // ExponentialProfile
 }} // imengine::models
 

@@ -8,11 +8,19 @@
 namespace local = imengine::models;
 
 local::ExponentialProfile::ExponentialProfile(double alpha) :
-_a(alpha),_a2(alpha*alpha), _a3(alpha*alpha*alpha)
+_twopi(8*std::atan(1.0))
 {
-    assertGreaterThan<double>("ExponentialProfile alpha",_a,0);
-    double twopi(8*std::atan(1.0));
-    double _norm(twopi/_a2);
+    setParameters(alpha);
+}
+
+void local::ExponentialProfile::setParameters(double alpha) {
+    if(alpha == _a) return;
+    assertGreaterThan<double>("ExponentialProfile alpha",alpha,0);
+    _a = alpha;
+    _a2 = _a*_a;
+    _a3 = _a2*_a;
+    _norm = _twopi/_a2;
+    setChanged();
 }
 
 local::ExponentialProfile::~ExponentialProfile() { }
