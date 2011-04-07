@@ -79,6 +79,8 @@ nobase_include_HEADERS = \
 	imengine/ImageResponseModel.h \
 	imengine/RuntimeError.h \
 	imengine/InvalidValue.h \
+	imengine/Observer.h \
+	imengine/ObserverDelegate.h \
 	imengine/models/DeltaFunction.h \
 	imengine/models/DiskDemo.h \
 	imengine/models/DiskProfile.h \

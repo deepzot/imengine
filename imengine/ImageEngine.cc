@@ -48,14 +48,14 @@ double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx,
     }
     // Calculate the discrete Fourier transform of the source and PSF (with any offset
     // only applied to the source).
-    if(_source->hasChanged()) _source->computeTransform(_sourceTransform);
-    if(_psf->hasChanged()) _psf->computeTransform(_psfTransform);
+    bool srcChanged(_source->hasChanged()), psfChanged(_psf->hasChanged());
+    if(srcChanged) _source->computeTransform(_sourceTransform);
+    if(psfChanged) _psf->computeTransform(_psfTransform);
     // Map the requested (dx,dy) to our image grid.
     dx -= _imageGrid->getGridX();
     dy -= _imageGrid->getGridY();
     // Has anything changed?
-    if(_source->hasChanged() || _psf->hasChanged() ||
-        !_validLast || (dx != _lastDx) || (dy != _lastDy)) {
+    if(srcChanged || psfChanged || !_validLast || (dx != _lastDx) || (dy != _lastDy)) {
         // combine the source and PSF in Fourier space
         _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,dx,dy);
         // build a grid of real-space convoluted image data

@@ -21,8 +21,13 @@ namespace imengine {
 	
 	inline ObserverDelegate::ObserverDelegate() { }
 	inline ObserverDelegate::~ObserverDelegate() { }
-    inline void ObserverDelegate::setObserver(ObserverPtr observer) { _observer = observer; }
-    inline void ObserverDelegate::setChanged() { _observer->setChanged(true); }
+
+    inline void ObserverDelegate::setObserver(ObserverPtr observer) {
+        _observer = observer;
+    }
+    inline void ObserverDelegate::setChanged() {
+        if(0 != _observer.get()) _observer->setChanged(true);
+    }
 	
 } // imengine
 
