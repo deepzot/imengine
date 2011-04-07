@@ -7,13 +7,21 @@
 
 namespace local = imengine::models;
 
-local::GaussianProfile::GaussianProfile(double sigma) {
+local::GaussianProfile::GaussianProfile(double sigma)
+: _twopi(8*std::atan(1.0))
+{
+    setParameters(sigma);
+}
+
+void local::GaussianProfile::setParameters(double sigma) {
+    if(sigma == _sigma) return;
     assertGreaterThan<double>("GaussianProfile sigma",sigma,0);
+    _sigma = sigma;
     double sigsq(sigma*sigma);
     _twosigsq = sigsq*2;
     _sigsqby2 = sigsq/2;
-    double twopi(8*std::atan(1.0));
-    _norm = 1/(twopi*sigsq);
+    _norm = 1/(_twopi*sigsq);
+    setChanged();
 }
 
 local::GaussianProfile::~GaussianProfile() {

@@ -15,8 +15,10 @@ namespace models {
         virtual double operator()(double r) const;
         // Evaluates this profile's real-valued radial integral for the specified kappa.
         virtual double radialIntegral(double kappa) const;
+        // Sets the parameter values to use.
+        void setParameters(double sigma);
 	private:
-        double _twosigsq, _sigsqby2, _norm;
+        double _sigma, _twosigsq, _sigsqby2, _norm, _twopi;
 	}; // GaussianProfile
 }} // imengine::models
 
