@@ -21,7 +21,11 @@ local::ImageEngine<T>::~ImageEngine() {
 
 template <class T>
 void local::ImageEngine<T>::initialize(int pixelsPerSide, double pixelScale) {
+    // do base class initialization
     AbsImageEngine::initialize(pixelsPerSide,pixelScale);
+    // create a cache for generated images
+    _generateCache.reset(new InterpolationData(pixelsPerSide,0,pixelScale,0,0));
+    // create an interpolation data grid
     _imageGrid.reset(createGrid());
     if(0 == _imageGrid.get()) {
         throw RuntimeError("createGrid() failed in ImageEngine::initialize");
@@ -55,20 +59,30 @@ double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx,
     dx -= _imageGrid->getGridX();
     dy -= _imageGrid->getGridY();
     // Has anything changed?
-    if(srcChanged || psfChanged || !_validLast || (dx != _lastDx) || (dy != _lastDy)) {
+    bool anyChange(srcChanged || psfChanged ||
+        !_validLast || (dx != _lastDx) || (dy != _lastDy));
+    if(anyChange) {
         // combine the source and PSF in Fourier space
         _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,dx,dy);
         // build a grid of real-space convoluted image data
-        _imageTransform->inverseTransform();
+        _imageTransform->inverseTransform();        
     }
     // initialize our writer
     int N(getPixelsPerSide());
-    double sum(0);
+    double value,sum(0);
     writer.open(N,getPixelScale());
     // estimate the signal in each pixel
     for(int y = 0; y < N; ++y) {
         for(int x = 0; x < N; ++x) {
-            sum += writer.write(x,y,estimatePixelValue(x,y));
+            // use cached values if possible
+            if(anyChange) {
+                value = estimatePixelValue(x,y);
+                _generateCache->setValue(x,y,value);
+            }
+            else {
+                value = _generateCache->getValue(x,y);
+            }
+            sum += writer.write(x,y,value);
         }
     }
     writer.close();
