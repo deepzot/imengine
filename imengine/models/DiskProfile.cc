@@ -9,15 +9,21 @@
 
 namespace local = imengine::models;
 
-local::DiskProfile::DiskProfile(double radius) :
-_radius(radius)
+local::DiskProfile::DiskProfile(double radius)
+: _pi(4*std::atan(1.0))
 {
-  assertGreaterThan<double>("DiskProfile radius",_radius,0);
-  double pi(4*std::atan(1.0));
-    _norm = 1/(pi*_radius*_radius);
+    setParameters(radius);
 }
 
 local::DiskProfile::~DiskProfile() { }
+
+void local::DiskProfile::setParameters(double radius) {
+    if(radius == _radius) return;
+    assertGreaterThan<double>("DiskProfile radius",radius,0);
+    _radius = radius;
+    _norm = 1/(_pi*_radius*_radius);
+    setChanged();
+}
 
 double local::DiskProfile::operator()(double r) const {
     return r < _radius ? _norm : 0;

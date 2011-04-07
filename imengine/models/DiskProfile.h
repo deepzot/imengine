@@ -15,8 +15,10 @@ namespace models {
         virtual double operator()(double r) const;
         // Evaluates this profile's real-valued radial integral for the specified kappa.
         virtual double radialIntegral(double kappa) const;
+        // Sets the parameter values to use.
+        void setParameters(double radius);
 	private:
-        double _radius, _norm;
+        double _radius, _norm, _pi;
 	}; // DiskProfile
 }} // imengine::models
 
