@@ -21,6 +21,7 @@ namespace models {
         void setParameters(double fwhm, double beta);
 	private:
         double _pi, _fwhm, _beta, _nu, _rd, _norm, _integralNorm;
+        double _rootpiby3, _approxNorm, _p0, _p1, _p2, _p3;
 	}; // MoffatProfile
 }} // imengine::models
 
