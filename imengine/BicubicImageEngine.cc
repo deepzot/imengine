@@ -7,8 +7,8 @@ namespace local = imengine;
 
 template <class T>
 local::BicubicImageEngine<T>::BicubicImageEngine(
-AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf)
-: ImageEngine<T>(source,psf)
+AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf, double threshold)
+: ImageEngine<T>(source,psf), _threshold(threshold), _rescale(144./169.)
 {
 }
 
@@ -17,8 +17,11 @@ local::BicubicImageEngine<T>::~BicubicImageEngine() { }
 
 template <class T>
 local::InterpolationData* local::BicubicImageEngine<T>::createGrid() {
+    int N(this->getPixelsPerSide());
+    // Calculate the actual threshold to apply on the partial bicubic result.
+    _actualThreshold = _threshold/(_rescale*N*N);
     // Put a grid point at the corners of each pixel
-    int size(this->getPixelsPerSide() + 3);
+    int size(N + 3);
     double scale(this->getPixelScale());
     double tmp(24*size*scale);
     _norm1 = 1/(tmp*tmp);
@@ -34,11 +37,11 @@ local::InterpolationData* local::BicubicImageEngine<T>::createGrid() {
 
 template <class T>
 double local::BicubicImageEngine<T>::estimatePixelValue(int x, int y) {
-    return
-        _norm169*(
-            _imageGrid->getValueForPixel(x,y) + _imageGrid->getValueForPixel(x+1,y) +
-            _imageGrid->getValueForPixel(x,y+1) + _imageGrid->getValueForPixel(x+1,y+1)
-        ) +
+    double result(_norm169*(
+        _imageGrid->getValueForPixel(x,y) + _imageGrid->getValueForPixel(x+1,y) +
+        _imageGrid->getValueForPixel(x,y+1) + _imageGrid->getValueForPixel(x+1,y+1)));
+    if(result >= _actualThreshold) {
+        result +=
         _norm13*(
             _imageGrid->getValueForPixel(x-1,y) + _imageGrid->getValueForPixel(x-1,y+1) +
             _imageGrid->getValueForPixel(x,y+2) + _imageGrid->getValueForPixel(x+1,y+2) +
@@ -49,6 +52,12 @@ double local::BicubicImageEngine<T>::estimatePixelValue(int x, int y) {
             _imageGrid->getValueForPixel(x-1,y-1) + _imageGrid->getValueForPixel(x-1,y+2) +
             _imageGrid->getValueForPixel(x+2,y+2) + _imageGrid->getValueForPixel(x+2,y-1)
         );
+    }
+    else {
+        // Rescale the partial bicubic result to a bilinear interpolation.
+        result *= _rescale;
+    }
+    return result;
 }
 
 // explicit template instantiations

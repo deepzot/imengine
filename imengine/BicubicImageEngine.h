@@ -11,13 +11,17 @@ namespace imengine {
     // at the pixel corners.
 	template <class T> class BicubicImageEngine : public ImageEngine<T> {
 	public:
-		BicubicImageEngine(AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf);
+	    // Creates a new interpolating engine that falls back to bilinear interpolation
+	    // whenever the bilinear estimate is below threshold/(N*N) where N is the image
+	    // grid size.
+		BicubicImageEngine(AbsPixelFunctionPtr source, AbsPixelFunctionPtr psf,
+		    double threshold = 0.05);
 		virtual ~BicubicImageEngine();
     protected:
         virtual InterpolationData *createGrid();
         virtual double estimatePixelValue(int i, int j);
 	private:
-        double _norm1,_norm13,_norm169;
+        double _threshold,_actualThreshold,_rescale,_norm1,_norm13,_norm169;
         using ImageEngine<T>::_imageGrid; // makes this-> unecessary in implementation code
 	}; // BicubicImageEngine
 } // imengine
