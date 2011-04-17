@@ -15,6 +15,7 @@ namespace po = boost::program_options;
 int main(int argc, char **argv) {
     // configure command-line options processing using the boost program_options library
     int npixels,oversampling;
+    uint32_t seed;
     double dx,dy,scale,total,offset,gain,noiseRMS;
     std::string outfile,srcString,psfString;
     po::options_description cli;
@@ -43,6 +44,8 @@ int main(int argc, char **argv) {
             "Signal size per pixel to use for generating Poisson fluctuations.")
         ("noiseRMS",po::value<double>(&noiseRMS)->default_value(0.),
             "RMS of uncorrelated Gaussian noise to add to each pixel.")
+        ("seed",po::value<uint32_t>(&seed)->default_value(0),
+            "Random seed to use for generating noise (uses time of day if zero).")
         ("printsum","Prints the pixel sum of the generated image.")
         ("src",po::value<std::string>(&srcString)->default_value("disk[1]"),
             "Source module to use.")
@@ -155,7 +158,7 @@ int main(int argc, char **argv) {
 
         // Select a random number seed for generating noise based on either the
         // current time or else specified on the command line.
-        uint32_t seed(static_cast<uint32_t>(std::time(0)));
+        if(0 == seed) seed = static_cast<uint32_t>(std::time(0));
 
         // filter the image with the specified response model
         writer.reset(new img::ImageResponseModel(writer,total,offset,gain,noiseRMS,seed));
