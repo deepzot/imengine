@@ -3,6 +3,8 @@
 #include "imengine/BicubicImageEngine.h"
 #include "imengine/InterpolationData.h"
 
+#include <iostream>
+
 namespace local = imengine;
 
 template <class T>
@@ -37,27 +39,27 @@ local::InterpolationData* local::BicubicImageEngine<T>::createGrid() {
 
 template <class T>
 double local::BicubicImageEngine<T>::estimatePixelValue(int x, int y) {
-    double result(_norm169*(
+    double linearApprox(_norm169*(
         _imageGrid->getValueForPixel(x,y) + _imageGrid->getValueForPixel(x+1,y) +
         _imageGrid->getValueForPixel(x,y+1) + _imageGrid->getValueForPixel(x+1,y+1)));
-    if(result >= _actualThreshold) {
-        result +=
-        _norm13*(
-            _imageGrid->getValueForPixel(x-1,y) + _imageGrid->getValueForPixel(x-1,y+1) +
-            _imageGrid->getValueForPixel(x,y+2) + _imageGrid->getValueForPixel(x+1,y+2) +
-            _imageGrid->getValueForPixel(x+2,y+1) + _imageGrid->getValueForPixel(x+2,y) +
-            _imageGrid->getValueForPixel(x+1,y-1) + _imageGrid->getValueForPixel(x,y-1)
-        ) +
-        _norm1*(
-            _imageGrid->getValueForPixel(x-1,y-1) + _imageGrid->getValueForPixel(x-1,y+2) +
-            _imageGrid->getValueForPixel(x+2,y+2) + _imageGrid->getValueForPixel(x+2,y-1)
-        );
+    if(linearApprox >= _actualThreshold) {
+        double cubicAdjust(
+            _norm13*(
+                _imageGrid->getValueForPixel(x-1,y) + _imageGrid->getValueForPixel(x-1,y+1) +
+                _imageGrid->getValueForPixel(x,y+2) + _imageGrid->getValueForPixel(x+1,y+2) +
+                _imageGrid->getValueForPixel(x+2,y+1) + _imageGrid->getValueForPixel(x+2,y) +
+                _imageGrid->getValueForPixel(x+1,y-1) + _imageGrid->getValueForPixel(x,y-1)
+            ) +
+            _norm1*(
+                _imageGrid->getValueForPixel(x-1,y-1) + _imageGrid->getValueForPixel(x-1,y+2) +
+                _imageGrid->getValueForPixel(x+2,y+2) + _imageGrid->getValueForPixel(x+2,y-1)
+            ));
+        return linearApprox + cubicAdjust;
     }
     else {
         // Rescale the partial bicubic result to a bilinear interpolation.
-        result *= _rescale;
+        return linearApprox*_rescale;
     }
-    return result;
 }
 
 // explicit template instantiations
