@@ -24,10 +24,17 @@ namespace imengine {
         virtual double filter(int x, int y, double value) const;
         // Returns a random noise value sampled from a Gaussian distribution.
         boost::function<double ()> noise;
+        // Sets the seed for generating subsequent random numbers.
+        void setSeed(uint32_t seedValue);
 	private:
         double _total, _offset, _gain, _noiseRMS;
         mutable boost::mt19937 _uniform;
 	}; // ImageResponseModel
+	
+	inline void ImageResponseModel::setSeed(uint32_t seedValue) {
+        _uniform.seed(seedValue);
+	}
+	
 } // imengine
 
 #endif // IMENGINE_IMAGE_RESPONSE_MODEL
