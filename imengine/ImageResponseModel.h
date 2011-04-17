@@ -18,7 +18,7 @@ namespace imengine {
 	    // Transformed values are passed to the specified writer. Use gain=0 to disable
 	    // Poisson fluctuations or noiseRMS=0 to disable Gaussian fluctuations.
 		ImageResponseModel(AbsImageWriterPtr writer,
-		    double total, double offset, double gain, double noiseRMS);
+		    double total, double offset, double gain, double noiseRMS, uint32_t seed = 2011);
 		virtual ~ImageResponseModel();
         // Filters each pixel before writing it by applying our response model.
         virtual double filter(int x, int y, double value) const;

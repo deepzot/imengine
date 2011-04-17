@@ -10,8 +10,9 @@
 namespace local = imengine;
 
 local::ImageResponseModel::ImageResponseModel(AbsImageWriterPtr writer,
-double total, double offset, double gain, double noiseRMS)
-: AbsImageFilter(writer), _total(total), _offset(offset), _gain(gain), _noiseRMS(noiseRMS)
+double total, double offset, double gain, double noiseRMS, uint32_t seed)
+: AbsImageFilter(writer), _total(total), _offset(offset), _gain(gain), _noiseRMS(noiseRMS),
+_uniform(seed)
 {
     assertGreaterThan<double>("ImageResponseModel total",total,0);
     assertGreaterThanOrEqualTo<double>("ImageResponseModel gain",gain,0);

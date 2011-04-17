@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <ctime>
 
 #include "imengine/imengine.h"
 
@@ -152,8 +153,12 @@ int main(int argc, char **argv) {
             writer.reset(new img::FileImageWriter(outfile));
         }
 
+        // Select a random number seed for generating noise based on either the
+        // current time or else specified on the command line.
+        uint32_t seed(static_cast<uint32_t>(std::time(0)));
+
         // filter the image with the specified response model
-        writer.reset(new img::ImageResponseModel(writer,total,offset,gain,noiseRMS));
+        writer.reset(new img::ImageResponseModel(writer,total,offset,gain,noiseRMS,seed));
 
         // generate the image
         engine->initialize(npixels,scale);
