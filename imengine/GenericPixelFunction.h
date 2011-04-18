@@ -17,7 +17,14 @@ namespace imengine {
 	protected:
         // Computes the function's discrete Fourier transform and saves the results in
         // the specified transform object. The transform is defined as:
-        // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
+        //
+        //   transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
+        //
+        // where:
+        //
+        //   data[j,k] = f(j2*delta,k2*delta) delta*delta
+        //
+        // [j2,k2] are indices centered on (0,0) and f(x,y) is evaluated via operator().
         // Should normally be called via the public AbsPixelFunction::computeTransform.
         virtual void doTransform(TransformDataPtr transformData);
 	}; // GenericPixelFunction
