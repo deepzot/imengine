@@ -43,6 +43,7 @@ libimengine_a_SOURCES = \
 	imengine/models/DiskProfile.cc \
 	imengine/models/ExponentialProfile.cc \
 	imengine/models/GaussianDemo.cc \
+	imengine/models/SersicDemo.cc \
 	imengine/models/GaussianProfile.cc \
 	imengine/models/MoffatProfile.cc
 
@@ -86,5 +87,6 @@ nobase_include_HEADERS = \
 	imengine/models/DiskProfile.h \
 	imengine/models/ExponentialProfile.h \
 	imengine/models/GaussianDemo.h \
+	imengine/models/SersicDemo.h \
 	imengine/models/GaussianProfile.h \
 	imengine/models/MoffatProfile.h

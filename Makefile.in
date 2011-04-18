@@ -95,7 +95,8 @@ am_libimengine_a_OBJECTS = AbsCoordTransform.$(OBJEXT) \
 	InvalidValue.$(OBJEXT) DeltaFunction.$(OBJEXT) \
 	DiskDemo.$(OBJEXT) DiskProfile.$(OBJEXT) \
 	ExponentialProfile.$(OBJEXT) GaussianDemo.$(OBJEXT) \
-	GaussianProfile.$(OBJEXT) MoffatProfile.$(OBJEXT)
+	SersicDemo.$(OBJEXT) GaussianProfile.$(OBJEXT) \
+	MoffatProfile.$(OBJEXT)
 libimengine_a_OBJECTS = $(am_libimengine_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
 am_imbenchmark_OBJECTS = imbenchmark.$(OBJEXT)
@@ -264,6 +265,7 @@ libimengine_a_SOURCES = \
 	imengine/models/DiskProfile.cc \
 	imengine/models/ExponentialProfile.cc \
 	imengine/models/GaussianDemo.cc \
+	imengine/models/SersicDemo.cc \
 	imengine/models/GaussianProfile.cc \
 	imengine/models/MoffatProfile.cc
 
@@ -307,6 +309,7 @@ nobase_include_HEADERS = \
 	imengine/models/DiskProfile.h \
 	imengine/models/ExponentialProfile.h \
 	imengine/models/GaussianDemo.h \
+	imengine/models/SersicDemo.h \
 	imengine/models/GaussianProfile.h \
 	imengine/models/MoffatProfile.h
 
@@ -483,6 +486,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OversamplingImageEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PngImageWriter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RuntimeError.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SersicDemo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SilentImageWriter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SlowTransform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformData.Po@am__quote@
@@ -965,6 +969,20 @@ GaussianDemo.obj: imengine/models/GaussianDemo.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/GaussianDemo.cc' object='GaussianDemo.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GaussianDemo.obj `if test -f 'imengine/models/GaussianDemo.cc'; then $(CYGPATH_W) 'imengine/models/GaussianDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/GaussianDemo.cc'; fi`
+
+SersicDemo.o: imengine/models/SersicDemo.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SersicDemo.o -MD -MP -MF $(DEPDIR)/SersicDemo.Tpo -c -o SersicDemo.o `test -f 'imengine/models/SersicDemo.cc' || echo '$(srcdir)/'`imengine/models/SersicDemo.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SersicDemo.Tpo $(DEPDIR)/SersicDemo.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/SersicDemo.cc' object='SersicDemo.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SersicDemo.o `test -f 'imengine/models/SersicDemo.cc' || echo '$(srcdir)/'`imengine/models/SersicDemo.cc
+
+SersicDemo.obj: imengine/models/SersicDemo.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SersicDemo.obj -MD -MP -MF $(DEPDIR)/SersicDemo.Tpo -c -o SersicDemo.obj `if test -f 'imengine/models/SersicDemo.cc'; then $(CYGPATH_W) 'imengine/models/SersicDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/SersicDemo.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SersicDemo.Tpo $(DEPDIR)/SersicDemo.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/SersicDemo.cc' object='SersicDemo.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SersicDemo.obj `if test -f 'imengine/models/SersicDemo.cc'; then $(CYGPATH_W) 'imengine/models/SersicDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/SersicDemo.cc'; fi`
 
 GaussianProfile.o: imengine/models/GaussianProfile.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GaussianProfile.o -MD -MP -MF $(DEPDIR)/GaussianProfile.Tpo -c -o GaussianProfile.o `test -f 'imengine/models/GaussianProfile.cc' || echo '$(srcdir)/'`imengine/models/GaussianProfile.cc
