@@ -5,6 +5,7 @@
 #include "imengine/AbsPixelFunction.h"
 #include "imengine/models/DeltaFunction.h"
 #include "imengine/models/GaussianDemo.h"
+#include "imengine/models/SersicDemo.h"
 #include "imengine/models/DiskDemo.h"
 #include "imengine/TransformedProfileFunction.h"
 
@@ -79,13 +80,15 @@ namespace parser {
                 [_val = construct<AbsRadialProfilePtr>(new_<mod::MoffatProfile>(_a,_b))];
                 
             // standalone pixel functions
-            standalone = delta | gdemo | ddemo;
+            standalone = delta | gdemo | ddemo | sdemo;
             delta = lit("delta")
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::DeltaFunction>())];
             gdemo = ("gdemo[" >> double_[_a=_1] >> ']')
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::GaussianDemo>(_a))];
             ddemo = ("ddemo[" >> double_[_a=_1] >> ']')
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::DiskDemo>(_a))];
+            sdemo = ("sdemo[" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ']')
+                [_val = construct<AbsPixelFunctionPtr>(new_<mod::SersicDemo>(_a,_b))];
         }
 
         AbsCoordTransformPtr identity;
@@ -93,6 +96,7 @@ namespace parser {
         qi::rule<Iterator, img::AbsPixelFunctionPtr()> model;
         qi::rule<Iterator, img::AbsPixelFunctionPtr()> standalone,delta;
         qi::rule<Iterator, img::AbsPixelFunctionPtr(), qi::locals<double> > gdemo,ddemo;
+        qi::rule<Iterator, img::AbsPixelFunctionPtr(), qi::locals<double,double> > sdemo;
         qi::rule<Iterator, img::AbsCoordTransformPtr(), qi::locals<double,double> > ellipticity;
         qi::rule<Iterator, img::AbsRadialProfilePtr()> profile;
         qi::rule<Iterator, img::AbsRadialProfilePtr(), qi::locals<double> > gauss,disk,exp;

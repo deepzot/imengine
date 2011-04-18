@@ -31,6 +31,7 @@
 #include "imengine/models/DeltaFunction.h"
 #include "imengine/models/DiskDemo.h"
 #include "imengine/models/GaussianDemo.h"
+#include "imengine/models/SersicDemo.h"
 
 // Radial profile transforms
 #include "imengine/IdentityTransform.h"
