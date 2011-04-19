@@ -11,8 +11,10 @@
 
 namespace local = imengine;
 
-local::PngImageWriter::PngImageWriter(std::string const &filename, float mapMin, float mapMax)
-: ArrayImageWriter(), _filename(filename), _mapMin(mapMin), _mapMax(mapMax)
+local::PngImageWriter::PngImageWriter(std::string const &filename, bool inverted,
+float mapMin, float mapMax)
+: ArrayImageWriter(), _filename(filename), _inverted(inverted),
+_mapMin(mapMin), _mapMax(mapMax)
 {
 }
 
@@ -25,12 +27,12 @@ void local::PngImageWriter::open(int size, double scale) {
 
 void local::PngImageWriter::close() {
     writePngImage(_filename, boost::bind(&local::PngImageWriter::getValue,this,_1,_2),
-        getSize(), _mapMin, _mapMax);
+        getSize(), _inverted, _mapMin, _mapMax);
     ArrayImageWriter::close();
 }
 
 void local::writePngImage(std::string const &filename, ImageDataAccessor getValue,
-    int size, float mapMin, float mapMax) {
+    int size, bool inverted, float mapMin, float mapMax) {
 
     // open the specified file or stdout
     std::FILE *_file;
@@ -58,7 +60,7 @@ void local::writePngImage(std::string const &filename, ImageDataAccessor getValu
     // calculate the float to int mapping
     double range(mapMax-mapMin);
     assert(range > 0);
-    double scale(((1<<16)-1)/range);
+    double scale(PngImageWriter::MaxPixel/range);
 
     // create a png_struct
     png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp)0, 0, 0);
@@ -94,7 +96,11 @@ void local::writePngImage(std::string const &filename, ImageDataAccessor getValu
             if(value < 0) value = 0;
             if(value > range) value = range;
             ivalue = static_cast<int>(value*scale+0.5);
-            assert(ivalue >= 0 && ivalue < (1<<16));
+            assert(ivalue >= 0 && ivalue <= PngImageWriter::MaxPixel);
+            // invert the image (black <-> white) if requested
+            if(inverted) {
+                ivalue = PngImageWriter::MaxPixel - ivalue;
+            }
             // store 16-bit value in big-endian order
             *row++ = (png_byte)((ivalue & 0xff00) >> 8);
             *row++ = (png_byte)(ivalue & 0xff);

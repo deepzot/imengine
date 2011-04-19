@@ -17,12 +17,16 @@ namespace imengine {
 	    // See comments for writePngImage for details on mapMin, mapMax. By default,
 	    // the black point is mapped to zero and the white point is autoscaled to 
 	    // the actual pixel data maximum.
-		PngImageWriter(std::string const &filename, float mapMin = 0, float mapMax = +FLT_MAX);
+		PngImageWriter(std::string const &filename, bool inverted = true,
+		    float mapMin = 0, float mapMax = +FLT_MAX);
 		virtual ~PngImageWriter();
         virtual void open(int size, double scale);
         virtual void close();
+        // The maximum allowed (16-bit) pixel value
+        static const int MaxPixel = 0xffff;
 	private:
         std::string _filename;
+        bool _inverted;
         float _mapMin, _mapMax;
 	}; // PngImageWriter
 	
@@ -33,7 +37,7 @@ namespace imengine {
 	// a different value will result in a fixed black/white point.
     typedef boost::function<float (int,int)> ImageDataAccessor;
     void writePngImage(std::string const &filename, ImageDataAccessor accessor,
-        int size, float mapMin = -FLT_MAX, float mapMax = +FLT_MAX);
+        int size, bool inverted = true, float mapMin = -FLT_MAX, float mapMax = +FLT_MAX);
     
 } // imengine
 
