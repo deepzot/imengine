@@ -26,7 +26,7 @@ void local::ExponentialProfile::setParameters(double alpha) {
 local::ExponentialProfile::~ExponentialProfile() { }
 
 double local::ExponentialProfile::operator()(double r) const {
-    return _norm*std::exp(-_a*r);
+    return std::exp(-_a*r)/_norm;
 }
 
 double local::ExponentialProfile::radialIntegral(double kappa) const {

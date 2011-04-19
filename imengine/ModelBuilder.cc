@@ -47,6 +47,8 @@ namespace parser {
             using qi::_val;
             using qi::_a;
             using qi::_b;
+            using qi::_c;
+            using qi::_d;
             using qi::_1;
             using qi::_2;
             using qi::double_;
@@ -66,7 +68,8 @@ namespace parser {
             
             // radial profile coordinate transformations
             ellipticity = ("%{" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> '}')
-                [_val = construct<AbsCoordTransformPtr>(new_<img::EllipticityTransform>(_a,_b))];
+                [_val = construct<AbsCoordTransformPtr>(
+                new_<img::EllipticityTransform>(_a,_b))];
 
             // radial profile primitives
             profile = gauss | disk | exp | moffat;
@@ -87,8 +90,9 @@ namespace parser {
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::GaussianDemo>(_a))];
             ddemo = ("ddemo[" >> double_[_a=_1] >> ']')
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::DiskDemo>(_a))];
-            sdemo = ("sdemo[" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ']')
-                [_val = construct<AbsPixelFunctionPtr>(new_<mod::SersicDemo>(_a,_b))];
+            sdemo = ("sdemo[" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ','
+                >> double_[_c=_1] >> ',' >> double_[_d=_1] >> ']')
+                [_val = construct<AbsPixelFunctionPtr>(new_<mod::SersicDemo>(_a,_b,_c,_d))];
         }
 
         AbsCoordTransformPtr identity;
@@ -96,8 +100,10 @@ namespace parser {
         qi::rule<Iterator, img::AbsPixelFunctionPtr()> model;
         qi::rule<Iterator, img::AbsPixelFunctionPtr()> standalone,delta;
         qi::rule<Iterator, img::AbsPixelFunctionPtr(), qi::locals<double> > gdemo,ddemo;
-        qi::rule<Iterator, img::AbsPixelFunctionPtr(), qi::locals<double,double> > sdemo;
-        qi::rule<Iterator, img::AbsCoordTransformPtr(), qi::locals<double,double> > ellipticity;
+        qi::rule<Iterator, img::AbsPixelFunctionPtr(),
+            qi::locals<double,double,double,double> > sdemo;
+        qi::rule<Iterator, img::AbsCoordTransformPtr(),
+            qi::locals<double,double> > ellipticity;
         qi::rule<Iterator, img::AbsRadialProfilePtr()> profile;
         qi::rule<Iterator, img::AbsRadialProfilePtr(), qi::locals<double> > gauss,disk,exp;
         qi::rule<Iterator, img::AbsRadialProfilePtr(), qi::locals<double,double> > moffat;
