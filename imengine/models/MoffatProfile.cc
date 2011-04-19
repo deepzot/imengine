@@ -19,7 +19,7 @@ _pi(4*std::atan(1.0))
 local::MoffatProfile::~MoffatProfile() { }
 
 void local::MoffatProfile::setParameters(double fwhm, double beta) {
-    if(fwhm == _fwhm && beta == _beta) return;
+    if(isInitialized() && fwhm == _fwhm && beta == _beta) return;
     assertGreaterThan<double>("MoffatProfile beta",beta,1);
     assertGreaterThan<double>("MoffateProfile fwhm",fwhm,0);
     _fwhm = fwhm;

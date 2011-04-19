@@ -14,7 +14,7 @@ local::GaussianProfile::GaussianProfile(double sigma)
 }
 
 void local::GaussianProfile::setParameters(double sigma) {
-    if(sigma == _sigma) return;
+    if(isInitialized() && sigma == _sigma) return;
     assertGreaterThan<double>("GaussianProfile sigma",sigma,0);
     _sigma = sigma;
     double sigsq(sigma*sigma);

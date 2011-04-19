@@ -14,7 +14,7 @@ _twopi(8*std::atan(1.0))
 }
 
 void local::ExponentialProfile::setParameters(double alpha) {
-    if(alpha == _a) return;
+    if(isInitialized() && alpha == _a) return;
     assertGreaterThan<double>("ExponentialProfile alpha",alpha,0);
     _a = alpha;
     _a2 = _a*_a;

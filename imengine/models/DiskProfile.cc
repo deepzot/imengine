@@ -18,7 +18,7 @@ local::DiskProfile::DiskProfile(double radius)
 local::DiskProfile::~DiskProfile() { }
 
 void local::DiskProfile::setParameters(double radius) {
-    if(radius == _radius) return;
+    if(isInitialized() && radius == _radius) return;
     assertGreaterThan<double>("DiskProfile radius",radius,0);
     _radius = radius;
     _norm = 1/(_pi*_radius*_radius);
