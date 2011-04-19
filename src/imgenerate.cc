@@ -24,6 +24,8 @@ int main(int argc, char **argv) {
         ("output,o", po::value<std::string>(&outfile)->default_value(""),
             "Output file for writing image data (defaults to stdout).")
         ("png", "Writes a 16-bit grayscale png image.")
+        ("noninverted",
+            "Any png image written will be non-inverted (default is inverted).")
         ("midpoint", "Uses the midpoint method for pixelization.")
         ("bilinear", "Uses bilinear interpolation for pixelization (this is the default).")
         ("bicubic", "Uses bicubic interpolation for pixelization.")
@@ -103,7 +105,7 @@ int main(int argc, char **argv) {
         std::cerr << "Option noiseRMS must have a value >= 0" << std::endl;
         return 6;
     }
-    bool png(vm.count("png"));
+    bool png(vm.count("png")),noninverted(vm.count("noninverted"));
 
     try {
         // create the source and psf models
@@ -150,7 +152,7 @@ int main(int argc, char **argv) {
         std::string pngend(".png");
         int outlen(outfile.length()),endlen(pngend.length());
         if(png || (outlen >= endlen && 0 == outfile.compare(outlen-endlen,endlen,pngend))) {
-            writer.reset(new img::PngImageWriter(outfile));
+            writer.reset(new img::PngImageWriter(outfile,!noninverted));
         }
         else {
             writer.reset(new img::FileImageWriter(outfile));
