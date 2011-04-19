@@ -14,7 +14,7 @@ namespace po = boost::program_options;
 
 int main(int argc, char **argv) {
     // configure command-line options processing using the boost program_options library
-    int npixels,oversampling;
+    int npixels,oversampling,margin;
     uint32_t seed;
     double dx,dy,scale,total,offset,gain,noiseRMS;
     std::string outfile,srcString,psfString;
@@ -38,6 +38,8 @@ int main(int argc, char **argv) {
         ("scale",po::value<double>(&scale)->default_value(1.),"Pixel scale.")
         ("oversampling",po::value<int>(&oversampling)->default_value(1),
             "Divides each pixel into N x N subpixels.")
+        ("margin",po::value<int>(&margin)->default_value(0),
+            "Adds or subtracts a temporary margin when generating the image.")
         ("total",po::value<double>(&total)->default_value(1.),
             "Total pixel sum of generated image.")
         ("offset",po::value<double>(&offset)->default_value(0.),
@@ -82,6 +84,11 @@ int main(int argc, char **argv) {
     }
     if(npixels <= 0) {
         std::cerr << "Option npixels must have a positive value" << std::endl;
+        return 3;
+    }
+    if(npixels + 2*margin <= 0) {
+        std::cerr << "The requested negative margin (" << margin <<
+            ") is too large for npixels = " << npixels << std::endl;
         return 3;
     }
     bool slow(vm.count("slow"));
@@ -145,6 +152,12 @@ int main(int argc, char **argv) {
         if(oversampling > 1) {
             // original engine shared ptr is kept alive by the new oversampling engine
             engine.reset(new img::OversamplingImageEngine(engine,oversampling));
+        }
+        
+        // add/subtract a margin?
+        if(margin != 0) {
+            // original engine shared ptr is kept alive by the new oversampling engine
+            engine.reset(new img::ResizingImageEngine(engine,margin));
         }
 
         // select an appropriate image writer

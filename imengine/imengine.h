@@ -13,7 +13,10 @@
 #include "imengine/MidpointImageEngine.h"
 #include "imengine/BilinearImageEngine.h"
 #include "imengine/BicubicImageEngine.h"
+
+// Engine modifiers
 #include "imengine/OversamplingImageEngine.h"
+#include "imengine/ResizingImageEngine.h"
 
 // Image writers and filter
 #include "imengine/SilentImageWriter.h"
