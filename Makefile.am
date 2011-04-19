@@ -31,6 +31,7 @@ libimengine_a_SOURCES = \
 	imengine/MidpointImageEngine.cc \
 	imengine/ModelBuilder.cc \
 	imengine/OversamplingImageEngine.cc \
+	imengine/ResizingImageEngine.cc \
 	imengine/PngImageWriter.cc \
 	imengine/SilentImageWriter.cc \
 	imengine/SlowTransform.cc \
@@ -76,6 +77,7 @@ nobase_include_HEADERS = \
 	imengine/TransformData.h \
 	imengine/TransformedProfileFunction.h \
 	imengine/OversamplingImageEngine.h \
+	imengine/ResizingImageEngine.h \
 	imengine/AbsImageFilter.h \
 	imengine/ImageResponseModel.h \
 	imengine/RuntimeError.h \

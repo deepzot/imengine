@@ -89,14 +89,14 @@ am_libimengine_a_OBJECTS = AbsCoordTransform.$(OBJEXT) \
 	ImageEngine.$(OBJEXT) ImageResponseModel.$(OBJEXT) \
 	InterpolationData.$(OBJEXT) MidpointImageEngine.$(OBJEXT) \
 	ModelBuilder.$(OBJEXT) OversamplingImageEngine.$(OBJEXT) \
-	PngImageWriter.$(OBJEXT) SilentImageWriter.$(OBJEXT) \
-	SlowTransform.$(OBJEXT) TransformData.$(OBJEXT) \
-	TransformedProfileFunction.$(OBJEXT) RuntimeError.$(OBJEXT) \
-	InvalidValue.$(OBJEXT) DeltaFunction.$(OBJEXT) \
-	DiskDemo.$(OBJEXT) DiskProfile.$(OBJEXT) \
-	ExponentialProfile.$(OBJEXT) GaussianDemo.$(OBJEXT) \
-	SersicDemo.$(OBJEXT) GaussianProfile.$(OBJEXT) \
-	MoffatProfile.$(OBJEXT)
+	ResizingImageEngine.$(OBJEXT) PngImageWriter.$(OBJEXT) \
+	SilentImageWriter.$(OBJEXT) SlowTransform.$(OBJEXT) \
+	TransformData.$(OBJEXT) TransformedProfileFunction.$(OBJEXT) \
+	RuntimeError.$(OBJEXT) InvalidValue.$(OBJEXT) \
+	DeltaFunction.$(OBJEXT) DiskDemo.$(OBJEXT) \
+	DiskProfile.$(OBJEXT) ExponentialProfile.$(OBJEXT) \
+	GaussianDemo.$(OBJEXT) SersicDemo.$(OBJEXT) \
+	GaussianProfile.$(OBJEXT) MoffatProfile.$(OBJEXT)
 libimengine_a_OBJECTS = $(am_libimengine_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
 am_imbenchmark_OBJECTS = imbenchmark.$(OBJEXT)
@@ -253,6 +253,7 @@ libimengine_a_SOURCES = \
 	imengine/MidpointImageEngine.cc \
 	imengine/ModelBuilder.cc \
 	imengine/OversamplingImageEngine.cc \
+	imengine/ResizingImageEngine.cc \
 	imengine/PngImageWriter.cc \
 	imengine/SilentImageWriter.cc \
 	imengine/SlowTransform.cc \
@@ -298,6 +299,7 @@ nobase_include_HEADERS = \
 	imengine/TransformData.h \
 	imengine/TransformedProfileFunction.h \
 	imengine/OversamplingImageEngine.h \
+	imengine/ResizingImageEngine.h \
 	imengine/AbsImageFilter.h \
 	imengine/ImageResponseModel.h \
 	imengine/RuntimeError.h \
@@ -485,6 +487,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MoffatProfile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OversamplingImageEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PngImageWriter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ResizingImageEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RuntimeError.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SersicDemo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SilentImageWriter.Po@am__quote@
@@ -801,6 +804,20 @@ OversamplingImageEngine.obj: imengine/OversamplingImageEngine.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/OversamplingImageEngine.cc' object='OversamplingImageEngine.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o OversamplingImageEngine.obj `if test -f 'imengine/OversamplingImageEngine.cc'; then $(CYGPATH_W) 'imengine/OversamplingImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/OversamplingImageEngine.cc'; fi`
+
+ResizingImageEngine.o: imengine/ResizingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ResizingImageEngine.o -MD -MP -MF $(DEPDIR)/ResizingImageEngine.Tpo -c -o ResizingImageEngine.o `test -f 'imengine/ResizingImageEngine.cc' || echo '$(srcdir)/'`imengine/ResizingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ResizingImageEngine.Tpo $(DEPDIR)/ResizingImageEngine.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ResizingImageEngine.cc' object='ResizingImageEngine.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ResizingImageEngine.o `test -f 'imengine/ResizingImageEngine.cc' || echo '$(srcdir)/'`imengine/ResizingImageEngine.cc
+
+ResizingImageEngine.obj: imengine/ResizingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ResizingImageEngine.obj -MD -MP -MF $(DEPDIR)/ResizingImageEngine.Tpo -c -o ResizingImageEngine.obj `if test -f 'imengine/ResizingImageEngine.cc'; then $(CYGPATH_W) 'imengine/ResizingImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ResizingImageEngine.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ResizingImageEngine.Tpo $(DEPDIR)/ResizingImageEngine.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ResizingImageEngine.cc' object='ResizingImageEngine.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ResizingImageEngine.obj `if test -f 'imengine/ResizingImageEngine.cc'; then $(CYGPATH_W) 'imengine/ResizingImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ResizingImageEngine.cc'; fi`
 
 PngImageWriter.o: imengine/PngImageWriter.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PngImageWriter.o -MD -MP -MF $(DEPDIR)/PngImageWriter.Tpo -c -o PngImageWriter.o `test -f 'imengine/PngImageWriter.cc' || echo '$(srcdir)/'`imengine/PngImageWriter.cc
