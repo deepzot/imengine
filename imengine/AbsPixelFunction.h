@@ -28,6 +28,9 @@ namespace imengine {
     protected:
         // Does the actual work of computeTransform.
         virtual void doTransform(TransformDataPtr transformData) = 0;
+        // Registers that our internal state has changed so that the next call to
+        // doTransform() would calculate a different result than the previous call.
+        void setChanged();
         // Allow subclasses to delegate observing duties by sharing our observer.
         ObserverPtr getObserver() const;
     private:

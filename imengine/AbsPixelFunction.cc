@@ -28,6 +28,10 @@ bool local::AbsPixelFunction::hasChanged() const {
     return _observer->hasChanged();
 }
 
+void local::AbsPixelFunction::setChanged() {
+    _observer->setChanged(true);
+}
+
 local::ObserverPtr local::AbsPixelFunction::getObserver() const {
     return _observer;
 }

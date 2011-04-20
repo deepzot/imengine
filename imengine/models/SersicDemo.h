@@ -13,8 +13,11 @@ namespace models {
 		SersicDemo(double alpha, double index, double e1, double e2);
 		virtual ~SersicDemo();
 		virtual double operator()(double x, double y) const;
+        // Sets the parameter values to use.
+        void setParameters(double alpha, double index, double e1, double e2);
 	private:
-        double _alpha, _index, _norm, _inverseIndex;
+        bool _initialized;
+        double _twopi, _alpha, _index, _norm, _inverseIndex;
         EllipticityTransform _transform;
 	}; // SersicDemo
 }} // imengine::models
