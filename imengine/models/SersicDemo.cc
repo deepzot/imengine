@@ -29,7 +29,7 @@ void local::SersicDemo::setParameters(double alpha, double index, double e1, dou
     _norm = _twopi*_index*std::pow(_alpha,-2*_index)*
         boost::math::tgamma(2*_index)/_transform.determinant();
     _initialized = true;
-    hasChanged();
+    setChanged();
 }
 
 double local::SersicDemo::operator()(double x, double y) const {
