@@ -26,13 +26,13 @@ void local::SersicDemo::setParameters(double alpha, double index, double e1, dou
     _alpha = alpha;
     _index = index;
     _inverseIndex = 1/_index;
-    _norm = _twopi*_index*std::pow(_alpha,-2*_index)*
+    _norm = _twopi*_alpha*_alpha*_index*
         boost::math::tgamma(2*_index)/_transform.determinant();
     _initialized = true;
     setChanged();
 }
 
 double local::SersicDemo::operator()(double x, double y) const {
-    double r(_transform.transformedRadius(x,y));
-    return std::exp(-_alpha*std::pow(r,_inverseIndex))/_norm;
+    double ra(_transform.transformedRadius(x,y)/_alpha);
+    return std::exp(-std::pow(ra,_inverseIndex))/_norm;
 }

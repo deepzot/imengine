@@ -14,21 +14,20 @@ _twopi(8*std::atan(1.0))
 }
 
 void local::ExponentialProfile::setParameters(double alpha) {
-    if(isInitialized() && alpha == _a) return;
+    if(isInitialized() && alpha == _alpha) return;
     assertGreaterThan<double>("ExponentialProfile alpha",alpha,0);
-    _a = alpha;
-    _a2 = _a*_a;
-    _a3 = _a2*_a;
-    _norm = _twopi/_a2;
+    _alpha = alpha;
+    _norm = _twopi*_alpha*_alpha;
     setChanged();
 }
 
 local::ExponentialProfile::~ExponentialProfile() { }
 
 double local::ExponentialProfile::operator()(double r) const {
-    return std::exp(-_a*r)/_norm;
+    return std::exp(-r/_alpha)/_norm;
 }
 
 double local::ExponentialProfile::radialIntegral(double kappa) const {
-    return _a3*std::pow(_a2+kappa*kappa,-1.5);
+    double ak(_alpha*kappa);
+    return std::pow(1+ak*ak,-1.5);
 }

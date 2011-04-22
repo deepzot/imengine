@@ -19,7 +19,7 @@ namespace models {
         // Sets the parameter values to use.
         void setParameters(double alpha);
 	private:
-        double _a,_a2,_a3,_norm,_twopi;
+        double _alpha,_norm,_twopi;
 	}; // ExponentialProfile
 }} // imengine::models
 
