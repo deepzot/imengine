@@ -84,14 +84,15 @@ local::Real *local::TransformData::getTargetDataPtr() const {
     return _target->_data;
 }
 
-void local::TransformData::setToProduct(local::TransformData const& t1,
-local::TransformData const& t2, double dx, double dy) {
+void local::TransformData::setToProduct(TransformDataPtr t1, TransformDataPtr t2,
+double dx, double dy) {
     // is there any translation to apply?
     bool translated = (0 != dx)||(0 != dy);
     double norm = _gridSpacing*_gridSpacing;
     for(int j = 0; j < _gridSize; ++j) {
         for(int i = 0; i < _break1; ++i) {
-            Real re1(t1.real(i,j)),im1(t1.imag(i,j)),re2(t2.real(i,j)),im2(t2.imag(i,j));
+            Real re1(t1->real(i,j)),im1(t1->imag(i,j));
+            Real re2(t2->real(i,j)),im2(t2->imag(i,j));
             Real re = norm*(re1*re2 - im1*im2);
             Real im = norm*(re1*im2 + im1*re2);
             if(translated) {
@@ -111,9 +112,9 @@ local::TransformData const& t2, double dx, double dy) {
             }
         }
     }
-    // Coerce the symmetry required for a real-valued inverse DFT. The reason that this might
-    // be required is that sub-pixel translation via an exponential factor breaks the
-    // symmetry when _gridSize is even.
+    // Coerce the symmetry required for a real-valued inverse DFT. The reason that
+    // this might be required is that sub-pixel translation via an exponential factor
+    // breaks the symmetry when _gridSize is even.
     if(_gridSize % 2 == 0) {
        int nby2(_gridSize >> 1);
        imag(nby2,0) = 0;
@@ -140,10 +141,12 @@ void local::TransformData::validate() const {
         //int sign = (N%2 == 0 && j == N/2) ? -1 : +1;
         for(int i = 0; i < _gridSize; i++) {
             if(std::fabs(getReal(i,j)-real(i,j)) > 1e-10) {
-                std::cout << "re(" << i << ',' << j << ") " << getReal(i,j) << ' ' << real(i,j) << std::endl;
+                std::cout << "re(" << i << ',' << j << ") " << getReal(i,j)
+                    << ' ' << real(i,j) << std::endl;
             }
             if(std::fabs(getImag(i,j)-imag(i,j)) > 1e-10) {
-                std::cout << "im(" << i << ',' << j << ") " << getImag(i,j) << ' ' << imag(i,j) << std::endl;
+                std::cout << "im(" << i << ',' << j << ") " << getImag(i,j)
+                    << ' ' << imag(i,j) << std::endl;
             }
         }
     }

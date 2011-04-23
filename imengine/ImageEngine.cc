@@ -63,7 +63,7 @@ double local::ImageEngine<T>::generate(local::AbsImageWriter &writer, double dx,
         !_validLast || (dx != _lastDx) || (dy != _lastDy));
     if(anyChange) {
         // combine the source and PSF in Fourier space
-        _imageTransform->setToProduct(*_sourceTransform,*_psfTransform,dx,dy);
+        _imageTransform->setToProduct(_sourceTransform,_psfTransform,dx,dy);
         // build a grid of real-space convoluted image data
         _imageTransform->inverseTransform();        
     }
