@@ -8,24 +8,27 @@
 namespace local = imengine;
 
 local::PixelFunctionSum::PixelFunctionSum(
-AbsPixelFunctionPtr f1, AbsPixelFunctionPtr f2, double frac1)
-: _f1(f1), _f2(f2), _frac1(-1)
+AbsPixelFunctionPtr f1, AbsPixelFunctionPtr f2, double frac1, double dx, double dy)
+: _f1(f1), _f2(f2), _initialized(false)
 {
-    setParameters(frac1);
+    setParameters(frac1,dx,dy);
 }
 
 local::PixelFunctionSum::~PixelFunctionSum() { }
 
-void local::PixelFunctionSum::setParameters(double frac1) {
-    if(_frac1 != -1 && _frac1 == frac1) return;
+void local::PixelFunctionSum::setParameters(double frac1, double dx, double dy) {
+    if(_initialized && _frac1 == frac1 && _dx == dx && _dy == dy) return;
     assertGreaterThanOrEqualTo<double>("PixelFunctionSum frac1",frac1,0);
     assertLessThanOrEqualTo<double>("PixelFunctionSum frac1",frac1,1);
     _frac1 = frac1;
+    _dx = dx;
+    _dy = dy;
+    _initialized = true;
     setChanged();
 }
 
 double local::PixelFunctionSum::operator()(double x, double y) const {
-    return _f1->operator()(x,y) + _f2->operator()(x,y);
+    return _frac1*_f1->operator()(x,y) + (1-_frac1)*_f2->operator()(x-_dx,y-_dy);
 }
 
 void local::PixelFunctionSum::initTransform(TransformDataPtr transformData) {
@@ -44,7 +47,7 @@ void local::PixelFunctionSum::doTransform(TransformDataPtr transformData) {
     if(_f1->hasChanged()) _f1->computeTransform(_transform1);
     if(_f2->hasChanged()) _f2->computeTransform(_transform2);
     // fill the provided transform with the scaled sum
-    transformData->setToSum(_transform1,_transform2,_frac1,1-_frac1);
+    transformData->setToSum(_transform1,_transform2,_frac1,1-_frac1,_dx,_dy);
 }
 
 bool local::PixelFunctionSum::hasChanged() const {
