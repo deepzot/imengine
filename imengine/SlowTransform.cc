@@ -54,3 +54,7 @@ void local::SlowTransform::setToTransform() {
     }
 }
 
+local::TransformDataPtr local::SlowTransform::clone() const {
+    TransformDataPtr _clone;
+    return _clone;
+}

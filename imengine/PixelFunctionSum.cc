@@ -30,8 +30,8 @@ double local::PixelFunctionSum::operator()(double x, double y) const {
 
 void local::PixelFunctionSum::initTransform(TransformDataPtr transformData) {
     // allocate transform data arrays for f1,f2 by cloning the input parameter
-    //_transform1.reset(transformData.clone());
-    //_transform2.reset(transformData.clone());
+    _transform1 = transformData->clone();
+    _transform2 = transformData->clone();
     // initialize f1,f2 with their new transform data arrays
     _f1->initTransform(_transform1);
     _f2->initTransform(_transform2);

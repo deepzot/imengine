@@ -62,6 +62,10 @@ namespace imengine {
         // object. Normalization is defined by:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
         virtual void setToTransform() = 0;
+        
+        // Returns a smart pointer to a new object that has the same properties as
+        // this one. The data from this object is not copied into the new object.
+        virtual TransformDataPtr clone() const = 0;
 
         //void validate() const;
 

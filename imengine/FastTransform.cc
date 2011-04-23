@@ -28,3 +28,8 @@ void local::FastTransform::setToTransform() {
 void local::FastTransform::inverseTransform() {
     FFTW(execute)((FFTW(plan))_inversePlan);
 }
+
+local::TransformDataPtr local::FastTransform::clone() const {
+    TransformDataPtr _clone;
+    return _clone;
+}

@@ -21,6 +21,9 @@ namespace imengine {
         // in our target InterpolationData object. Normalization is defined by:
         // data[m,n] = Re[Sum[transform[j,k] Exp[+2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]]
         virtual void inverseTransform();
+        // Returns a smart pointer to a new object that has the same properties as
+        // this one. The data from this object is not copied into the new object.
+        virtual TransformDataPtr clone() const;
 	private:
 	}; // SlowTransform
 } // imengine
