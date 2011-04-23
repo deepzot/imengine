@@ -53,6 +53,8 @@ namespace parser {
             using qi::_1;
             using qi::_2;
             using qi::_3;
+            using qi::_4;
+            using qi::_5;
             using qi::double_;
             using boost::phoenix::construct;
             using boost::phoenix::new_;
@@ -62,6 +64,10 @@ namespace parser {
                 = ("sum[" >> model >> ',' >> model >> ';' >> double_ >> ']')
                     [_val = construct<AbsPixelFunctionPtr>
                         (new_<img::PixelFunctionSum>(_1,_2,_3))]
+                | ("sum[" >> model >> ',' >> model >> ';' >> double_ >> ','
+                    >> double_ >> ',' >> double_ >> ']')
+                    [_val = construct<AbsPixelFunctionPtr>
+                        (new_<img::PixelFunctionSum>(_1,_2,_3,_4,_5))]
                 | standalone
                     [_val = _1]
                 | (profile >> ellipticity)
