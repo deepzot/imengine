@@ -22,9 +22,9 @@ namespace imengine {
         // the specified transform object. The transform is defined as:
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
         void computeTransform(TransformDataPtr transformData);
-        // Returns true if the next call to doTransform() would calculate a different
+        // Returns true if the next call to computeTransform() would calculate a different
         // result than the previous call.
-        bool hasChanged() const;
+        virtual bool hasChanged() const;
     protected:
         // Does the actual work of computeTransform.
         virtual void doTransform(TransformDataPtr transformData) = 0;

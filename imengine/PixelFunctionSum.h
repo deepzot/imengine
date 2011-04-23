@@ -10,9 +10,25 @@
 namespace imengine {
 	class PixelFunctionSum : public AbsPixelFunction {
 	public:
-		PixelFunctionSum();
+	    // Creates a pixel function frac1*f1 + (1-frac1)*f2
+		PixelFunctionSum(AbsPixelFunctionPtr f1, AbsPixelFunctionPtr f2, double frac1);
 		virtual ~PixelFunctionSum();
+		// Returns the function value
+        virtual double operator()(double x, double y) const;
+        // Performs one-time initializations before subsequent calls to doTransform.
+        virtual void initTransform(TransformDataPtr transformData);
+        // Sets our model parameters
+        void setParameters(double frac1);
+        // Returns true if the next call to computeTransform() would calculate a different
+        // result than the previous call.
+        virtual bool hasChanged() const;
+    protected:
+        // Does the actual work of computeTransform.
+        virtual void doTransform(TransformDataPtr transformData);
 	private:
+        AbsPixelFunctionPtr _f1, _f2;
+        TransformDataPtr _transform1, _transform2;
+        double _frac1;
 	}; // PixelFunctionSum
 } // imengine
 
