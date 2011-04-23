@@ -55,6 +55,7 @@ void local::SlowTransform::setToTransform() {
 }
 
 local::TransformDataPtr local::SlowTransform::clone() const {
-    TransformDataPtr _clone;
+    InterpolationDataPtr target = getTarget();
+    TransformDataPtr _clone(new SlowTransform(target));
     return _clone;
 }

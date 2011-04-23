@@ -63,8 +63,8 @@ namespace imengine {
         // transform[m,n] = Sum[data[j,k] Exp[-2piI(j*m+k*n)/N],{j,0,N-1},{k,0,N-1}]
         virtual void setToTransform() = 0;
         
-        // Returns a smart pointer to a new object that has the same properties as
-        // this one. The data from this object is not copied into the new object.
+        // Returns a smart pointer to a new object that shares our target but does
+        // not copy our transform data.
         virtual TransformDataPtr clone() const = 0;
 
         //void validate() const;
@@ -77,10 +77,13 @@ namespace imengine {
         Real const& imag(int i, int j) const;
 
         // returns a pointer to our transform data array
-        Real *getDataPtr();
+        Real *getDataPtr() const;
 
-        // returns a pointer to the target data array
-        Real *getTargetDataPtr();
+        // returns a bare pointer to the target data array
+        Real *getTargetDataPtr() const;
+        
+        // returns a smart pointer to our target data array
+        InterpolationDataPtr getTarget() const;
 
     private:
         InterpolationDataPtr _target;
@@ -121,8 +124,12 @@ namespace imengine {
         return _dk*(i < _break1 ? i : i-_gridSize);
     }
     
-    inline Real *TransformData::getDataPtr() {
+    inline Real *TransformData::getDataPtr() const {
         return _data;
+    }
+    
+    inline InterpolationDataPtr TransformData::getTarget() const {
+        return _target;
     }
     
 } // imengine

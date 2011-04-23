@@ -80,7 +80,7 @@ void local::TransformData::setTargetValue(int i, int j, Real value) {
     _target->setValue(i,j,value);
 }
 
-local::Real *local::TransformData::getTargetDataPtr() {
+local::Real *local::TransformData::getTargetDataPtr() const {
     return _target->_data;
 }
 

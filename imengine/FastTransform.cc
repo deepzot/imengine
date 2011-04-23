@@ -30,6 +30,7 @@ void local::FastTransform::inverseTransform() {
 }
 
 local::TransformDataPtr local::FastTransform::clone() const {
-    TransformDataPtr _clone;
+    InterpolationDataPtr target = getTarget();
+    TransformDataPtr _clone(new FastTransform(target));
     return _clone;
 }
