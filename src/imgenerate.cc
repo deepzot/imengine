@@ -51,9 +51,9 @@ int main(int argc, char **argv) {
         ("seed",po::value<uint32_t>(&seed)->default_value(0),
             "Random seed to use for generating noise (uses time of day if zero).")
         ("printsum","Prints the pixel sum of the generated image.")
-        ("src",po::value<std::string>(&srcString)->default_value("disk[1]"),
+        ("src",po::value<std::string>(&srcString)->default_value("delta"),
             "Source module to use.")
-        ("psf",po::value<std::string>(&psfString)->default_value("gauss[1]"),
+        ("psf",po::value<std::string>(&psfString)->default_value("delta"),
             "PSF module to use.")
         ;
 

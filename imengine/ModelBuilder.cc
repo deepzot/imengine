@@ -3,6 +3,7 @@
 #include "imengine/ModelBuilder.h"
 
 #include "imengine/AbsPixelFunction.h"
+#include "imengine/PixelFunctionSum.h"
 #include "imengine/models/DeltaFunction.h"
 #include "imengine/models/GaussianDemo.h"
 #include "imengine/models/SersicDemo.h"
@@ -51,13 +52,17 @@ namespace parser {
             using qi::_d;
             using qi::_1;
             using qi::_2;
+            using qi::_3;
             using qi::double_;
             using boost::phoenix::construct;
             using boost::phoenix::new_;
             using boost::shared_ptr;
             
             model
-                = standalone
+                = ("sum[" >> model >> ',' >> model >> ';' >> double_ >> ']')
+                    [_val = construct<AbsPixelFunctionPtr>
+                        (new_<img::PixelFunctionSum>(_1,_2,_3))]
+                | standalone
                     [_val = _1]
                 | (profile >> ellipticity)
                     [_val = construct<AbsPixelFunctionPtr>
