@@ -122,6 +122,11 @@ local::TransformData const& t2, double dx, double dy) {
     }
 }
 
+void local::TransformData::setToSum(TransformDataPtr t1, TransformDataPtr t2,
+double c1, double c2) {
+    
+}
+
 /**
 void local::TransformData::validate() const {
     int N = _gridSize;

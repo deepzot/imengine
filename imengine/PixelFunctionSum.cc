@@ -44,7 +44,7 @@ void local::PixelFunctionSum::doTransform(TransformDataPtr transformData) {
     if(_f1->hasChanged()) _f1->computeTransform(_transform1);
     if(_f2->hasChanged()) _f2->computeTransform(_transform2);
     // fill the provided transform with the scaled sum
-    //transformData->setToSum(_transform1,_transform2,_frac1,_1-_frac1);
+    transformData->setToSum(_transform1,_transform2,_frac1,1-_frac1);
 }
 
 bool local::PixelFunctionSum::hasChanged() const {

@@ -48,7 +48,12 @@ namespace imengine {
         // sets our values to the element-by-element product of two other transforms,
         // including an optional translation to be applied analytically via a complex
         // exponential factor exp(-ik.dr)
-        void setToProduct(TransformData const& t1, TransformData const& t2, double dx=0, double dy=0);
+        void setToProduct(TransformData const& t1, TransformData const& t2,
+            double dx=0, double dy=0);
+            
+        // sets our values to the element-by-element sum of two other transforms
+        // weighted by the specified coefficients.
+        void setToSum(TransformDataPtr t1, TransformDataPtr t2, double c1, double c2);
         
         // dumps grid complex values to std::cout in row-wise order
         void dump() const;
