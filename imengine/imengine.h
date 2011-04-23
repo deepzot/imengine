@@ -40,8 +40,9 @@
 #include "imengine/IdentityTransform.h"
 #include "imengine/EllipticityTransform.h"
 
-// Model building support
+// Model building utilities
 #include "imengine/ModelBuilder.h"
+#include "imengine/PixelFunctionSum.h"
 
 // Error handling
 #include "imengine/RuntimeError.h"

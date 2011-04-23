@@ -39,6 +39,7 @@ libimengine_a_SOURCES = \
 	imengine/TransformedProfileFunction.cc \
 	imengine/RuntimeError.cc \
 	imengine/InvalidValue.cc \
+	imengine/PixelFunctionSum.cc \
 	imengine/models/DeltaFunction.cc \
 	imengine/models/DiskDemo.cc \
 	imengine/models/DiskProfile.cc \
@@ -82,6 +83,7 @@ nobase_include_HEADERS = \
 	imengine/ImageResponseModel.h \
 	imengine/RuntimeError.h \
 	imengine/InvalidValue.h \
+	imengine/PixelFunctionSum.h \
 	imengine/Observer.h \
 	imengine/ObserverDelegate.h \
 	imengine/models/DeltaFunction.h \

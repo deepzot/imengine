@@ -93,10 +93,11 @@ am_libimengine_a_OBJECTS = AbsCoordTransform.$(OBJEXT) \
 	SilentImageWriter.$(OBJEXT) SlowTransform.$(OBJEXT) \
 	TransformData.$(OBJEXT) TransformedProfileFunction.$(OBJEXT) \
 	RuntimeError.$(OBJEXT) InvalidValue.$(OBJEXT) \
-	DeltaFunction.$(OBJEXT) DiskDemo.$(OBJEXT) \
-	DiskProfile.$(OBJEXT) ExponentialProfile.$(OBJEXT) \
-	GaussianDemo.$(OBJEXT) SersicDemo.$(OBJEXT) \
-	GaussianProfile.$(OBJEXT) MoffatProfile.$(OBJEXT)
+	PixelFunctionSum.$(OBJEXT) DeltaFunction.$(OBJEXT) \
+	DiskDemo.$(OBJEXT) DiskProfile.$(OBJEXT) \
+	ExponentialProfile.$(OBJEXT) GaussianDemo.$(OBJEXT) \
+	SersicDemo.$(OBJEXT) GaussianProfile.$(OBJEXT) \
+	MoffatProfile.$(OBJEXT)
 libimengine_a_OBJECTS = $(am_libimengine_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
 am_imbenchmark_OBJECTS = imbenchmark.$(OBJEXT)
@@ -261,6 +262,7 @@ libimengine_a_SOURCES = \
 	imengine/TransformedProfileFunction.cc \
 	imengine/RuntimeError.cc \
 	imengine/InvalidValue.cc \
+	imengine/PixelFunctionSum.cc \
 	imengine/models/DeltaFunction.cc \
 	imengine/models/DiskDemo.cc \
 	imengine/models/DiskProfile.cc \
@@ -304,6 +306,7 @@ nobase_include_HEADERS = \
 	imengine/ImageResponseModel.h \
 	imengine/RuntimeError.h \
 	imengine/InvalidValue.h \
+	imengine/PixelFunctionSum.h \
 	imengine/Observer.h \
 	imengine/ObserverDelegate.h \
 	imengine/models/DeltaFunction.h \
@@ -486,6 +489,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModelBuilder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MoffatProfile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OversamplingImageEngine.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PixelFunctionSum.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PngImageWriter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ResizingImageEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RuntimeError.Po@am__quote@
@@ -916,6 +920,20 @@ InvalidValue.obj: imengine/InvalidValue.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/InvalidValue.cc' object='InvalidValue.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o InvalidValue.obj `if test -f 'imengine/InvalidValue.cc'; then $(CYGPATH_W) 'imengine/InvalidValue.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/InvalidValue.cc'; fi`
+
+PixelFunctionSum.o: imengine/PixelFunctionSum.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PixelFunctionSum.o -MD -MP -MF $(DEPDIR)/PixelFunctionSum.Tpo -c -o PixelFunctionSum.o `test -f 'imengine/PixelFunctionSum.cc' || echo '$(srcdir)/'`imengine/PixelFunctionSum.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PixelFunctionSum.Tpo $(DEPDIR)/PixelFunctionSum.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PixelFunctionSum.cc' object='PixelFunctionSum.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PixelFunctionSum.o `test -f 'imengine/PixelFunctionSum.cc' || echo '$(srcdir)/'`imengine/PixelFunctionSum.cc
+
+PixelFunctionSum.obj: imengine/PixelFunctionSum.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PixelFunctionSum.obj -MD -MP -MF $(DEPDIR)/PixelFunctionSum.Tpo -c -o PixelFunctionSum.obj `if test -f 'imengine/PixelFunctionSum.cc'; then $(CYGPATH_W) 'imengine/PixelFunctionSum.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PixelFunctionSum.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PixelFunctionSum.Tpo $(DEPDIR)/PixelFunctionSum.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PixelFunctionSum.cc' object='PixelFunctionSum.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PixelFunctionSum.obj `if test -f 'imengine/PixelFunctionSum.cc'; then $(CYGPATH_W) 'imengine/PixelFunctionSum.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PixelFunctionSum.cc'; fi`
 
 DeltaFunction.o: imengine/models/DeltaFunction.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DeltaFunction.o -MD -MP -MF $(DEPDIR)/DeltaFunction.Tpo -c -o DeltaFunction.o `test -f 'imengine/models/DeltaFunction.cc' || echo '$(srcdir)/'`imengine/models/DeltaFunction.cc
