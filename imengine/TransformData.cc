@@ -124,7 +124,12 @@ local::TransformData const& t2, double dx, double dy) {
 
 void local::TransformData::setToSum(TransformDataPtr t1, TransformDataPtr t2,
 double c1, double c2) {
-    
+    for(int j = 0; j < _gridSize; ++j) {
+        for(int i = 0; i < _break1; ++i) {
+            real(i,j) = c1*t1->real(i,j) + c2*t2->real(i,j);
+            imag(i,j) = c1*t1->imag(i,j) + c2*t2->imag(i,j);
+        }
+    }
 }
 
 /**
