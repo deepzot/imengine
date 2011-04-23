@@ -52,8 +52,10 @@ namespace imengine {
             double dx=0, double dy=0);
             
         // sets our values to the element-by-element sum of two other transforms
-        // weighted by the specified coefficients.
-        void setToSum(TransformDataPtr t1, TransformDataPtr t2, double c1, double c2);
+        // weighted by the specified coefficients, including an optional translation
+        // applied to the second transform only.
+        void setToSum(TransformDataPtr t1, TransformDataPtr t2, double c1, double c2,
+            double dx=0, double dy=0);
         
         // dumps grid complex values to std::cout in row-wise order
         void dump() const;
@@ -91,6 +93,8 @@ namespace imengine {
         InterpolationDataPtr getTarget() const;
 
     private:
+        // Translates transform[i,j] = {re,im} by (dx,dy).
+        void _translate(Real &re, Real &im, double dx, double dy, int i, int j);
         InterpolationDataPtr _target;
         Real *_data;
         double _dk;

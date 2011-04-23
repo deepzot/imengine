@@ -84,6 +84,21 @@ local::Real *local::TransformData::getTargetDataPtr() const {
     return _target->_data;
 }
 
+void local::TransformData::_translate(Real &re, Real &im,
+double dx, double dy, int i, int j) {
+    // calculate the argument of the translation transform
+    Real theta = -(waveNumber(i)*dx + waveNumber(j)*dy);
+    // coerce the symmetry required for a real-valued inverse DFT
+    if(2*i == _gridSize && j >= _break1) {
+        theta = -(-waveNumber(i)*dx + waveNumber(j)*dy);
+    }
+    Real costh = std::cos(theta);
+    Real sinth = std::sin(theta);
+    Real re0(re),im0(im);
+    re = re0*costh - im0*sinth;
+    im = re0*sinth + im0*costh;    
+}
+
 void local::TransformData::setToProduct(TransformDataPtr t1, TransformDataPtr t2,
 double dx, double dy) {
     // is there any translation to apply?
@@ -95,21 +110,9 @@ double dx, double dy) {
             Real re2(t2->real(i,j)),im2(t2->imag(i,j));
             Real re = norm*(re1*re2 - im1*im2);
             Real im = norm*(re1*im2 + im1*re2);
-            if(translated) {
-                Real theta = -(waveNumber(i)*dx + waveNumber(j)*dy);
-                // coerce the symmetry required for a real-valued inverse DFT
-                if(2*i == _gridSize && j >= _break1) {
-                    theta = -(-waveNumber(i)*dx + waveNumber(j)*dy);
-                }
-                Real costh = std::cos(theta);
-                Real sinth = std::sin(theta);
-                real(i,j) = re*costh - im*sinth;
-                imag(i,j) = re*sinth + im*costh;
-            }
-            else {
-                real(i,j) = re;
-                imag(i,j) = im;
-            }
+            if(translated) _translate(re,im,dx,dy,i,j);
+            real(i,j) = re;
+            imag(i,j) = im;
         }
     }
     // Coerce the symmetry required for a real-valued inverse DFT. The reason that
@@ -124,11 +127,15 @@ double dx, double dy) {
 }
 
 void local::TransformData::setToSum(TransformDataPtr t1, TransformDataPtr t2,
-double c1, double c2) {
+double c1, double c2, double dx, double dy) {
+    bool translated = (0 != dx)||(0 != dy);
     for(int j = 0; j < _gridSize; ++j) {
         for(int i = 0; i < _break1; ++i) {
-            real(i,j) = c1*t1->real(i,j) + c2*t2->real(i,j);
-            imag(i,j) = c1*t1->imag(i,j) + c2*t2->imag(i,j);
+            Real re1(c1*t1->real(i,j)),im1(c1*t1->imag(i,j));
+            Real re2(c2*t2->real(i,j)),im2(c2*t2->imag(i,j));
+            if(translated) _translate(re2,im2,dx,dy,i,j);
+            real(i,j) = re1 + re2;
+            imag(i,j) = im1 + im2;
         }
     }
 }
