@@ -27,8 +27,8 @@ int main(int argc, char **argv) {
         ("noninverted",
             "Any png image written will be non-inverted (default is inverted).")
         ("midpoint", "Uses the midpoint method for pixelization.")
-        ("bilinear", "Uses bilinear interpolation for pixelization (this is the default).")
-        ("bicubic", "Uses bicubic interpolation for pixelization.")
+        ("bilinear", "Uses bilinear interpolation for pixelization.")
+        ("bicubic", "Uses bicubic interpolation for pixelization (this is the default).")
         ("slow", "Uses un-optimized discrete Fourier transforms.")
         ("fast", "Uses optimized fast Fourier transforms (default).")
         ("npixels,n", po::value<int>(&npixels)->default_value(48),
@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
     bool midpoint(vm.count("midpoint")),bilinear(vm.count("bilinear")),bicubic(vm.count("bicubic"));
     int methods = vm.count("midpoint")+vm.count("bilinear")+vm.count("bicubic");
     if(methods == 0) {
-        bilinear = true; // specifies default method
+        bicubic = true; // specifies default method
     }
     else if(methods != 1) {
         std::cerr << "Only one pixelization method can be specified (midpoint,bilinear,bicubic)"
