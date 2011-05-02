@@ -13,6 +13,15 @@ AC_PROG_RANLIB
 
 # Checks for header files.
 
+# Check for the GNU Scientific Library (GSL)
+# See http://www.gnu.org/software/gsl/manual/html_node/Autoconf-Macros.html
+AC_CHECK_LIB([m],[cos], ,
+	AC_MSG_ERROR([No math library installed.]))
+AC_CHECK_LIB([gslcblas],[cblas_dgemm], ,
+	AC_MSG_ERROR([No GSL CBLAS library installed.]))
+AC_CHECK_LIB([gsl],[gsl_blas_dgemm], ,
+	AC_MSG_ERROR([No GSL library installed.]))
+
 # Checks for libraries.
 # FIXME: Replace `main' with a function in each library:
 AC_CHECK_LIB([boost_program_options], [main], ,
@@ -21,10 +30,6 @@ AC_CHECK_LIB([z], [main], ,
              AC_MSG_ERROR([You need libzip-dev]))
 AC_CHECK_LIB([png], [main], ,
              AC_MSG_ERROR([You need libpngXX-dev]))
-AC_CHECK_LIB([gslcblas], [main], ,
-             AC_MSG_ERROR([You need libgsl0-dev]))
-AC_CHECK_LIB([gsl], [main], ,
-             AC_MSG_ERROR([You need libgsl0-dev]))
 AC_CHECK_LIB([fftw3], [main], ,
              AC_MSG_ERROR([You need libfftw3-dev]))
 

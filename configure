@@ -3425,8 +3425,8 @@ fi
 
 # Checks for header files.
 
-# Checks for libraries.
-# FIXME: Replace `main' with a function in each library:
+# Check for the GNU Scientific Library (GSL)
+# See http://www.gnu.org/software/gsl/manual/html_node/Autoconf-Macros.html
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -4095,6 +4095,150 @@ fi
 
 
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for cos in -lm" >&5
+$as_echo_n "checking for cos in -lm... " >&6; }
+if ${ac_cv_lib_m_cos+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lm  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char cos ();
+int
+main ()
+{
+return cos ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_m_cos=yes
+else
+  ac_cv_lib_m_cos=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_m_cos" >&5
+$as_echo "$ac_cv_lib_m_cos" >&6; }
+if test "x$ac_cv_lib_m_cos" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBM 1
+_ACEOF
+
+  LIBS="-lm $LIBS"
+
+else
+  as_fn_error $? "No math library installed." "$LINENO" 5
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for cblas_dgemm in -lgslcblas" >&5
+$as_echo_n "checking for cblas_dgemm in -lgslcblas... " >&6; }
+if ${ac_cv_lib_gslcblas_cblas_dgemm+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lgslcblas  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char cblas_dgemm ();
+int
+main ()
+{
+return cblas_dgemm ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_gslcblas_cblas_dgemm=yes
+else
+  ac_cv_lib_gslcblas_cblas_dgemm=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gslcblas_cblas_dgemm" >&5
+$as_echo "$ac_cv_lib_gslcblas_cblas_dgemm" >&6; }
+if test "x$ac_cv_lib_gslcblas_cblas_dgemm" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBGSLCBLAS 1
+_ACEOF
+
+  LIBS="-lgslcblas $LIBS"
+
+else
+  as_fn_error $? "No GSL CBLAS library installed." "$LINENO" 5
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for gsl_blas_dgemm in -lgsl" >&5
+$as_echo_n "checking for gsl_blas_dgemm in -lgsl... " >&6; }
+if ${ac_cv_lib_gsl_gsl_blas_dgemm+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lgsl  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char gsl_blas_dgemm ();
+int
+main ()
+{
+return gsl_blas_dgemm ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_gsl_gsl_blas_dgemm=yes
+else
+  ac_cv_lib_gsl_gsl_blas_dgemm=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gsl_gsl_blas_dgemm" >&5
+$as_echo "$ac_cv_lib_gsl_gsl_blas_dgemm" >&6; }
+if test "x$ac_cv_lib_gsl_gsl_blas_dgemm" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBGSL 1
+_ACEOF
+
+  LIBS="-lgsl $LIBS"
+
+else
+  as_fn_error $? "No GSL library installed." "$LINENO" 5
+fi
+
+
+# Checks for libraries.
+# FIXME: Replace `main' with a function in each library:
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lboost_program_options" >&5
 $as_echo_n "checking for main in -lboost_program_options... " >&6; }
 if ${ac_cv_lib_boost_program_options_main+:} false; then :
@@ -4216,88 +4360,6 @@ _ACEOF
 
 else
   as_fn_error $? "You need libpngXX-dev" "$LINENO" 5
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lgslcblas" >&5
-$as_echo_n "checking for main in -lgslcblas... " >&6; }
-if ${ac_cv_lib_gslcblas_main+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lgslcblas  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-
-int
-main ()
-{
-return main ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_gslcblas_main=yes
-else
-  ac_cv_lib_gslcblas_main=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gslcblas_main" >&5
-$as_echo "$ac_cv_lib_gslcblas_main" >&6; }
-if test "x$ac_cv_lib_gslcblas_main" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBGSLCBLAS 1
-_ACEOF
-
-  LIBS="-lgslcblas $LIBS"
-
-else
-  as_fn_error $? "You need libgsl0-dev" "$LINENO" 5
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lgsl" >&5
-$as_echo_n "checking for main in -lgsl... " >&6; }
-if ${ac_cv_lib_gsl_main+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lgsl  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-
-int
-main ()
-{
-return main ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_gsl_main=yes
-else
-  ac_cv_lib_gsl_main=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gsl_main" >&5
-$as_echo "$ac_cv_lib_gsl_main" >&6; }
-if test "x$ac_cv_lib_gsl_main" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBGSL 1
-_ACEOF
-
-  LIBS="-lgsl $LIBS"
-
-else
-  as_fn_error $? "You need libgsl0-dev" "$LINENO" 5
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lfftw3" >&5
