@@ -10,11 +10,13 @@ namespace imengine {
 namespace models {
 	class SersicDemo : public GenericPixelFunction {
 	public:
-		SersicDemo(double alpha, double index, double e1, double e2);
+	    // Creates a new model with half-light radius re using the
+	    // specified Sersic index and ellipticity parameters.
+		SersicDemo(double re, double index, double e1, double e2);
 		virtual ~SersicDemo();
 		virtual double operator()(double x, double y) const;
         // Sets the parameter values to use.
-        void setParameters(double alpha, double index, double e1, double e2);
+        void setParameters(double re, double index, double e1, double e2);
         // Calculate the value of k for the specified index so that re is
         // the half-light radius.
         static double kValue(double index);
@@ -23,7 +25,7 @@ namespace models {
         static double kValueDF(double index, void *params);
         static void kValueFDF(double index, void *params, double *y, double *dy);
         bool _initialized;
-        double _twopi, _alpha, _index, _norm, _inverseIndex;
+        double _twopi, _re, _alpha, _index, _norm, _inverseIndex;
         EllipticityTransform _transform;
 	}; // SersicDemo
 }} // imengine::models
