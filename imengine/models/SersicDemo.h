@@ -25,7 +25,7 @@ namespace models {
         static double kValueDF(double index, void *params);
         static void kValueFDF(double index, void *params, double *y, double *dy);
         bool _initialized;
-        double _twopi, _re, _alpha, _index, _norm, _inverseIndex, _rmax;
+        double _twopi, _re, _alphaScale, _alpha, _index, _norm, _inverseIndex, _rmax;
         EllipticityTransform _transform;
 	}; // SersicDemo
 }} // imengine::models

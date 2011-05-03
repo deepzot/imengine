@@ -36,8 +36,9 @@ double e1, double e2, double rmax) {
     if(!_initialized || _index != index) {
         _index = index;
         _inverseIndex = 1/_index;
-        _alpha = _re/std::pow(kValue(_index),_index);
+        _alphaScale = std::pow(kValue(_index),-_index);
     }
+    _alpha = _re*_alphaScale;
     _norm = _twopi*_alpha*_alpha*_index*
         boost::math::tgamma(2*_index)/_transform.determinant();
     _initialized = true;
