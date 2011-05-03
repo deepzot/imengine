@@ -14,22 +14,25 @@
 
 namespace local = imengine::models;
 
-local::SersicDemo::SersicDemo(double re, double index, double e1, double e2)
+local::SersicDemo::SersicDemo(double re, double index, double e1, double e2, double rmax)
 : _initialized(false), _twopi(8*std::atan(1.0)), _transform(e1,e2)
 {
     _transform.setObserver(getObserver());
-    setParameters(re, index, e1, e2);
+    setParameters(re, index, e1, e2, rmax);
 }
 
 local::SersicDemo::~SersicDemo() { }
 
-void local::SersicDemo::setParameters(double re, double index, double e1, double e2) {
+void local::SersicDemo::setParameters(double re, double index,
+double e1, double e2, double rmax) {
     _transform.setParameters(e1,e2);
-    if(_initialized && re == _re && index == _index) return;
+    if(_initialized && re == _re && index == _index && rmax == _rmax) return;
     assertGreaterThan<double>("SersicDemo re",re,0);
+    assertGreaterThanOrEqualTo<double>("SersicDemo rmax",rmax,0);
     // Minimum index is set by the numerical stability of kValue()
     assertGreaterThan<double>("SersicDemo index",index,0.2);
     _re = re;
+    _rmax = rmax;
     if(!_initialized || _index != index) {
         _index = index;
         _inverseIndex = 1/_index;
@@ -42,8 +45,9 @@ void local::SersicDemo::setParameters(double re, double index, double e1, double
 }
 
 double local::SersicDemo::operator()(double x, double y) const {
-    double ra(_transform.transformedRadius(x,y)/_alpha);
-    return std::exp(-std::pow(ra,_inverseIndex))/_norm;
+    double r(_transform.transformedRadius(x,y));
+    if(_rmax > 0 && r > _rmax) return 0;
+    return std::exp(-std::pow(r/_alpha,_inverseIndex))/_norm;
 }
 
 double local::SersicDemo::kValueF(double x, void *params) {

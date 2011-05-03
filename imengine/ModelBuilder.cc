@@ -50,6 +50,7 @@ namespace parser {
             using qi::_b;
             using qi::_c;
             using qi::_d;
+            using qi::_e;
             using qi::_1;
             using qi::_2;
             using qi::_3;
@@ -94,16 +95,21 @@ namespace parser {
                 [_val = construct<AbsRadialProfilePtr>(new_<mod::MoffatProfile>(_a,_b))];
                 
             // standalone pixel functions
-            standalone = delta | gdemo | ddemo | sdemo;
+            standalone = delta | gdemo | ddemo | sdemo2 | sdemo4 | sdemo5;
             delta = lit("delta")
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::DeltaFunction>())];
             gdemo = ("gdemo[" >> double_[_a=_1] >> ']')
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::GaussianDemo>(_a))];
             ddemo = ("ddemo[" >> double_[_a=_1] >> ']')
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::DiskDemo>(_a))];
-            sdemo = ("sdemo[" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ','
+            sdemo2 = ("sdemo[" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ']')
+                [_val = construct<AbsPixelFunctionPtr>(new_<mod::SersicDemo>(_a,_b,0,0,0))];
+            sdemo4 = ("sdemo[" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ','
                 >> double_[_c=_1] >> ',' >> double_[_d=_1] >> ']')
-                [_val = construct<AbsPixelFunctionPtr>(new_<mod::SersicDemo>(_a,_b,_c,_d))];
+                [_val = construct<AbsPixelFunctionPtr>(new_<mod::SersicDemo>(_a,_b,_c,_d,0))];
+            sdemo5 = ("sdemo[" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ','
+                >> double_[_c=_1] >> ',' >> double_[_d=_1] >> ',' >> double_[_e=_1] >> ']')
+                [_val = construct<AbsPixelFunctionPtr>(new_<mod::SersicDemo>(_a,_b,_c,_d,_e))];
         }
 
         AbsCoordTransformPtr identity;
@@ -112,7 +118,11 @@ namespace parser {
         qi::rule<Iterator, img::AbsPixelFunctionPtr()> standalone,delta;
         qi::rule<Iterator, img::AbsPixelFunctionPtr(), qi::locals<double> > gdemo,ddemo;
         qi::rule<Iterator, img::AbsPixelFunctionPtr(),
-            qi::locals<double,double,double,double> > sdemo;
+            qi::locals<double,double> > sdemo2;
+        qi::rule<Iterator, img::AbsPixelFunctionPtr(),
+            qi::locals<double,double,double,double> > sdemo4;
+        qi::rule<Iterator, img::AbsPixelFunctionPtr(),
+            qi::locals<double,double,double,double,double> > sdemo5;
         qi::rule<Iterator, img::AbsCoordTransformPtr(),
             qi::locals<double,double> > ellipticity;
         qi::rule<Iterator, img::AbsRadialProfilePtr()> profile;
