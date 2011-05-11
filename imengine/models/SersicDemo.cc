@@ -14,18 +14,19 @@
 
 namespace local = imengine::models;
 
-local::SersicDemo::SersicDemo(double re, double index, double e1, double e2, double rmax)
-: _initialized(false), _twopi(8*std::atan(1.0)), _transform(e1,e2)
+local::SersicDemo::SersicDemo(double re, double index, double eg1, double eg2,
+double rmax, double egcos, double egsin)
+: _initialized(false), _twopi(8*std::atan(1.0)), _transform(eg1,eg2,egcos,egsin)
 {
     _transform.setObserver(getObserver());
-    setParameters(re, index, e1, e2, rmax);
+    setParameters(re, index, eg1, eg2, rmax, egcos, egsin);
 }
 
 local::SersicDemo::~SersicDemo() { }
 
 void local::SersicDemo::setParameters(double re, double index,
-double e1, double e2, double rmax) {
-    _transform.setParameters(e1,e2);
+double eg1, double eg2, double rmax, double egcos, double egsin) {
+    _transform.setParameters(eg1,eg2,egcos,egsin);
     if(_initialized && re == _re && index == _index && rmax == _rmax) return;
     assertGreaterThan<double>("SersicDemo re",re,0);
     assertGreaterThanOrEqualTo<double>("SersicDemo rmax",rmax,0);

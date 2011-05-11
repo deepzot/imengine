@@ -10,29 +10,17 @@ namespace imengine {
 	public:
 	    // Creates a transformation from elliptical (observed) to circular (source)
 	    // coordinates using a composition of shear transforms, M(e1,e2) M(g1,g2),
-	    // similar to the EllipticityTransform class but using polar coordinate
-	    // parameters:
+	    // similar to the EllipticityTransform class but using a different
+	    // parameterization that is better suited for fitting, where the effects
+	    // of (e1,e2) and (g1,g2) are highly correlated:
 	    //
-	    //  e1 + g1 = EG(lambda) cos(2 phi)
-	    //  e2 + g2 = EG(lambda) sin(2 phi)
-	    //  e1 g1 + e2 g2 = egcos
-	    //  e2 g1 - e1 g2 = egsin
+	    //  eg1 = e1 + g1
+	    //  eg2 = e2 + g2
+	    //  egcos = e1 g1 + e2 g2
+	    //  egsin = e2 g1 - e1 g2
 	    //
-	    // where EG(lambda) = (lambda^2 - 1)/(lambda^2 + 1) with lambda representing
-	    // the factor by which the unit vector should be stretched (shrunk) to
-	    // obtain the major (minor) axis, so that the major/minor ratio is lambda^2,
-	    // and phi is the orientation of the major axis (assuming lambda > 1).
-	    // The parameters egcos, egsin correspond to:
-	    //
-	    //  egcos = |e| |g| cos(dtheta)
-	    //  egsin = |e| |g| sin(dtheta)
-	    //
-	    // where dtheta is the angle between (e1,e2) and (g1,g2) and |e|, |g| are
-	    // their magnitudes.
-        //
 	    // Use the defaults egcos = egsin = 0 to model a single shear transformation.
-		PolarEllipticityTransform(double lambda, double phi,
-		    double egcos = 0, double egsin = 0);
+		PolarEllipticityTransform(double eg1, double eg2, double egcos = 0, double egsin = 0);
 		virtual ~PolarEllipticityTransform();
 		// Returns the transform determinant
         virtual double determinant() const;
@@ -42,9 +30,9 @@ namespace imengine {
         // transpose of the inverse transform
         virtual double transformedWaveNumber(double kx, double ky) const;
         // Sets the ellipticity parameter values to use.
-        void setParameters(double lambda, double phi, double egcos = 0, double egsin = 0);
+        void setParameters(double eg1, double eg2, double egcos = 0, double egsin = 0);
 	private:
-        double _lambda,_phi,_egcos,_egsin,_a,_b,_c,_d,_detM;
+        double _eg1,_eg2,_egcos,_egsin,_a,_b,_c,_d,_detM;
 	}; // EllipticityTransform
 } // imengine
 

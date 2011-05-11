@@ -16,18 +16,15 @@ double egcos, double egsin)
 local::PolarEllipticityTransform::~PolarEllipticityTransform() {
 }
 
-void local::PolarEllipticityTransform::setParameters(double lambda, double phi,
+void local::PolarEllipticityTransform::setParameters(double eg1, double eg2,
 double egcos, double egsin) {
-    if(isInitialized() && lambda == _lambda && phi == _phi &&
+    if(isInitialized() && eg1 == _eg1 && eg2 == _eg2 &&
         egcos == _egcos && egsin == _egsin) return;
-    _lambda = lambda;
-    _phi = phi;
+    _eg1 = eg1;
+    _eg2 = eg2;
     _egcos = egcos;
     _egsin = egsin;
     // Calculate the 2x2 matrix elements of M = {{a,b},{c,d}}
-    double lamsq(lambda*lambda);
-    double EG((lamsq-1)/(lamsq+1));
-    double eg1(EG*std::cos(2*phi)),eg2(EG*std::sin(2*phi));
     _a = 1 - eg1 + egcos;
     _b = -eg2 - egsin;
     _c = -eg2 + egsin;
