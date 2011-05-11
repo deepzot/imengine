@@ -62,6 +62,18 @@ void local::assertLessThan(std::string const &what, T value, T max) {
   }
 }
 
+template <typename T>
+void local::assertNotEqualTo(std::string const &what, T value, T illegal) {
+  if(value == illegal) {
+    std::string reason("Invalid Value: ");
+    reason += what;
+    reason += " = " + boost::lexical_cast<std::string>(value);
+    reason += ", should be != ";
+    reason += boost::lexical_cast<std::string>(illegal);
+    throw InvalidValue(reason);
+  }
+}
+
 // explicit template instantiations for int, double args
 
 template void local::assertGreaterThan<int>(std::string const&,int,int);
@@ -75,3 +87,6 @@ template void local::assertLessThan<double>(std::string const&,double,double);
 
 template void local::assertLessThanOrEqualTo<int>(std::string const&,int,int);
 template void local::assertLessThanOrEqualTo<double>(std::string const&,double,double);
+
+template void local::assertNotEqualTo<int>(std::string const&,int,int);
+template void local::assertNotEqualTo<double>(std::string const&,double,double);

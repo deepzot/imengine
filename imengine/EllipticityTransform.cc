@@ -27,7 +27,7 @@ void local::EllipticityTransform::setParameters(double e1, double e2, double g1,
     _c = -e2*(1-g1) - g2*(1+e1);
     _d = (1+e1)*(1+g1) + e2*g2;
     _detM = _a*_d - _b*_c; // = (1 - e1*e1 - e2*e2)*(1 - g1*g1 - g2*g2)
-    assertGreaterThan<double>("EllipticityTransform det(M)",_detM,0);
+    assertNotEqualTo<double>("EllipticityTransform det(M)",_detM,0);
     setChanged();
 }
 
