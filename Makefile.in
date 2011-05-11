@@ -84,11 +84,12 @@ am_libimengine_a_OBJECTS = AbsCoordTransform.$(OBJEXT) \
 	AbsRadialProfile.$(OBJEXT) ArrayImageWriter.$(OBJEXT) \
 	BicubicImageEngine.$(OBJEXT) BilinearImageEngine.$(OBJEXT) \
 	DataGrid.$(OBJEXT) EllipticityTransform.$(OBJEXT) \
-	FastTransform.$(OBJEXT) FileImageWriter.$(OBJEXT) \
-	GenericPixelFunction.$(OBJEXT) IdentityTransform.$(OBJEXT) \
-	ImageEngine.$(OBJEXT) ImageResponseModel.$(OBJEXT) \
-	InterpolationData.$(OBJEXT) MidpointImageEngine.$(OBJEXT) \
-	ModelBuilder.$(OBJEXT) OversamplingImageEngine.$(OBJEXT) \
+	PolarEllipticityTransform.$(OBJEXT) FastTransform.$(OBJEXT) \
+	FileImageWriter.$(OBJEXT) GenericPixelFunction.$(OBJEXT) \
+	IdentityTransform.$(OBJEXT) ImageEngine.$(OBJEXT) \
+	ImageResponseModel.$(OBJEXT) InterpolationData.$(OBJEXT) \
+	MidpointImageEngine.$(OBJEXT) ModelBuilder.$(OBJEXT) \
+	OversamplingImageEngine.$(OBJEXT) \
 	ResizingImageEngine.$(OBJEXT) PngImageWriter.$(OBJEXT) \
 	SilentImageWriter.$(OBJEXT) SlowTransform.$(OBJEXT) \
 	TransformData.$(OBJEXT) TransformedProfileFunction.$(OBJEXT) \
@@ -244,6 +245,7 @@ libimengine_a_SOURCES = \
 	imengine/BilinearImageEngine.cc \
 	imengine/DataGrid.cc \
 	imengine/EllipticityTransform.cc \
+	imengine/PolarEllipticityTransform.cc \
 	imengine/FastTransform.cc \
 	imengine/FileImageWriter.cc \
 	imengine/GenericPixelFunction.cc \
@@ -287,6 +289,7 @@ nobase_include_HEADERS = \
 	imengine/BilinearImageEngine.h \
 	imengine/DataGrid.h \
 	imengine/EllipticityTransform.h \
+	imengine/PolarEllipticityTransform.h \
 	imengine/FastTransform.h \
 	imengine/FileImageWriter.h \
 	imengine/GenericPixelFunction.h \
@@ -491,6 +494,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OversamplingImageEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PixelFunctionSum.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PngImageWriter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PolarEllipticityTransform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ResizingImageEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RuntimeError.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SersicDemo.Po@am__quote@
@@ -668,6 +672,20 @@ EllipticityTransform.obj: imengine/EllipticityTransform.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/EllipticityTransform.cc' object='EllipticityTransform.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o EllipticityTransform.obj `if test -f 'imengine/EllipticityTransform.cc'; then $(CYGPATH_W) 'imengine/EllipticityTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/EllipticityTransform.cc'; fi`
+
+PolarEllipticityTransform.o: imengine/PolarEllipticityTransform.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PolarEllipticityTransform.o -MD -MP -MF $(DEPDIR)/PolarEllipticityTransform.Tpo -c -o PolarEllipticityTransform.o `test -f 'imengine/PolarEllipticityTransform.cc' || echo '$(srcdir)/'`imengine/PolarEllipticityTransform.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PolarEllipticityTransform.Tpo $(DEPDIR)/PolarEllipticityTransform.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PolarEllipticityTransform.cc' object='PolarEllipticityTransform.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PolarEllipticityTransform.o `test -f 'imengine/PolarEllipticityTransform.cc' || echo '$(srcdir)/'`imengine/PolarEllipticityTransform.cc
+
+PolarEllipticityTransform.obj: imengine/PolarEllipticityTransform.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PolarEllipticityTransform.obj -MD -MP -MF $(DEPDIR)/PolarEllipticityTransform.Tpo -c -o PolarEllipticityTransform.obj `if test -f 'imengine/PolarEllipticityTransform.cc'; then $(CYGPATH_W) 'imengine/PolarEllipticityTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PolarEllipticityTransform.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PolarEllipticityTransform.Tpo $(DEPDIR)/PolarEllipticityTransform.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PolarEllipticityTransform.cc' object='PolarEllipticityTransform.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PolarEllipticityTransform.obj `if test -f 'imengine/PolarEllipticityTransform.cc'; then $(CYGPATH_W) 'imengine/PolarEllipticityTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PolarEllipticityTransform.cc'; fi`
 
 FastTransform.o: imengine/FastTransform.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FastTransform.o -MD -MP -MF $(DEPDIR)/FastTransform.Tpo -c -o FastTransform.o `test -f 'imengine/FastTransform.cc' || echo '$(srcdir)/'`imengine/FastTransform.cc

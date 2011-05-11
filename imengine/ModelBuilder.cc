@@ -19,6 +19,7 @@
 #include "imengine/AbsCoordTransform.h"
 #include "imengine/IdentityTransform.h"
 #include "imengine/EllipticityTransform.h"
+#include "imengine/PolarEllipticityTransform.h"
 
 #include "boost/config/warning_disable.hpp"
 #include "boost/spirit/include/qi.hpp"
@@ -79,14 +80,21 @@ namespace parser {
                     (new_<img::TransformedProfileFunction>(_1,identity))];
             
             // radial profile coordinate transformations
-            transform = ellipticity2 | ellipticity4;
+            transform = ellipticity2 | ellipticity4 | polar2 | polar4;
             ellipticity2 = ("%{" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> '}')
                 [_val = construct<AbsCoordTransformPtr>(
                 new_<img::EllipticityTransform>(_a,_b))];
-            ellipticity4 = ("%{" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ','
+            ellipticity4 = ("%{" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ';'
                 >> double_[_c=_1] >> ',' >> double_[_d=_1] >> '}')
                 [_val = construct<AbsCoordTransformPtr>(
                 new_<img::EllipticityTransform>(_a,_b,_c,_d))];
+            polar2 = ("%<" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> '>')
+                [_val = construct<AbsCoordTransformPtr>(
+                new_<img::PolarEllipticityTransform>(_a,_b))];
+            polar4 = ("%<" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ';'
+                >> double_[_c=_1] >> ',' >> double_[_d=_1] >> '>')
+                [_val = construct<AbsCoordTransformPtr>(
+                new_<img::PolarEllipticityTransform>(_a,_b,_c,_d))];
 
             // radial profile primitives
             profile = gauss | disk | exp | moffat;
@@ -130,9 +138,9 @@ namespace parser {
             qi::locals<double,double,double,double,double> > sdemo5;
         qi::rule<Iterator, img::AbsCoordTransformPtr()> transform;
         qi::rule<Iterator, img::AbsCoordTransformPtr(),
-            qi::locals<double,double> > ellipticity2;
+            qi::locals<double,double> > ellipticity2,polar2;
         qi::rule<Iterator, img::AbsCoordTransformPtr(),
-            qi::locals<double,double,double,double> > ellipticity4;
+            qi::locals<double,double,double,double> > ellipticity4,polar4;
         qi::rule<Iterator, img::AbsRadialProfilePtr()> profile;
         qi::rule<Iterator, img::AbsRadialProfilePtr(), qi::locals<double> > gauss,disk,exp;
         qi::rule<Iterator, img::AbsRadialProfilePtr(), qi::locals<double,double> > moffat;

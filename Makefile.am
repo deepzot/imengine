@@ -21,6 +21,7 @@ libimengine_a_SOURCES = \
 	imengine/BilinearImageEngine.cc \
 	imengine/DataGrid.cc \
 	imengine/EllipticityTransform.cc \
+	imengine/PolarEllipticityTransform.cc \
 	imengine/FastTransform.cc \
 	imengine/FileImageWriter.cc \
 	imengine/GenericPixelFunction.cc \
@@ -64,6 +65,7 @@ nobase_include_HEADERS = \
 	imengine/BilinearImageEngine.h \
 	imengine/DataGrid.h \
 	imengine/EllipticityTransform.h \
+	imengine/PolarEllipticityTransform.h \
 	imengine/FastTransform.h \
 	imengine/FileImageWriter.h \
 	imengine/GenericPixelFunction.h \

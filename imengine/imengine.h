@@ -39,6 +39,7 @@
 // Radial profile transforms
 #include "imengine/IdentityTransform.h"
 #include "imengine/EllipticityTransform.h"
+#include "imengine/PolarEllipticityTransform.h"
 
 // Model building utilities
 #include "imengine/ModelBuilder.h"
