@@ -7,21 +7,26 @@
 
 namespace local = imengine;
 
-local::EllipticityTransform::EllipticityTransform(double e1, double e2)
+local::EllipticityTransform::EllipticityTransform(double e1, double e2, double g1, double g2)
 {
-    setParameters(e1,e2);
+    setParameters(e1,e2,g1,g2);
 }
 
 local::EllipticityTransform::~EllipticityTransform() {
 }
 
-void local::EllipticityTransform::setParameters(double e1, double e2) {
-    if(isInitialized() && e1 == _e1 && e2 == _e2) return;
+void local::EllipticityTransform::setParameters(double e1, double e2, double g1, double g2) {
+    if(isInitialized() && e1 == _e1 && e2 == _e2 && g1 == _g1 && g2 == _g2) return;
     _e1 = e1;
-    _e1p = 1 + e1;
-    _e1m = 1 - e1;
     _e2 = e2;
-    _detM = 1 - e1*e1 - e2*e2;
+    _g1 = g1;
+    _g2 = g2;
+    // Calculate the 2x2 matrix elements of M = {{a,b},{c,d}}
+    _a = (1-e1)*(1-g1) + e2*g2;
+    _b = -e2*(1+g1) - g2*(1-e1);
+    _c = -e2*(1-g1) - g2*(1+e1);
+    _d = (1+e1)*(1+g1) + e2*g2;
+    _detM = _a*_d - _b*_c; // = (1 - e1*e1 - e2*e2)*(1 - g1*g1 - g2*g2)
     assertGreaterThan<double>("EllipticityTransform det(M)",_detM,0);
     setChanged();
 }
@@ -31,13 +36,13 @@ double local::EllipticityTransform::determinant() const {
 }
 
 double local::EllipticityTransform::transformedRadius(double x, double y) const {
-    double xp(_e1m*x - _e2*y);
-    double yp(_e1p*y - _e2*x);
+    double xp(_a*x + _b*y);
+    double yp(_c*x + _d*y);
     return std::sqrt(xp*xp + yp*yp);
 }
 
 double local::EllipticityTransform::transformedWaveNumber(double kx, double ky) const {
-    double kxp(_e1p*kx + _e2*ky);
-    double kyp(_e1m*ky + _e2*kx);
+    double kxp(_d*kx - _c*ky);
+    double kyp(_a*ky - _b*kx);
     return std::sqrt(kxp*kxp + kyp*kyp)/_detM;
 }
