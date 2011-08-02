@@ -17,7 +17,7 @@ local::EllipticityTransform::~EllipticityTransform() {
 
 void local::EllipticityTransform::setParameters(double e1, double e2, double g1, double g2) {
     if(isInitialized() && e1 == _e1 && e2 == _e2 && g1 == _g1 && g2 == _g2) return;
-    assertLessThanOrEqualTo<double>("EllipticityTransform |e|",std::sqrt(e1*e1+e2*e2),1);
+//    assertLessThanOrEqualTo<double>("EllipticityTransform |e|",std::sqrt(e1*e1+e2*e2),1);
     _e1 = e1;
     _e2 = e2;
     _g1 = g1;

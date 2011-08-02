@@ -20,7 +20,7 @@ void local::PolarEllipticityTransform::setParameters(double eg1, double eg2,
 double egcos, double egsin) {
     if(isInitialized() && eg1 == _eg1 && eg2 == _eg2 &&
         egcos == _egcos && egsin == _egsin) return;
-    assertLessThanOrEqualTo<double>("EllipticityTransform |e|",std::sqrt(eg1*eg1+eg2*eg2),1);
+//    assertLessThanOrEqualTo<double>("EllipticityTransform |e|",std::sqrt(eg1*eg1+eg2*eg2),1);
     _eg1 = eg1;
     _eg2 = eg2;
     _egcos = egcos;
