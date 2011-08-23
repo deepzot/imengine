@@ -48,7 +48,8 @@ libimengine_a_SOURCES = \
 	imengine/models/GaussianDemo.cc \
 	imengine/models/SersicDemo.cc \
 	imengine/models/GaussianProfile.cc \
-	imengine/models/MoffatProfile.cc
+	imengine/models/MoffatProfile.cc \
+	imengine/models/AiryDemo.cc
 
 nobase_include_HEADERS = \
 	imengine/imengine.h \
@@ -95,4 +96,6 @@ nobase_include_HEADERS = \
 	imengine/models/GaussianDemo.h \
 	imengine/models/SersicDemo.h \
 	imengine/models/GaussianProfile.h \
-	imengine/models/MoffatProfile.h
+	imengine/models/MoffatProfile.h \
+	imengine/models/AiryDemo.h
+

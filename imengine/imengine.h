@@ -35,6 +35,7 @@
 #include "imengine/models/DiskDemo.h"
 #include "imengine/models/GaussianDemo.h"
 #include "imengine/models/SersicDemo.h"
+#include "imengine/models/AiryDemo.h"
 
 // Radial profile transforms
 #include "imengine/IdentityTransform.h"

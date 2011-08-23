@@ -8,6 +8,7 @@
 #include "imengine/models/GaussianDemo.h"
 #include "imengine/models/SersicDemo.h"
 #include "imengine/models/DiskDemo.h"
+#include "imengine/models/AiryDemo.h"
 #include "imengine/TransformedProfileFunction.h"
 
 #include "imengine/AbsRadialProfile.h"
@@ -110,7 +111,7 @@ namespace parser {
                 [_val = construct<AbsRadialProfilePtr>(new_<mod::MoffatProfile>(_a,_b))];
                 
             // standalone pixel functions
-            standalone = delta | gdemo | ddemo | sdemo2 | sdemo4 | sdemo5 | sdemo7;
+            standalone = delta | gdemo | ddemo | sdemo2 | sdemo4 | sdemo5 | sdemo7 | ademo | ademo3;
             delta = lit("delta")
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::DeltaFunction>())];
             gdemo = ("gdemo[" >> double_[_a=_1] >> ']')
@@ -129,15 +130,22 @@ namespace parser {
                 >> double_[_c=_1] >> ',' >> double_[_d=_1] >> ',' >> double_[_e=_1] >> ','
                 >> double_[_f=_1] >> ',' >> double_[_g=_1] >> ']')
                 [_val = construct<AbsPixelFunctionPtr>(new_<mod::SersicDemo>(_a,_b,_c,_d,_e,_f,_g))];
+            ademo = ("ademo[" >> double_[_a=_1] >> ']')
+                [_val = construct<AbsPixelFunctionPtr>(new_<mod::AiryDemo>(_a,0,0))];
+            ademo3 = ("ademo[" >> double_[_a=_1] >> ',' >> double_[_b=_1] >> ','
+                >> double_[_c=_1] >> ']')
+                [_val = construct<AbsPixelFunctionPtr>(new_<mod::AiryDemo>(_a,_b,_c))];
         }
 
         AbsCoordTransformPtr identity;
 
         qi::rule<Iterator, img::AbsPixelFunctionPtr()> model;
         qi::rule<Iterator, img::AbsPixelFunctionPtr()> standalone,delta;
-        qi::rule<Iterator, img::AbsPixelFunctionPtr(), qi::locals<double> > gdemo,ddemo;
+        qi::rule<Iterator, img::AbsPixelFunctionPtr(), qi::locals<double> > gdemo,ddemo,ademo;
         qi::rule<Iterator, img::AbsPixelFunctionPtr(),
             qi::locals<double,double> > sdemo2;
+        qi::rule<Iterator, img::AbsPixelFunctionPtr(),
+            qi::locals<double,double,double> > ademo3;
         qi::rule<Iterator, img::AbsPixelFunctionPtr(),
             qi::locals<double,double,double,double> > sdemo4;
         qi::rule<Iterator, img::AbsPixelFunctionPtr(),
