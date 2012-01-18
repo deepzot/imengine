@@ -1,19 +1,23 @@
-#                                               -*- Autoconf -*-
-# Process this file with autoconf to produce a configure script.
+#################################################################################
+## Run autoreconf after making any change here.
+## Created by David Kirkby <dkirkby@uci.edu>
+#################################################################################
 
-AC_PREREQ([2.67])
-AC_INIT([imengine], [0.9])
-AM_INIT_AUTOMAKE([foreign])
-AC_CONFIG_SRCDIR([imengine/imengine.h])
-AC_CONFIG_HEADERS([config.h])
+# This could probably be relaxed to an older version.
+AC_PREREQ([2.68])
 
-# Checks for programs.
+# Our package info.
+AC_INIT([bosslya], [dev], [dkirkby@uci.edu])
+
+# Checks for programs
 AC_PROG_CXX
-AC_PROG_RANLIB
 
-# Checks for header files.
+# Initialize libtool, which adds --enable/disable-shared configure options.
+# The boost.m4 macros used below also need this.
+LT_INIT
 
-# Check for the GNU Scientific Library (GSL)
+## Checks for libraries:
+# GNU Scientific Library (GSL)
 # See http://www.gnu.org/software/gsl/manual/html_node/Autoconf-Macros.html
 AC_CHECK_LIB([m],[cos], ,
 	AC_MSG_ERROR([No math library installed.]))
@@ -33,12 +37,11 @@ AC_CHECK_LIB([png], [main], ,
 AC_CHECK_LIB([fftw3], [main], ,
              AC_MSG_ERROR([You need libfftw3-dev]))
 
-# Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_INLINE
-
-# Checks for library functions.
-AC_CHECK_FUNCS([pow sqrt getrusage])
-
+# Configure automake
 AC_CONFIG_FILES([Makefile])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+# See http://www.gnu.org/s/hello/manual/automake/maintainer_002dmode.html
+AM_MAINTAINER_MODE
+
 AC_OUTPUT
