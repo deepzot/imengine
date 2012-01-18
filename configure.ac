@@ -7,7 +7,7 @@
 AC_PREREQ([2.68])
 
 # Our package info.
-AC_INIT([bosslya], [dev], [dkirkby@uci.edu])
+AC_INIT([imengine], [1.0], [dkirkby@uci.edu])
 
 # Checks for programs
 AC_PROG_CXX
@@ -29,13 +29,13 @@ AC_CHECK_LIB([gsl],[gsl_blas_dgemm], ,
 # Checks for libraries.
 # FIXME: Replace `main' with a function in each library:
 AC_CHECK_LIB([boost_program_options], [main], ,
-             AC_MSG_ERROR([You need libboost-program-options-dev]))
+             AC_MSG_ERROR([You need libboost-program-options]))
 AC_CHECK_LIB([z], [main], ,
-             AC_MSG_ERROR([You need libzip-dev]))
+             AC_MSG_ERROR([You need libzip]))
 AC_CHECK_LIB([png], [main], ,
-             AC_MSG_ERROR([You need libpngXX-dev]))
+             AC_MSG_ERROR([You need libpng]))
 AC_CHECK_LIB([fftw3], [main], ,
-             AC_MSG_ERROR([You need libfftw3-dev]))
+             AC_MSG_ERROR([You need libfftw3]))
 
 # Configure automake
 AC_CONFIG_FILES([Makefile])
