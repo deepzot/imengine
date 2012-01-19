@@ -26,13 +26,8 @@ AC_CHECK_LIB([m],[cos], ,
 	AC_MSG_ERROR([No math library installed.]))
 AC_CHECK_LIB([gsl],[gsl_sf_gamma], ,
 	AC_MSG_ERROR([No GSL library installed.]))
-
-# Checks for libraries.
-# FIXME: Replace `main' with a function in each library:
-AC_CHECK_LIB([boost_program_options], [main], ,
-             AC_MSG_ERROR([You need libboost-program-options]))
 AC_CHECK_LIB([fftw3], [main], ,
-             AC_MSG_ERROR([You need libfftw3]))
+	AC_MSG_ERROR([You need libfftw3]))
 
 # Following http://www.gentoo.org/proj/en/qa/automagic.xml below...
 
