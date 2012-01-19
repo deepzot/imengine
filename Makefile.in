@@ -36,7 +36,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = imbenchmark$(EXEEXT) imgenerate$(EXEEXT)
+bin_PROGRAMS = imbenchmark$(EXEEXT) imgenerate$(EXEEXT) \
+	imdemo$(EXEEXT)
 subdir = .
 DIST_COMMON = $(am__configure_deps) $(nobase_include_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
@@ -105,6 +106,9 @@ PROGRAMS = $(bin_PROGRAMS)
 am_imbenchmark_OBJECTS = imbenchmark.$(OBJEXT)
 imbenchmark_OBJECTS = $(am_imbenchmark_OBJECTS)
 imbenchmark_LDADD = $(LDADD)
+am_imdemo_OBJECTS = imdemo.$(OBJEXT)
+imdemo_OBJECTS = $(am_imdemo_OBJECTS)
+imdemo_LDADD = $(LDADD)
 am_imgenerate_OBJECTS = imgenerate.$(OBJEXT)
 imgenerate_OBJECTS = $(am_imgenerate_OBJECTS)
 imgenerate_LDADD = $(LDADD)
@@ -122,9 +126,9 @@ CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(libimengine_a_SOURCES) $(imbenchmark_SOURCES) \
-	$(imgenerate_SOURCES)
+	$(imdemo_SOURCES) $(imgenerate_SOURCES)
 DIST_SOURCES = $(libimengine_a_SOURCES) $(imbenchmark_SOURCES) \
-	$(imgenerate_SOURCES)
+	$(imdemo_SOURCES) $(imgenerate_SOURCES)
 HEADERS = $(nobase_include_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -260,8 +264,10 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 imbenchmark_SOURCES = src/imbenchmark.cc
 imgenerate_SOURCES = src/imgenerate.cc
+imdemo_SOURCES = src/imdemo.cc
 imbenchmark_DEPENDENCIES = $(lib_LIBRARIES)
 imgenerate_DEPENDENCIES = $(lib_LIBRARIES)
+imdemo_DEPENDENCIES = $(lib_LIBRARIES)
 
 # compile and link options
 LDADD = -L. -limengine
@@ -494,6 +500,9 @@ clean-binPROGRAMS:
 imbenchmark$(EXEEXT): $(imbenchmark_OBJECTS) $(imbenchmark_DEPENDENCIES) 
 	@rm -f imbenchmark$(EXEEXT)
 	$(CXXLINK) $(imbenchmark_OBJECTS) $(imbenchmark_LDADD) $(LIBS)
+imdemo$(EXEEXT): $(imdemo_OBJECTS) $(imdemo_DEPENDENCIES) 
+	@rm -f imdemo$(EXEEXT)
+	$(CXXLINK) $(imdemo_OBJECTS) $(imdemo_LDADD) $(LIBS)
 imgenerate$(EXEEXT): $(imgenerate_OBJECTS) $(imgenerate_DEPENDENCIES) 
 	@rm -f imgenerate$(EXEEXT)
 	$(CXXLINK) $(imgenerate_OBJECTS) $(imgenerate_LDADD) $(LIBS)
@@ -545,6 +554,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformedProfileFunction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imbenchmark.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imdemo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imgenerate.Po@am__quote@
 
 .cc.o:
@@ -1141,6 +1151,20 @@ imbenchmark.obj: src/imbenchmark.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imbenchmark.cc' object='imbenchmark.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imbenchmark.obj `if test -f 'src/imbenchmark.cc'; then $(CYGPATH_W) 'src/imbenchmark.cc'; else $(CYGPATH_W) '$(srcdir)/src/imbenchmark.cc'; fi`
+
+imdemo.o: src/imdemo.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imdemo.o -MD -MP -MF $(DEPDIR)/imdemo.Tpo -c -o imdemo.o `test -f 'src/imdemo.cc' || echo '$(srcdir)/'`src/imdemo.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/imdemo.Tpo $(DEPDIR)/imdemo.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imdemo.cc' object='imdemo.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imdemo.o `test -f 'src/imdemo.cc' || echo '$(srcdir)/'`src/imdemo.cc
+
+imdemo.obj: src/imdemo.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imdemo.obj -MD -MP -MF $(DEPDIR)/imdemo.Tpo -c -o imdemo.obj `if test -f 'src/imdemo.cc'; then $(CYGPATH_W) 'src/imdemo.cc'; else $(CYGPATH_W) '$(srcdir)/src/imdemo.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/imdemo.Tpo $(DEPDIR)/imdemo.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imdemo.cc' object='imdemo.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imdemo.obj `if test -f 'src/imdemo.cc'; then $(CYGPATH_W) 'src/imdemo.cc'; else $(CYGPATH_W) '$(srcdir)/src/imdemo.cc'; fi`
 
 imgenerate.o: src/imgenerate.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imgenerate.o -MD -MP -MF $(DEPDIR)/imgenerate.Tpo -c -o imgenerate.o `test -f 'src/imgenerate.cc' || echo '$(srcdir)/'`src/imgenerate.cc

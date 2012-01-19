@@ -1,9 +1,11 @@
-bin_PROGRAMS = imbenchmark imgenerate
+bin_PROGRAMS = imbenchmark imgenerate imdemo
 imbenchmark_SOURCES = src/imbenchmark.cc
 imgenerate_SOURCES = src/imgenerate.cc
+imdemo_SOURCES = src/imdemo.cc
 
 imbenchmark_DEPENDENCIES = $(lib_LIBRARIES)
 imgenerate_DEPENDENCIES = $(lib_LIBRARIES)
+imdemo_DEPENDENCIES = $(lib_LIBRARIES)
 
 # compile and link options
 LDADD = -L. -limengine
