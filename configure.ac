@@ -1,44 +1,57 @@
-#                                               -*- Autoconf -*-
-# Process this file with autoconf to produce a configure script.
+#################################################################################
+## Run autoreconf after making any change here.
+## Created by David Kirkby <dkirkby@uci.edu>
+#################################################################################
 
-AC_PREREQ([2.67])
-AC_INIT([imengine], [0.9])
-AM_INIT_AUTOMAKE([foreign])
-AC_CONFIG_SRCDIR([imengine/imengine.h])
-AC_CONFIG_HEADERS([config.h])
+# This could probably be relaxed to an older version.
+AC_PREREQ([2.68])
 
-# Checks for programs.
+# Our package info.
+AC_INIT([imengine], [1.0], [dkirkby@uci.edu])
+
+# Checks for programs
 AC_PROG_CXX
-AC_PROG_RANLIB
 
-# Checks for header files.
+# Initialize libtool, which adds --enable/disable-shared configure options.
+# The boost.m4 macros used below also need this.
+LT_INIT
 
-# Check for the GNU Scientific Library (GSL)
+# We need a recent version of boost
+BOOST_REQUIRE([1.45])
+
+## Checks for libraries:
+# GNU Scientific Library (GSL)
 # See http://www.gnu.org/software/gsl/manual/html_node/Autoconf-Macros.html
 AC_CHECK_LIB([m],[cos], ,
 	AC_MSG_ERROR([No math library installed.]))
-AC_CHECK_LIB([gslcblas],[cblas_dgemm], ,
-	AC_MSG_ERROR([No GSL CBLAS library installed.]))
-AC_CHECK_LIB([gsl],[gsl_blas_dgemm], ,
+AC_CHECK_LIB([gsl],[gsl_sf_gamma], ,
 	AC_MSG_ERROR([No GSL library installed.]))
-
-# Checks for libraries.
-# FIXME: Replace `main' with a function in each library:
-AC_CHECK_LIB([boost_program_options], [main], ,
-             AC_MSG_ERROR([You need libboost-program-options-dev]))
-AC_CHECK_LIB([z], [main], ,
-             AC_MSG_ERROR([You need libzip-dev]))
-AC_CHECK_LIB([png], [main], ,
-             AC_MSG_ERROR([You need libpngXX-dev]))
 AC_CHECK_LIB([fftw3], [main], ,
-             AC_MSG_ERROR([You need libfftw3-dev]))
+	AC_MSG_ERROR([You need libfftw3]))
 
-# Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_INLINE
+# Following http://www.gentoo.org/proj/en/qa/automagic.xml below...
 
-# Checks for library functions.
-AC_CHECK_FUNCS([pow sqrt getrusage])
+# Use 'configure --without-png' if PNG output is not needed (or libz and libpng are not available)
+AC_ARG_WITH([png],
+	AS_HELP_STRING([--without-png], [Build without PNG output.]))
+AS_IF([test "x$with_png" != "xno"], [
+	AC_CHECK_LIB([png],[main],,
+		AC_MSG_ERROR([You need libpng.]))
+])
+AS_IF([test "x$with_png" != "xno"], [
+	AC_CHECK_LIB([z],[main],,
+		AC_MSG_ERROR([You need libz.]))
+])
 
+# Configure automake
 AC_CONFIG_FILES([Makefile])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+# See http://www.gnu.org/s/hello/manual/automake/maintainer_002dmode.html
+AM_MAINTAINER_MODE
+AC_CONFIG_HEADERS([config.h])
+
+# Define automake variables that flag whether optional libraries should be used.
+AM_CONDITIONAL([USE_PNG], [test "x$ac_cv_lib_png_main" = "xyes"])
+
 AC_OUTPUT

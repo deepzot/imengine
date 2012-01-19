@@ -1,0 +1,5 @@
+An astronomical image simulation engine, originally designed to generate simulated images of individual galaxies for the GREAT10 weak lensing challenge. Galaxies are modeled within a flexible and extensible framework.
+
+See http://darkmatter.ps.uci.edu/wiki/DeepZot/Imengine for details.
+
+Contact David Kirkby <dkirkby@uci.edu> with questions.

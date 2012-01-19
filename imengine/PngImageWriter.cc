@@ -1,8 +1,12 @@
 // Created 02-Mar-2011 by David Kirkby (University of California, Irvine) <dkirkby@uci.edu>
 
 #include "imengine/PngImageWriter.h"
+#include "imengine/RuntimeError.h"
 
+#include "config.h" // propagates HAVE_LIBPNG from configure
+#ifdef HAVE_LIBPNG
 #include "png.h"
+#endif
 
 #include "boost/bind.hpp"
 
@@ -16,6 +20,9 @@ float mapMin, float mapMax)
 : ArrayImageWriter(), _filename(filename), _inverted(inverted),
 _mapMin(mapMin), _mapMax(mapMax)
 {
+#ifndef HAVE_LIBPNG
+    throw RuntimeError("PngImageWriter: library not built with optional png support.");
+#endif
 }
 
 local::PngImageWriter::~PngImageWriter() {
@@ -33,7 +40,7 @@ void local::PngImageWriter::close() {
 
 void local::writePngImage(std::string const &filename, ImageDataAccessor getValue,
     int size, bool inverted, float mapMin, float mapMax) {
-
+#ifdef HAVE_LIBPNG
     // open the specified file or stdout
     std::FILE *_file;
     if(0 == filename.length()) {
@@ -121,4 +128,5 @@ void local::writePngImage(std::string const &filename, ImageDataAccessor getValu
         std::fclose(_file);
     }
     _file = 0;
+#endif
 }
