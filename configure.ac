@@ -16,6 +16,9 @@ AC_PROG_CXX
 # The boost.m4 macros used below also need this.
 LT_INIT
 
+# We need a recent version of boost
+BOOST_REQUIRE([1.45])
+
 ## Checks for libraries:
 # GNU Scientific Library (GSL)
 # See http://www.gnu.org/software/gsl/manual/html_node/Autoconf-Macros.html

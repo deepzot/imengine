@@ -1,17 +1,30 @@
+# global compile and link options
+AM_CPPFLAGS = $(BOOST_CPPFLAGS)
+
+# targets to build and install
+lib_LTLIBRARIES = libimengine.la
 bin_PROGRAMS = imbenchmark imgenerate imdemo
-imbenchmark_SOURCES = src/imbenchmark.cc
+
+# extra targets that should be built locally but not installed
+noinst_PROGRAMS = imbenchmark imdemo
+
+# instructions for building each program
+
 imgenerate_SOURCES = src/imgenerate.cc
-imdemo_SOURCES = src/imdemo.cc
-
-imbenchmark_DEPENDENCIES = $(lib_LIBRARIES)
 imgenerate_DEPENDENCIES = $(lib_LIBRARIES)
+imgenerate_LDADD = -lboost_program_options -L. -limengine
+
+imbenchmark_SOURCES = src/imbenchmark.cc
+imbenchmark_DEPENDENCIES = $(lib_LIBRARIES)
+imbenchmark_LDADD = -L. -limengine
+
+imdemo_SOURCES = src/imdemo.cc
 imdemo_DEPENDENCIES = $(lib_LIBRARIES)
+imdemo_LDADD = -L. -limengine
 
-# compile and link options
-LDADD = -L. -limengine
+# instructions for building the library
 
-lib_LIBRARIES = libimengine.a
-libimengine_a_SOURCES = \
+libimengine_la_SOURCES = \
 	imengine/AbsCoordTransform.cc \
 	imengine/AbsImageEngine.cc \
 	imengine/AbsImageFilter.cc \
@@ -52,6 +65,10 @@ libimengine_a_SOURCES = \
 	imengine/models/GaussianProfile.cc \
 	imengine/models/MoffatProfile.cc \
 	imengine/models/AiryDemo.cc
+
+# library headers to install (nobase prefix preserves directories under bosslya)
+# Anything that includes config.h should *not* be listed here.
+# and is not part of the package public API.
 
 nobase_include_HEADERS = \
 	imengine/imengine.h \
@@ -100,4 +117,3 @@ nobase_include_HEADERS = \
 	imengine/models/GaussianProfile.h \
 	imengine/models/MoffatProfile.h \
 	imengine/models/AiryDemo.h
-

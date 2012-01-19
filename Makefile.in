@@ -38,6 +38,7 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = imbenchmark$(EXEEXT) imgenerate$(EXEEXT) \
 	imdemo$(EXEEXT)
+noinst_PROGRAMS = imbenchmark$(EXEEXT) imdemo$(EXEEXT)
 subdir = .
 DIST_COMMON = $(am__configure_deps) $(nobase_include_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
@@ -76,42 +77,31 @@ am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
 	"$(DESTDIR)$(includedir)"
-LIBRARIES = $(lib_LIBRARIES)
-ARFLAGS = cru
-libimengine_a_AR = $(AR) $(ARFLAGS)
-libimengine_a_LIBADD =
-am_libimengine_a_OBJECTS = AbsCoordTransform.$(OBJEXT) \
-	AbsImageEngine.$(OBJEXT) AbsImageFilter.$(OBJEXT) \
-	AbsImageWriter.$(OBJEXT) AbsPixelFunction.$(OBJEXT) \
-	AbsRadialProfile.$(OBJEXT) ArrayImageWriter.$(OBJEXT) \
-	BicubicImageEngine.$(OBJEXT) BilinearImageEngine.$(OBJEXT) \
-	DataGrid.$(OBJEXT) EllipticityTransform.$(OBJEXT) \
-	PolarEllipticityTransform.$(OBJEXT) FastTransform.$(OBJEXT) \
-	FileImageWriter.$(OBJEXT) GenericPixelFunction.$(OBJEXT) \
-	IdentityTransform.$(OBJEXT) ImageEngine.$(OBJEXT) \
-	ImageResponseModel.$(OBJEXT) InterpolationData.$(OBJEXT) \
-	MidpointImageEngine.$(OBJEXT) ModelBuilder.$(OBJEXT) \
-	OversamplingImageEngine.$(OBJEXT) \
-	ResizingImageEngine.$(OBJEXT) PngImageWriter.$(OBJEXT) \
-	SilentImageWriter.$(OBJEXT) SlowTransform.$(OBJEXT) \
-	TransformData.$(OBJEXT) TransformedProfileFunction.$(OBJEXT) \
-	RuntimeError.$(OBJEXT) InvalidValue.$(OBJEXT) \
-	PixelFunctionSum.$(OBJEXT) DeltaFunction.$(OBJEXT) \
-	DiskDemo.$(OBJEXT) DiskProfile.$(OBJEXT) \
-	ExponentialProfile.$(OBJEXT) GaussianDemo.$(OBJEXT) \
-	SersicDemo.$(OBJEXT) GaussianProfile.$(OBJEXT) \
-	MoffatProfile.$(OBJEXT) AiryDemo.$(OBJEXT)
-libimengine_a_OBJECTS = $(am_libimengine_a_OBJECTS)
-PROGRAMS = $(bin_PROGRAMS)
+LTLIBRARIES = $(lib_LTLIBRARIES)
+libimengine_la_LIBADD =
+am_libimengine_la_OBJECTS = AbsCoordTransform.lo AbsImageEngine.lo \
+	AbsImageFilter.lo AbsImageWriter.lo AbsPixelFunction.lo \
+	AbsRadialProfile.lo ArrayImageWriter.lo BicubicImageEngine.lo \
+	BilinearImageEngine.lo DataGrid.lo EllipticityTransform.lo \
+	PolarEllipticityTransform.lo FastTransform.lo \
+	FileImageWriter.lo GenericPixelFunction.lo \
+	IdentityTransform.lo ImageEngine.lo ImageResponseModel.lo \
+	InterpolationData.lo MidpointImageEngine.lo ModelBuilder.lo \
+	OversamplingImageEngine.lo ResizingImageEngine.lo \
+	PngImageWriter.lo SilentImageWriter.lo SlowTransform.lo \
+	TransformData.lo TransformedProfileFunction.lo RuntimeError.lo \
+	InvalidValue.lo PixelFunctionSum.lo DeltaFunction.lo \
+	DiskDemo.lo DiskProfile.lo ExponentialProfile.lo \
+	GaussianDemo.lo SersicDemo.lo GaussianProfile.lo \
+	MoffatProfile.lo AiryDemo.lo
+libimengine_la_OBJECTS = $(am_libimengine_la_OBJECTS)
+PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
 am_imbenchmark_OBJECTS = imbenchmark.$(OBJEXT)
 imbenchmark_OBJECTS = $(am_imbenchmark_OBJECTS)
-imbenchmark_LDADD = $(LDADD)
 am_imdemo_OBJECTS = imdemo.$(OBJEXT)
 imdemo_OBJECTS = $(am_imdemo_OBJECTS)
-imdemo_LDADD = $(LDADD)
 am_imgenerate_OBJECTS = imgenerate.$(OBJEXT)
 imgenerate_OBJECTS = $(am_imgenerate_OBJECTS)
-imgenerate_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -125,9 +115,9 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libimengine_a_SOURCES) $(imbenchmark_SOURCES) \
+SOURCES = $(libimengine_la_SOURCES) $(imbenchmark_SOURCES) \
 	$(imdemo_SOURCES) $(imgenerate_SOURCES)
-DIST_SOURCES = $(libimengine_a_SOURCES) $(imbenchmark_SOURCES) \
+DIST_SOURCES = $(libimengine_la_SOURCES) $(imbenchmark_SOURCES) \
 	$(imdemo_SOURCES) $(imgenerate_SOURCES)
 HEADERS = $(nobase_include_HEADERS)
 ETAGS = etags
@@ -150,6 +140,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BOOST_CPPFLAGS = @BOOST_CPPFLAGS@
+BOOST_ROOT = @BOOST_ROOT@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -162,6 +154,7 @@ CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
 DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
@@ -262,17 +255,26 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-imbenchmark_SOURCES = src/imbenchmark.cc
-imgenerate_SOURCES = src/imgenerate.cc
-imdemo_SOURCES = src/imdemo.cc
-imbenchmark_DEPENDENCIES = $(lib_LIBRARIES)
-imgenerate_DEPENDENCIES = $(lib_LIBRARIES)
-imdemo_DEPENDENCIES = $(lib_LIBRARIES)
 
-# compile and link options
-LDADD = -L. -limengine
-lib_LIBRARIES = libimengine.a
-libimengine_a_SOURCES = \
+# global compile and link options
+AM_CPPFLAGS = $(BOOST_CPPFLAGS)
+
+# targets to build and install
+lib_LTLIBRARIES = libimengine.la
+
+# instructions for building each program
+imgenerate_SOURCES = src/imgenerate.cc
+imgenerate_DEPENDENCIES = $(lib_LIBRARIES)
+imgenerate_LDADD = -lboost_program_options -L. -limengine
+imbenchmark_SOURCES = src/imbenchmark.cc
+imbenchmark_DEPENDENCIES = $(lib_LIBRARIES)
+imbenchmark_LDADD = -L. -limengine
+imdemo_SOURCES = src/imdemo.cc
+imdemo_DEPENDENCIES = $(lib_LIBRARIES)
+imdemo_LDADD = -L. -limengine
+
+# instructions for building the library
+libimengine_la_SOURCES = \
 	imengine/AbsCoordTransform.cc \
 	imengine/AbsImageEngine.cc \
 	imengine/AbsImageFilter.cc \
@@ -314,6 +316,10 @@ libimengine_a_SOURCES = \
 	imengine/models/MoffatProfile.cc \
 	imengine/models/AiryDemo.cc
 
+
+# library headers to install (nobase prefix preserves directories under bosslya)
+# Anything that includes config.h should *not* be listed here.
+# and is not part of the package public API.
 nobase_include_HEADERS = \
 	imengine/imengine.h \
 	imengine/types.h \
@@ -418,42 +424,39 @@ $(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-install-libLIBRARIES: $(lib_LIBRARIES)
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	test -z "$(libdir)" || $(MKDIR_P) "$(DESTDIR)$(libdir)"
-	@list='$(lib_LIBRARIES)'; test -n "$(libdir)" || list=; \
+	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
 	list2=; for p in $$list; do \
 	  if test -f $$p; then \
 	    list2="$$list2 $$p"; \
 	  else :; fi; \
 	done; \
 	test -z "$$list2" || { \
-	  echo " $(INSTALL_DATA) $$list2 '$(DESTDIR)$(libdir)'"; \
-	  $(INSTALL_DATA) $$list2 "$(DESTDIR)$(libdir)" || exit $$?; }
-	@$(POST_INSTALL)
-	@list='$(lib_LIBRARIES)'; test -n "$(libdir)" || list=; \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 '$(DESTDIR)$(libdir)'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 "$(DESTDIR)$(libdir)"; \
+	}
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
 	for p in $$list; do \
-	  if test -f $$p; then \
-	    $(am__strip_dir) \
-	    echo " ( cd '$(DESTDIR)$(libdir)' && $(RANLIB) $$f )"; \
-	    ( cd "$(DESTDIR)$(libdir)" && $(RANLIB) $$f ) || exit $$?; \
-	  else :; fi; \
+	  $(am__strip_dir) \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(libdir)/$$f'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(libdir)/$$f"; \
 	done
 
-uninstall-libLIBRARIES:
-	@$(NORMAL_UNINSTALL)
-	@list='$(lib_LIBRARIES)'; test -n "$(libdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(libdir)' && rm -f "$$files" )"; \
-	cd "$(DESTDIR)$(libdir)" && rm -f $$files
-
-clean-libLIBRARIES:
-	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
-libimengine.a: $(libimengine_a_OBJECTS) $(libimengine_a_DEPENDENCIES) 
-	-rm -f libimengine.a
-	$(libimengine_a_AR) libimengine.a $(libimengine_a_OBJECTS) $(libimengine_a_LIBADD)
-	$(RANLIB) libimengine.a
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
+	  test "$$dir" != "$$p" || dir=.; \
+	  echo "rm -f \"$${dir}/so_locations\""; \
+	  rm -f "$${dir}/so_locations"; \
+	done
+libimengine.la: $(libimengine_la_OBJECTS) $(libimengine_la_DEPENDENCIES) 
+	$(CXXLINK) -rpath $(libdir) $(libimengine_la_OBJECTS) $(libimengine_la_LIBADD) $(LIBS)
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
@@ -497,6 +500,15 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+
+clean-noinstPROGRAMS:
+	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
+	echo " rm -f" $$list; \
+	rm -f $$list || exit $$?; \
+	test -n "$(EXEEXT)" || exit 0; \
+	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
+	echo " rm -f" $$list; \
+	rm -f $$list
 imbenchmark$(EXEEXT): $(imbenchmark_OBJECTS) $(imbenchmark_DEPENDENCIES) 
 	@rm -f imbenchmark$(EXEEXT)
 	$(CXXLINK) $(imbenchmark_OBJECTS) $(imbenchmark_LDADD) $(LIBS)
@@ -513,46 +525,46 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsCoordTransform.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsImageEngine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsImageFilter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsImageWriter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsPixelFunction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsRadialProfile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AiryDemo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ArrayImageWriter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BicubicImageEngine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BilinearImageEngine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DataGrid.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DeltaFunction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DiskDemo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DiskProfile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EllipticityTransform.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ExponentialProfile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FastTransform.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FileImageWriter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GaussianDemo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GaussianProfile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GenericPixelFunction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IdentityTransform.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ImageEngine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ImageResponseModel.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InterpolationData.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InvalidValue.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MidpointImageEngine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModelBuilder.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MoffatProfile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OversamplingImageEngine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PixelFunctionSum.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PngImageWriter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PolarEllipticityTransform.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ResizingImageEngine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RuntimeError.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SersicDemo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SilentImageWriter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SlowTransform.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformData.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformedProfileFunction.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsCoordTransform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsImageEngine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsImageFilter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsImageWriter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsPixelFunction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AbsRadialProfile.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AiryDemo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ArrayImageWriter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BicubicImageEngine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BilinearImageEngine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DataGrid.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DeltaFunction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DiskDemo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DiskProfile.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EllipticityTransform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ExponentialProfile.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FastTransform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FileImageWriter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GaussianDemo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GaussianProfile.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GenericPixelFunction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IdentityTransform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ImageEngine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ImageResponseModel.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InterpolationData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InvalidValue.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MidpointImageEngine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModelBuilder.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MoffatProfile.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OversamplingImageEngine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PixelFunctionSum.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PngImageWriter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PolarEllipticityTransform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ResizingImageEngine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RuntimeError.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SersicDemo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SilentImageWriter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SlowTransform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformedProfileFunction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imbenchmark.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imdemo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imgenerate.Po@am__quote@
@@ -578,565 +590,285 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
-AbsCoordTransform.o: imengine/AbsCoordTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsCoordTransform.o -MD -MP -MF $(DEPDIR)/AbsCoordTransform.Tpo -c -o AbsCoordTransform.o `test -f 'imengine/AbsCoordTransform.cc' || echo '$(srcdir)/'`imengine/AbsCoordTransform.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsCoordTransform.Tpo $(DEPDIR)/AbsCoordTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsCoordTransform.cc' object='AbsCoordTransform.o' libtool=no @AMDEPBACKSLASH@
+AbsCoordTransform.lo: imengine/AbsCoordTransform.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsCoordTransform.lo -MD -MP -MF $(DEPDIR)/AbsCoordTransform.Tpo -c -o AbsCoordTransform.lo `test -f 'imengine/AbsCoordTransform.cc' || echo '$(srcdir)/'`imengine/AbsCoordTransform.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsCoordTransform.Tpo $(DEPDIR)/AbsCoordTransform.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsCoordTransform.cc' object='AbsCoordTransform.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsCoordTransform.o `test -f 'imengine/AbsCoordTransform.cc' || echo '$(srcdir)/'`imengine/AbsCoordTransform.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsCoordTransform.lo `test -f 'imengine/AbsCoordTransform.cc' || echo '$(srcdir)/'`imengine/AbsCoordTransform.cc
 
-AbsCoordTransform.obj: imengine/AbsCoordTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsCoordTransform.obj -MD -MP -MF $(DEPDIR)/AbsCoordTransform.Tpo -c -o AbsCoordTransform.obj `if test -f 'imengine/AbsCoordTransform.cc'; then $(CYGPATH_W) 'imengine/AbsCoordTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsCoordTransform.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsCoordTransform.Tpo $(DEPDIR)/AbsCoordTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsCoordTransform.cc' object='AbsCoordTransform.obj' libtool=no @AMDEPBACKSLASH@
+AbsImageEngine.lo: imengine/AbsImageEngine.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsImageEngine.lo -MD -MP -MF $(DEPDIR)/AbsImageEngine.Tpo -c -o AbsImageEngine.lo `test -f 'imengine/AbsImageEngine.cc' || echo '$(srcdir)/'`imengine/AbsImageEngine.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsImageEngine.Tpo $(DEPDIR)/AbsImageEngine.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsImageEngine.cc' object='AbsImageEngine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsCoordTransform.obj `if test -f 'imengine/AbsCoordTransform.cc'; then $(CYGPATH_W) 'imengine/AbsCoordTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsCoordTransform.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsImageEngine.lo `test -f 'imengine/AbsImageEngine.cc' || echo '$(srcdir)/'`imengine/AbsImageEngine.cc
 
-AbsImageEngine.o: imengine/AbsImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsImageEngine.o -MD -MP -MF $(DEPDIR)/AbsImageEngine.Tpo -c -o AbsImageEngine.o `test -f 'imengine/AbsImageEngine.cc' || echo '$(srcdir)/'`imengine/AbsImageEngine.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsImageEngine.Tpo $(DEPDIR)/AbsImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsImageEngine.cc' object='AbsImageEngine.o' libtool=no @AMDEPBACKSLASH@
+AbsImageFilter.lo: imengine/AbsImageFilter.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsImageFilter.lo -MD -MP -MF $(DEPDIR)/AbsImageFilter.Tpo -c -o AbsImageFilter.lo `test -f 'imengine/AbsImageFilter.cc' || echo '$(srcdir)/'`imengine/AbsImageFilter.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsImageFilter.Tpo $(DEPDIR)/AbsImageFilter.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsImageFilter.cc' object='AbsImageFilter.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsImageEngine.o `test -f 'imengine/AbsImageEngine.cc' || echo '$(srcdir)/'`imengine/AbsImageEngine.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsImageFilter.lo `test -f 'imengine/AbsImageFilter.cc' || echo '$(srcdir)/'`imengine/AbsImageFilter.cc
 
-AbsImageEngine.obj: imengine/AbsImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsImageEngine.obj -MD -MP -MF $(DEPDIR)/AbsImageEngine.Tpo -c -o AbsImageEngine.obj `if test -f 'imengine/AbsImageEngine.cc'; then $(CYGPATH_W) 'imengine/AbsImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsImageEngine.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsImageEngine.Tpo $(DEPDIR)/AbsImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsImageEngine.cc' object='AbsImageEngine.obj' libtool=no @AMDEPBACKSLASH@
+AbsImageWriter.lo: imengine/AbsImageWriter.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsImageWriter.lo -MD -MP -MF $(DEPDIR)/AbsImageWriter.Tpo -c -o AbsImageWriter.lo `test -f 'imengine/AbsImageWriter.cc' || echo '$(srcdir)/'`imengine/AbsImageWriter.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsImageWriter.Tpo $(DEPDIR)/AbsImageWriter.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsImageWriter.cc' object='AbsImageWriter.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsImageEngine.obj `if test -f 'imengine/AbsImageEngine.cc'; then $(CYGPATH_W) 'imengine/AbsImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsImageEngine.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsImageWriter.lo `test -f 'imengine/AbsImageWriter.cc' || echo '$(srcdir)/'`imengine/AbsImageWriter.cc
 
-AbsImageFilter.o: imengine/AbsImageFilter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsImageFilter.o -MD -MP -MF $(DEPDIR)/AbsImageFilter.Tpo -c -o AbsImageFilter.o `test -f 'imengine/AbsImageFilter.cc' || echo '$(srcdir)/'`imengine/AbsImageFilter.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsImageFilter.Tpo $(DEPDIR)/AbsImageFilter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsImageFilter.cc' object='AbsImageFilter.o' libtool=no @AMDEPBACKSLASH@
+AbsPixelFunction.lo: imengine/AbsPixelFunction.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsPixelFunction.lo -MD -MP -MF $(DEPDIR)/AbsPixelFunction.Tpo -c -o AbsPixelFunction.lo `test -f 'imengine/AbsPixelFunction.cc' || echo '$(srcdir)/'`imengine/AbsPixelFunction.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsPixelFunction.Tpo $(DEPDIR)/AbsPixelFunction.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsPixelFunction.cc' object='AbsPixelFunction.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsImageFilter.o `test -f 'imengine/AbsImageFilter.cc' || echo '$(srcdir)/'`imengine/AbsImageFilter.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsPixelFunction.lo `test -f 'imengine/AbsPixelFunction.cc' || echo '$(srcdir)/'`imengine/AbsPixelFunction.cc
 
-AbsImageFilter.obj: imengine/AbsImageFilter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsImageFilter.obj -MD -MP -MF $(DEPDIR)/AbsImageFilter.Tpo -c -o AbsImageFilter.obj `if test -f 'imengine/AbsImageFilter.cc'; then $(CYGPATH_W) 'imengine/AbsImageFilter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsImageFilter.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsImageFilter.Tpo $(DEPDIR)/AbsImageFilter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsImageFilter.cc' object='AbsImageFilter.obj' libtool=no @AMDEPBACKSLASH@
+AbsRadialProfile.lo: imengine/AbsRadialProfile.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsRadialProfile.lo -MD -MP -MF $(DEPDIR)/AbsRadialProfile.Tpo -c -o AbsRadialProfile.lo `test -f 'imengine/AbsRadialProfile.cc' || echo '$(srcdir)/'`imengine/AbsRadialProfile.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsRadialProfile.Tpo $(DEPDIR)/AbsRadialProfile.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsRadialProfile.cc' object='AbsRadialProfile.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsImageFilter.obj `if test -f 'imengine/AbsImageFilter.cc'; then $(CYGPATH_W) 'imengine/AbsImageFilter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsImageFilter.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsRadialProfile.lo `test -f 'imengine/AbsRadialProfile.cc' || echo '$(srcdir)/'`imengine/AbsRadialProfile.cc
 
-AbsImageWriter.o: imengine/AbsImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsImageWriter.o -MD -MP -MF $(DEPDIR)/AbsImageWriter.Tpo -c -o AbsImageWriter.o `test -f 'imengine/AbsImageWriter.cc' || echo '$(srcdir)/'`imengine/AbsImageWriter.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsImageWriter.Tpo $(DEPDIR)/AbsImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsImageWriter.cc' object='AbsImageWriter.o' libtool=no @AMDEPBACKSLASH@
+ArrayImageWriter.lo: imengine/ArrayImageWriter.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ArrayImageWriter.lo -MD -MP -MF $(DEPDIR)/ArrayImageWriter.Tpo -c -o ArrayImageWriter.lo `test -f 'imengine/ArrayImageWriter.cc' || echo '$(srcdir)/'`imengine/ArrayImageWriter.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ArrayImageWriter.Tpo $(DEPDIR)/ArrayImageWriter.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ArrayImageWriter.cc' object='ArrayImageWriter.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsImageWriter.o `test -f 'imengine/AbsImageWriter.cc' || echo '$(srcdir)/'`imengine/AbsImageWriter.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ArrayImageWriter.lo `test -f 'imengine/ArrayImageWriter.cc' || echo '$(srcdir)/'`imengine/ArrayImageWriter.cc
 
-AbsImageWriter.obj: imengine/AbsImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsImageWriter.obj -MD -MP -MF $(DEPDIR)/AbsImageWriter.Tpo -c -o AbsImageWriter.obj `if test -f 'imengine/AbsImageWriter.cc'; then $(CYGPATH_W) 'imengine/AbsImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsImageWriter.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsImageWriter.Tpo $(DEPDIR)/AbsImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsImageWriter.cc' object='AbsImageWriter.obj' libtool=no @AMDEPBACKSLASH@
+BicubicImageEngine.lo: imengine/BicubicImageEngine.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BicubicImageEngine.lo -MD -MP -MF $(DEPDIR)/BicubicImageEngine.Tpo -c -o BicubicImageEngine.lo `test -f 'imengine/BicubicImageEngine.cc' || echo '$(srcdir)/'`imengine/BicubicImageEngine.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BicubicImageEngine.Tpo $(DEPDIR)/BicubicImageEngine.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/BicubicImageEngine.cc' object='BicubicImageEngine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsImageWriter.obj `if test -f 'imengine/AbsImageWriter.cc'; then $(CYGPATH_W) 'imengine/AbsImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsImageWriter.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BicubicImageEngine.lo `test -f 'imengine/BicubicImageEngine.cc' || echo '$(srcdir)/'`imengine/BicubicImageEngine.cc
 
-AbsPixelFunction.o: imengine/AbsPixelFunction.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsPixelFunction.o -MD -MP -MF $(DEPDIR)/AbsPixelFunction.Tpo -c -o AbsPixelFunction.o `test -f 'imengine/AbsPixelFunction.cc' || echo '$(srcdir)/'`imengine/AbsPixelFunction.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsPixelFunction.Tpo $(DEPDIR)/AbsPixelFunction.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsPixelFunction.cc' object='AbsPixelFunction.o' libtool=no @AMDEPBACKSLASH@
+BilinearImageEngine.lo: imengine/BilinearImageEngine.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BilinearImageEngine.lo -MD -MP -MF $(DEPDIR)/BilinearImageEngine.Tpo -c -o BilinearImageEngine.lo `test -f 'imengine/BilinearImageEngine.cc' || echo '$(srcdir)/'`imengine/BilinearImageEngine.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BilinearImageEngine.Tpo $(DEPDIR)/BilinearImageEngine.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/BilinearImageEngine.cc' object='BilinearImageEngine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsPixelFunction.o `test -f 'imengine/AbsPixelFunction.cc' || echo '$(srcdir)/'`imengine/AbsPixelFunction.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BilinearImageEngine.lo `test -f 'imengine/BilinearImageEngine.cc' || echo '$(srcdir)/'`imengine/BilinearImageEngine.cc
 
-AbsPixelFunction.obj: imengine/AbsPixelFunction.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsPixelFunction.obj -MD -MP -MF $(DEPDIR)/AbsPixelFunction.Tpo -c -o AbsPixelFunction.obj `if test -f 'imengine/AbsPixelFunction.cc'; then $(CYGPATH_W) 'imengine/AbsPixelFunction.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsPixelFunction.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsPixelFunction.Tpo $(DEPDIR)/AbsPixelFunction.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsPixelFunction.cc' object='AbsPixelFunction.obj' libtool=no @AMDEPBACKSLASH@
+DataGrid.lo: imengine/DataGrid.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DataGrid.lo -MD -MP -MF $(DEPDIR)/DataGrid.Tpo -c -o DataGrid.lo `test -f 'imengine/DataGrid.cc' || echo '$(srcdir)/'`imengine/DataGrid.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DataGrid.Tpo $(DEPDIR)/DataGrid.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/DataGrid.cc' object='DataGrid.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsPixelFunction.obj `if test -f 'imengine/AbsPixelFunction.cc'; then $(CYGPATH_W) 'imengine/AbsPixelFunction.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsPixelFunction.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DataGrid.lo `test -f 'imengine/DataGrid.cc' || echo '$(srcdir)/'`imengine/DataGrid.cc
 
-AbsRadialProfile.o: imengine/AbsRadialProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsRadialProfile.o -MD -MP -MF $(DEPDIR)/AbsRadialProfile.Tpo -c -o AbsRadialProfile.o `test -f 'imengine/AbsRadialProfile.cc' || echo '$(srcdir)/'`imengine/AbsRadialProfile.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsRadialProfile.Tpo $(DEPDIR)/AbsRadialProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsRadialProfile.cc' object='AbsRadialProfile.o' libtool=no @AMDEPBACKSLASH@
+EllipticityTransform.lo: imengine/EllipticityTransform.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT EllipticityTransform.lo -MD -MP -MF $(DEPDIR)/EllipticityTransform.Tpo -c -o EllipticityTransform.lo `test -f 'imengine/EllipticityTransform.cc' || echo '$(srcdir)/'`imengine/EllipticityTransform.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/EllipticityTransform.Tpo $(DEPDIR)/EllipticityTransform.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/EllipticityTransform.cc' object='EllipticityTransform.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsRadialProfile.o `test -f 'imengine/AbsRadialProfile.cc' || echo '$(srcdir)/'`imengine/AbsRadialProfile.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o EllipticityTransform.lo `test -f 'imengine/EllipticityTransform.cc' || echo '$(srcdir)/'`imengine/EllipticityTransform.cc
 
-AbsRadialProfile.obj: imengine/AbsRadialProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AbsRadialProfile.obj -MD -MP -MF $(DEPDIR)/AbsRadialProfile.Tpo -c -o AbsRadialProfile.obj `if test -f 'imengine/AbsRadialProfile.cc'; then $(CYGPATH_W) 'imengine/AbsRadialProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsRadialProfile.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AbsRadialProfile.Tpo $(DEPDIR)/AbsRadialProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/AbsRadialProfile.cc' object='AbsRadialProfile.obj' libtool=no @AMDEPBACKSLASH@
+PolarEllipticityTransform.lo: imengine/PolarEllipticityTransform.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PolarEllipticityTransform.lo -MD -MP -MF $(DEPDIR)/PolarEllipticityTransform.Tpo -c -o PolarEllipticityTransform.lo `test -f 'imengine/PolarEllipticityTransform.cc' || echo '$(srcdir)/'`imengine/PolarEllipticityTransform.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PolarEllipticityTransform.Tpo $(DEPDIR)/PolarEllipticityTransform.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PolarEllipticityTransform.cc' object='PolarEllipticityTransform.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AbsRadialProfile.obj `if test -f 'imengine/AbsRadialProfile.cc'; then $(CYGPATH_W) 'imengine/AbsRadialProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/AbsRadialProfile.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PolarEllipticityTransform.lo `test -f 'imengine/PolarEllipticityTransform.cc' || echo '$(srcdir)/'`imengine/PolarEllipticityTransform.cc
 
-ArrayImageWriter.o: imengine/ArrayImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ArrayImageWriter.o -MD -MP -MF $(DEPDIR)/ArrayImageWriter.Tpo -c -o ArrayImageWriter.o `test -f 'imengine/ArrayImageWriter.cc' || echo '$(srcdir)/'`imengine/ArrayImageWriter.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ArrayImageWriter.Tpo $(DEPDIR)/ArrayImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ArrayImageWriter.cc' object='ArrayImageWriter.o' libtool=no @AMDEPBACKSLASH@
+FastTransform.lo: imengine/FastTransform.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FastTransform.lo -MD -MP -MF $(DEPDIR)/FastTransform.Tpo -c -o FastTransform.lo `test -f 'imengine/FastTransform.cc' || echo '$(srcdir)/'`imengine/FastTransform.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/FastTransform.Tpo $(DEPDIR)/FastTransform.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/FastTransform.cc' object='FastTransform.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ArrayImageWriter.o `test -f 'imengine/ArrayImageWriter.cc' || echo '$(srcdir)/'`imengine/ArrayImageWriter.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FastTransform.lo `test -f 'imengine/FastTransform.cc' || echo '$(srcdir)/'`imengine/FastTransform.cc
 
-ArrayImageWriter.obj: imengine/ArrayImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ArrayImageWriter.obj -MD -MP -MF $(DEPDIR)/ArrayImageWriter.Tpo -c -o ArrayImageWriter.obj `if test -f 'imengine/ArrayImageWriter.cc'; then $(CYGPATH_W) 'imengine/ArrayImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ArrayImageWriter.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ArrayImageWriter.Tpo $(DEPDIR)/ArrayImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ArrayImageWriter.cc' object='ArrayImageWriter.obj' libtool=no @AMDEPBACKSLASH@
+FileImageWriter.lo: imengine/FileImageWriter.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FileImageWriter.lo -MD -MP -MF $(DEPDIR)/FileImageWriter.Tpo -c -o FileImageWriter.lo `test -f 'imengine/FileImageWriter.cc' || echo '$(srcdir)/'`imengine/FileImageWriter.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/FileImageWriter.Tpo $(DEPDIR)/FileImageWriter.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/FileImageWriter.cc' object='FileImageWriter.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ArrayImageWriter.obj `if test -f 'imengine/ArrayImageWriter.cc'; then $(CYGPATH_W) 'imengine/ArrayImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ArrayImageWriter.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FileImageWriter.lo `test -f 'imengine/FileImageWriter.cc' || echo '$(srcdir)/'`imengine/FileImageWriter.cc
 
-BicubicImageEngine.o: imengine/BicubicImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BicubicImageEngine.o -MD -MP -MF $(DEPDIR)/BicubicImageEngine.Tpo -c -o BicubicImageEngine.o `test -f 'imengine/BicubicImageEngine.cc' || echo '$(srcdir)/'`imengine/BicubicImageEngine.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BicubicImageEngine.Tpo $(DEPDIR)/BicubicImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/BicubicImageEngine.cc' object='BicubicImageEngine.o' libtool=no @AMDEPBACKSLASH@
+GenericPixelFunction.lo: imengine/GenericPixelFunction.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GenericPixelFunction.lo -MD -MP -MF $(DEPDIR)/GenericPixelFunction.Tpo -c -o GenericPixelFunction.lo `test -f 'imengine/GenericPixelFunction.cc' || echo '$(srcdir)/'`imengine/GenericPixelFunction.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GenericPixelFunction.Tpo $(DEPDIR)/GenericPixelFunction.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/GenericPixelFunction.cc' object='GenericPixelFunction.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BicubicImageEngine.o `test -f 'imengine/BicubicImageEngine.cc' || echo '$(srcdir)/'`imengine/BicubicImageEngine.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GenericPixelFunction.lo `test -f 'imengine/GenericPixelFunction.cc' || echo '$(srcdir)/'`imengine/GenericPixelFunction.cc
 
-BicubicImageEngine.obj: imengine/BicubicImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BicubicImageEngine.obj -MD -MP -MF $(DEPDIR)/BicubicImageEngine.Tpo -c -o BicubicImageEngine.obj `if test -f 'imengine/BicubicImageEngine.cc'; then $(CYGPATH_W) 'imengine/BicubicImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/BicubicImageEngine.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BicubicImageEngine.Tpo $(DEPDIR)/BicubicImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/BicubicImageEngine.cc' object='BicubicImageEngine.obj' libtool=no @AMDEPBACKSLASH@
+IdentityTransform.lo: imengine/IdentityTransform.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IdentityTransform.lo -MD -MP -MF $(DEPDIR)/IdentityTransform.Tpo -c -o IdentityTransform.lo `test -f 'imengine/IdentityTransform.cc' || echo '$(srcdir)/'`imengine/IdentityTransform.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IdentityTransform.Tpo $(DEPDIR)/IdentityTransform.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/IdentityTransform.cc' object='IdentityTransform.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BicubicImageEngine.obj `if test -f 'imengine/BicubicImageEngine.cc'; then $(CYGPATH_W) 'imengine/BicubicImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/BicubicImageEngine.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IdentityTransform.lo `test -f 'imengine/IdentityTransform.cc' || echo '$(srcdir)/'`imengine/IdentityTransform.cc
 
-BilinearImageEngine.o: imengine/BilinearImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BilinearImageEngine.o -MD -MP -MF $(DEPDIR)/BilinearImageEngine.Tpo -c -o BilinearImageEngine.o `test -f 'imengine/BilinearImageEngine.cc' || echo '$(srcdir)/'`imengine/BilinearImageEngine.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BilinearImageEngine.Tpo $(DEPDIR)/BilinearImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/BilinearImageEngine.cc' object='BilinearImageEngine.o' libtool=no @AMDEPBACKSLASH@
+ImageEngine.lo: imengine/ImageEngine.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ImageEngine.lo -MD -MP -MF $(DEPDIR)/ImageEngine.Tpo -c -o ImageEngine.lo `test -f 'imengine/ImageEngine.cc' || echo '$(srcdir)/'`imengine/ImageEngine.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ImageEngine.Tpo $(DEPDIR)/ImageEngine.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ImageEngine.cc' object='ImageEngine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BilinearImageEngine.o `test -f 'imengine/BilinearImageEngine.cc' || echo '$(srcdir)/'`imengine/BilinearImageEngine.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ImageEngine.lo `test -f 'imengine/ImageEngine.cc' || echo '$(srcdir)/'`imengine/ImageEngine.cc
 
-BilinearImageEngine.obj: imengine/BilinearImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BilinearImageEngine.obj -MD -MP -MF $(DEPDIR)/BilinearImageEngine.Tpo -c -o BilinearImageEngine.obj `if test -f 'imengine/BilinearImageEngine.cc'; then $(CYGPATH_W) 'imengine/BilinearImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/BilinearImageEngine.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/BilinearImageEngine.Tpo $(DEPDIR)/BilinearImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/BilinearImageEngine.cc' object='BilinearImageEngine.obj' libtool=no @AMDEPBACKSLASH@
+ImageResponseModel.lo: imengine/ImageResponseModel.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ImageResponseModel.lo -MD -MP -MF $(DEPDIR)/ImageResponseModel.Tpo -c -o ImageResponseModel.lo `test -f 'imengine/ImageResponseModel.cc' || echo '$(srcdir)/'`imengine/ImageResponseModel.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ImageResponseModel.Tpo $(DEPDIR)/ImageResponseModel.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ImageResponseModel.cc' object='ImageResponseModel.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BilinearImageEngine.obj `if test -f 'imengine/BilinearImageEngine.cc'; then $(CYGPATH_W) 'imengine/BilinearImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/BilinearImageEngine.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ImageResponseModel.lo `test -f 'imengine/ImageResponseModel.cc' || echo '$(srcdir)/'`imengine/ImageResponseModel.cc
 
-DataGrid.o: imengine/DataGrid.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DataGrid.o -MD -MP -MF $(DEPDIR)/DataGrid.Tpo -c -o DataGrid.o `test -f 'imengine/DataGrid.cc' || echo '$(srcdir)/'`imengine/DataGrid.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DataGrid.Tpo $(DEPDIR)/DataGrid.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/DataGrid.cc' object='DataGrid.o' libtool=no @AMDEPBACKSLASH@
+InterpolationData.lo: imengine/InterpolationData.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT InterpolationData.lo -MD -MP -MF $(DEPDIR)/InterpolationData.Tpo -c -o InterpolationData.lo `test -f 'imengine/InterpolationData.cc' || echo '$(srcdir)/'`imengine/InterpolationData.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/InterpolationData.Tpo $(DEPDIR)/InterpolationData.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/InterpolationData.cc' object='InterpolationData.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DataGrid.o `test -f 'imengine/DataGrid.cc' || echo '$(srcdir)/'`imengine/DataGrid.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o InterpolationData.lo `test -f 'imengine/InterpolationData.cc' || echo '$(srcdir)/'`imengine/InterpolationData.cc
 
-DataGrid.obj: imengine/DataGrid.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DataGrid.obj -MD -MP -MF $(DEPDIR)/DataGrid.Tpo -c -o DataGrid.obj `if test -f 'imengine/DataGrid.cc'; then $(CYGPATH_W) 'imengine/DataGrid.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/DataGrid.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DataGrid.Tpo $(DEPDIR)/DataGrid.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/DataGrid.cc' object='DataGrid.obj' libtool=no @AMDEPBACKSLASH@
+MidpointImageEngine.lo: imengine/MidpointImageEngine.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MidpointImageEngine.lo -MD -MP -MF $(DEPDIR)/MidpointImageEngine.Tpo -c -o MidpointImageEngine.lo `test -f 'imengine/MidpointImageEngine.cc' || echo '$(srcdir)/'`imengine/MidpointImageEngine.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MidpointImageEngine.Tpo $(DEPDIR)/MidpointImageEngine.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/MidpointImageEngine.cc' object='MidpointImageEngine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DataGrid.obj `if test -f 'imengine/DataGrid.cc'; then $(CYGPATH_W) 'imengine/DataGrid.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/DataGrid.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MidpointImageEngine.lo `test -f 'imengine/MidpointImageEngine.cc' || echo '$(srcdir)/'`imengine/MidpointImageEngine.cc
 
-EllipticityTransform.o: imengine/EllipticityTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT EllipticityTransform.o -MD -MP -MF $(DEPDIR)/EllipticityTransform.Tpo -c -o EllipticityTransform.o `test -f 'imengine/EllipticityTransform.cc' || echo '$(srcdir)/'`imengine/EllipticityTransform.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/EllipticityTransform.Tpo $(DEPDIR)/EllipticityTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/EllipticityTransform.cc' object='EllipticityTransform.o' libtool=no @AMDEPBACKSLASH@
+ModelBuilder.lo: imengine/ModelBuilder.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ModelBuilder.lo -MD -MP -MF $(DEPDIR)/ModelBuilder.Tpo -c -o ModelBuilder.lo `test -f 'imengine/ModelBuilder.cc' || echo '$(srcdir)/'`imengine/ModelBuilder.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ModelBuilder.Tpo $(DEPDIR)/ModelBuilder.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ModelBuilder.cc' object='ModelBuilder.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o EllipticityTransform.o `test -f 'imengine/EllipticityTransform.cc' || echo '$(srcdir)/'`imengine/EllipticityTransform.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ModelBuilder.lo `test -f 'imengine/ModelBuilder.cc' || echo '$(srcdir)/'`imengine/ModelBuilder.cc
 
-EllipticityTransform.obj: imengine/EllipticityTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT EllipticityTransform.obj -MD -MP -MF $(DEPDIR)/EllipticityTransform.Tpo -c -o EllipticityTransform.obj `if test -f 'imengine/EllipticityTransform.cc'; then $(CYGPATH_W) 'imengine/EllipticityTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/EllipticityTransform.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/EllipticityTransform.Tpo $(DEPDIR)/EllipticityTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/EllipticityTransform.cc' object='EllipticityTransform.obj' libtool=no @AMDEPBACKSLASH@
+OversamplingImageEngine.lo: imengine/OversamplingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT OversamplingImageEngine.lo -MD -MP -MF $(DEPDIR)/OversamplingImageEngine.Tpo -c -o OversamplingImageEngine.lo `test -f 'imengine/OversamplingImageEngine.cc' || echo '$(srcdir)/'`imengine/OversamplingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/OversamplingImageEngine.Tpo $(DEPDIR)/OversamplingImageEngine.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/OversamplingImageEngine.cc' object='OversamplingImageEngine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o EllipticityTransform.obj `if test -f 'imengine/EllipticityTransform.cc'; then $(CYGPATH_W) 'imengine/EllipticityTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/EllipticityTransform.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o OversamplingImageEngine.lo `test -f 'imengine/OversamplingImageEngine.cc' || echo '$(srcdir)/'`imengine/OversamplingImageEngine.cc
 
-PolarEllipticityTransform.o: imengine/PolarEllipticityTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PolarEllipticityTransform.o -MD -MP -MF $(DEPDIR)/PolarEllipticityTransform.Tpo -c -o PolarEllipticityTransform.o `test -f 'imengine/PolarEllipticityTransform.cc' || echo '$(srcdir)/'`imengine/PolarEllipticityTransform.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PolarEllipticityTransform.Tpo $(DEPDIR)/PolarEllipticityTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PolarEllipticityTransform.cc' object='PolarEllipticityTransform.o' libtool=no @AMDEPBACKSLASH@
+ResizingImageEngine.lo: imengine/ResizingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ResizingImageEngine.lo -MD -MP -MF $(DEPDIR)/ResizingImageEngine.Tpo -c -o ResizingImageEngine.lo `test -f 'imengine/ResizingImageEngine.cc' || echo '$(srcdir)/'`imengine/ResizingImageEngine.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ResizingImageEngine.Tpo $(DEPDIR)/ResizingImageEngine.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ResizingImageEngine.cc' object='ResizingImageEngine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PolarEllipticityTransform.o `test -f 'imengine/PolarEllipticityTransform.cc' || echo '$(srcdir)/'`imengine/PolarEllipticityTransform.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ResizingImageEngine.lo `test -f 'imengine/ResizingImageEngine.cc' || echo '$(srcdir)/'`imengine/ResizingImageEngine.cc
 
-PolarEllipticityTransform.obj: imengine/PolarEllipticityTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PolarEllipticityTransform.obj -MD -MP -MF $(DEPDIR)/PolarEllipticityTransform.Tpo -c -o PolarEllipticityTransform.obj `if test -f 'imengine/PolarEllipticityTransform.cc'; then $(CYGPATH_W) 'imengine/PolarEllipticityTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PolarEllipticityTransform.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PolarEllipticityTransform.Tpo $(DEPDIR)/PolarEllipticityTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PolarEllipticityTransform.cc' object='PolarEllipticityTransform.obj' libtool=no @AMDEPBACKSLASH@
+PngImageWriter.lo: imengine/PngImageWriter.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PngImageWriter.lo -MD -MP -MF $(DEPDIR)/PngImageWriter.Tpo -c -o PngImageWriter.lo `test -f 'imengine/PngImageWriter.cc' || echo '$(srcdir)/'`imengine/PngImageWriter.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PngImageWriter.Tpo $(DEPDIR)/PngImageWriter.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PngImageWriter.cc' object='PngImageWriter.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PolarEllipticityTransform.obj `if test -f 'imengine/PolarEllipticityTransform.cc'; then $(CYGPATH_W) 'imengine/PolarEllipticityTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PolarEllipticityTransform.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PngImageWriter.lo `test -f 'imengine/PngImageWriter.cc' || echo '$(srcdir)/'`imengine/PngImageWriter.cc
 
-FastTransform.o: imengine/FastTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FastTransform.o -MD -MP -MF $(DEPDIR)/FastTransform.Tpo -c -o FastTransform.o `test -f 'imengine/FastTransform.cc' || echo '$(srcdir)/'`imengine/FastTransform.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/FastTransform.Tpo $(DEPDIR)/FastTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/FastTransform.cc' object='FastTransform.o' libtool=no @AMDEPBACKSLASH@
+SilentImageWriter.lo: imengine/SilentImageWriter.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SilentImageWriter.lo -MD -MP -MF $(DEPDIR)/SilentImageWriter.Tpo -c -o SilentImageWriter.lo `test -f 'imengine/SilentImageWriter.cc' || echo '$(srcdir)/'`imengine/SilentImageWriter.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SilentImageWriter.Tpo $(DEPDIR)/SilentImageWriter.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/SilentImageWriter.cc' object='SilentImageWriter.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FastTransform.o `test -f 'imengine/FastTransform.cc' || echo '$(srcdir)/'`imengine/FastTransform.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SilentImageWriter.lo `test -f 'imengine/SilentImageWriter.cc' || echo '$(srcdir)/'`imengine/SilentImageWriter.cc
 
-FastTransform.obj: imengine/FastTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FastTransform.obj -MD -MP -MF $(DEPDIR)/FastTransform.Tpo -c -o FastTransform.obj `if test -f 'imengine/FastTransform.cc'; then $(CYGPATH_W) 'imengine/FastTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/FastTransform.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/FastTransform.Tpo $(DEPDIR)/FastTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/FastTransform.cc' object='FastTransform.obj' libtool=no @AMDEPBACKSLASH@
+SlowTransform.lo: imengine/SlowTransform.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SlowTransform.lo -MD -MP -MF $(DEPDIR)/SlowTransform.Tpo -c -o SlowTransform.lo `test -f 'imengine/SlowTransform.cc' || echo '$(srcdir)/'`imengine/SlowTransform.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SlowTransform.Tpo $(DEPDIR)/SlowTransform.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/SlowTransform.cc' object='SlowTransform.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FastTransform.obj `if test -f 'imengine/FastTransform.cc'; then $(CYGPATH_W) 'imengine/FastTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/FastTransform.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SlowTransform.lo `test -f 'imengine/SlowTransform.cc' || echo '$(srcdir)/'`imengine/SlowTransform.cc
 
-FileImageWriter.o: imengine/FileImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FileImageWriter.o -MD -MP -MF $(DEPDIR)/FileImageWriter.Tpo -c -o FileImageWriter.o `test -f 'imengine/FileImageWriter.cc' || echo '$(srcdir)/'`imengine/FileImageWriter.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/FileImageWriter.Tpo $(DEPDIR)/FileImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/FileImageWriter.cc' object='FileImageWriter.o' libtool=no @AMDEPBACKSLASH@
+TransformData.lo: imengine/TransformData.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TransformData.lo -MD -MP -MF $(DEPDIR)/TransformData.Tpo -c -o TransformData.lo `test -f 'imengine/TransformData.cc' || echo '$(srcdir)/'`imengine/TransformData.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/TransformData.Tpo $(DEPDIR)/TransformData.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/TransformData.cc' object='TransformData.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FileImageWriter.o `test -f 'imengine/FileImageWriter.cc' || echo '$(srcdir)/'`imengine/FileImageWriter.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TransformData.lo `test -f 'imengine/TransformData.cc' || echo '$(srcdir)/'`imengine/TransformData.cc
 
-FileImageWriter.obj: imengine/FileImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FileImageWriter.obj -MD -MP -MF $(DEPDIR)/FileImageWriter.Tpo -c -o FileImageWriter.obj `if test -f 'imengine/FileImageWriter.cc'; then $(CYGPATH_W) 'imengine/FileImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/FileImageWriter.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/FileImageWriter.Tpo $(DEPDIR)/FileImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/FileImageWriter.cc' object='FileImageWriter.obj' libtool=no @AMDEPBACKSLASH@
+TransformedProfileFunction.lo: imengine/TransformedProfileFunction.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TransformedProfileFunction.lo -MD -MP -MF $(DEPDIR)/TransformedProfileFunction.Tpo -c -o TransformedProfileFunction.lo `test -f 'imengine/TransformedProfileFunction.cc' || echo '$(srcdir)/'`imengine/TransformedProfileFunction.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/TransformedProfileFunction.Tpo $(DEPDIR)/TransformedProfileFunction.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/TransformedProfileFunction.cc' object='TransformedProfileFunction.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o FileImageWriter.obj `if test -f 'imengine/FileImageWriter.cc'; then $(CYGPATH_W) 'imengine/FileImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/FileImageWriter.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TransformedProfileFunction.lo `test -f 'imengine/TransformedProfileFunction.cc' || echo '$(srcdir)/'`imengine/TransformedProfileFunction.cc
 
-GenericPixelFunction.o: imengine/GenericPixelFunction.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GenericPixelFunction.o -MD -MP -MF $(DEPDIR)/GenericPixelFunction.Tpo -c -o GenericPixelFunction.o `test -f 'imengine/GenericPixelFunction.cc' || echo '$(srcdir)/'`imengine/GenericPixelFunction.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GenericPixelFunction.Tpo $(DEPDIR)/GenericPixelFunction.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/GenericPixelFunction.cc' object='GenericPixelFunction.o' libtool=no @AMDEPBACKSLASH@
+RuntimeError.lo: imengine/RuntimeError.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT RuntimeError.lo -MD -MP -MF $(DEPDIR)/RuntimeError.Tpo -c -o RuntimeError.lo `test -f 'imengine/RuntimeError.cc' || echo '$(srcdir)/'`imengine/RuntimeError.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/RuntimeError.Tpo $(DEPDIR)/RuntimeError.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/RuntimeError.cc' object='RuntimeError.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GenericPixelFunction.o `test -f 'imengine/GenericPixelFunction.cc' || echo '$(srcdir)/'`imengine/GenericPixelFunction.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RuntimeError.lo `test -f 'imengine/RuntimeError.cc' || echo '$(srcdir)/'`imengine/RuntimeError.cc
 
-GenericPixelFunction.obj: imengine/GenericPixelFunction.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GenericPixelFunction.obj -MD -MP -MF $(DEPDIR)/GenericPixelFunction.Tpo -c -o GenericPixelFunction.obj `if test -f 'imengine/GenericPixelFunction.cc'; then $(CYGPATH_W) 'imengine/GenericPixelFunction.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/GenericPixelFunction.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GenericPixelFunction.Tpo $(DEPDIR)/GenericPixelFunction.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/GenericPixelFunction.cc' object='GenericPixelFunction.obj' libtool=no @AMDEPBACKSLASH@
+InvalidValue.lo: imengine/InvalidValue.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT InvalidValue.lo -MD -MP -MF $(DEPDIR)/InvalidValue.Tpo -c -o InvalidValue.lo `test -f 'imengine/InvalidValue.cc' || echo '$(srcdir)/'`imengine/InvalidValue.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/InvalidValue.Tpo $(DEPDIR)/InvalidValue.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/InvalidValue.cc' object='InvalidValue.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GenericPixelFunction.obj `if test -f 'imengine/GenericPixelFunction.cc'; then $(CYGPATH_W) 'imengine/GenericPixelFunction.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/GenericPixelFunction.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o InvalidValue.lo `test -f 'imengine/InvalidValue.cc' || echo '$(srcdir)/'`imengine/InvalidValue.cc
 
-IdentityTransform.o: imengine/IdentityTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IdentityTransform.o -MD -MP -MF $(DEPDIR)/IdentityTransform.Tpo -c -o IdentityTransform.o `test -f 'imengine/IdentityTransform.cc' || echo '$(srcdir)/'`imengine/IdentityTransform.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IdentityTransform.Tpo $(DEPDIR)/IdentityTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/IdentityTransform.cc' object='IdentityTransform.o' libtool=no @AMDEPBACKSLASH@
+PixelFunctionSum.lo: imengine/PixelFunctionSum.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PixelFunctionSum.lo -MD -MP -MF $(DEPDIR)/PixelFunctionSum.Tpo -c -o PixelFunctionSum.lo `test -f 'imengine/PixelFunctionSum.cc' || echo '$(srcdir)/'`imengine/PixelFunctionSum.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PixelFunctionSum.Tpo $(DEPDIR)/PixelFunctionSum.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PixelFunctionSum.cc' object='PixelFunctionSum.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IdentityTransform.o `test -f 'imengine/IdentityTransform.cc' || echo '$(srcdir)/'`imengine/IdentityTransform.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PixelFunctionSum.lo `test -f 'imengine/PixelFunctionSum.cc' || echo '$(srcdir)/'`imengine/PixelFunctionSum.cc
 
-IdentityTransform.obj: imengine/IdentityTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IdentityTransform.obj -MD -MP -MF $(DEPDIR)/IdentityTransform.Tpo -c -o IdentityTransform.obj `if test -f 'imengine/IdentityTransform.cc'; then $(CYGPATH_W) 'imengine/IdentityTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/IdentityTransform.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/IdentityTransform.Tpo $(DEPDIR)/IdentityTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/IdentityTransform.cc' object='IdentityTransform.obj' libtool=no @AMDEPBACKSLASH@
+DeltaFunction.lo: imengine/models/DeltaFunction.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DeltaFunction.lo -MD -MP -MF $(DEPDIR)/DeltaFunction.Tpo -c -o DeltaFunction.lo `test -f 'imengine/models/DeltaFunction.cc' || echo '$(srcdir)/'`imengine/models/DeltaFunction.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DeltaFunction.Tpo $(DEPDIR)/DeltaFunction.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/DeltaFunction.cc' object='DeltaFunction.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o IdentityTransform.obj `if test -f 'imengine/IdentityTransform.cc'; then $(CYGPATH_W) 'imengine/IdentityTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/IdentityTransform.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DeltaFunction.lo `test -f 'imengine/models/DeltaFunction.cc' || echo '$(srcdir)/'`imengine/models/DeltaFunction.cc
 
-ImageEngine.o: imengine/ImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ImageEngine.o -MD -MP -MF $(DEPDIR)/ImageEngine.Tpo -c -o ImageEngine.o `test -f 'imengine/ImageEngine.cc' || echo '$(srcdir)/'`imengine/ImageEngine.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ImageEngine.Tpo $(DEPDIR)/ImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ImageEngine.cc' object='ImageEngine.o' libtool=no @AMDEPBACKSLASH@
+DiskDemo.lo: imengine/models/DiskDemo.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DiskDemo.lo -MD -MP -MF $(DEPDIR)/DiskDemo.Tpo -c -o DiskDemo.lo `test -f 'imengine/models/DiskDemo.cc' || echo '$(srcdir)/'`imengine/models/DiskDemo.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DiskDemo.Tpo $(DEPDIR)/DiskDemo.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/DiskDemo.cc' object='DiskDemo.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ImageEngine.o `test -f 'imengine/ImageEngine.cc' || echo '$(srcdir)/'`imengine/ImageEngine.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DiskDemo.lo `test -f 'imengine/models/DiskDemo.cc' || echo '$(srcdir)/'`imengine/models/DiskDemo.cc
 
-ImageEngine.obj: imengine/ImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ImageEngine.obj -MD -MP -MF $(DEPDIR)/ImageEngine.Tpo -c -o ImageEngine.obj `if test -f 'imengine/ImageEngine.cc'; then $(CYGPATH_W) 'imengine/ImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ImageEngine.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ImageEngine.Tpo $(DEPDIR)/ImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ImageEngine.cc' object='ImageEngine.obj' libtool=no @AMDEPBACKSLASH@
+DiskProfile.lo: imengine/models/DiskProfile.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DiskProfile.lo -MD -MP -MF $(DEPDIR)/DiskProfile.Tpo -c -o DiskProfile.lo `test -f 'imengine/models/DiskProfile.cc' || echo '$(srcdir)/'`imengine/models/DiskProfile.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DiskProfile.Tpo $(DEPDIR)/DiskProfile.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/DiskProfile.cc' object='DiskProfile.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ImageEngine.obj `if test -f 'imengine/ImageEngine.cc'; then $(CYGPATH_W) 'imengine/ImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ImageEngine.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DiskProfile.lo `test -f 'imengine/models/DiskProfile.cc' || echo '$(srcdir)/'`imengine/models/DiskProfile.cc
 
-ImageResponseModel.o: imengine/ImageResponseModel.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ImageResponseModel.o -MD -MP -MF $(DEPDIR)/ImageResponseModel.Tpo -c -o ImageResponseModel.o `test -f 'imengine/ImageResponseModel.cc' || echo '$(srcdir)/'`imengine/ImageResponseModel.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ImageResponseModel.Tpo $(DEPDIR)/ImageResponseModel.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ImageResponseModel.cc' object='ImageResponseModel.o' libtool=no @AMDEPBACKSLASH@
+ExponentialProfile.lo: imengine/models/ExponentialProfile.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ExponentialProfile.lo -MD -MP -MF $(DEPDIR)/ExponentialProfile.Tpo -c -o ExponentialProfile.lo `test -f 'imengine/models/ExponentialProfile.cc' || echo '$(srcdir)/'`imengine/models/ExponentialProfile.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ExponentialProfile.Tpo $(DEPDIR)/ExponentialProfile.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/ExponentialProfile.cc' object='ExponentialProfile.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ImageResponseModel.o `test -f 'imengine/ImageResponseModel.cc' || echo '$(srcdir)/'`imengine/ImageResponseModel.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ExponentialProfile.lo `test -f 'imengine/models/ExponentialProfile.cc' || echo '$(srcdir)/'`imengine/models/ExponentialProfile.cc
 
-ImageResponseModel.obj: imengine/ImageResponseModel.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ImageResponseModel.obj -MD -MP -MF $(DEPDIR)/ImageResponseModel.Tpo -c -o ImageResponseModel.obj `if test -f 'imengine/ImageResponseModel.cc'; then $(CYGPATH_W) 'imengine/ImageResponseModel.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ImageResponseModel.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ImageResponseModel.Tpo $(DEPDIR)/ImageResponseModel.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ImageResponseModel.cc' object='ImageResponseModel.obj' libtool=no @AMDEPBACKSLASH@
+GaussianDemo.lo: imengine/models/GaussianDemo.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GaussianDemo.lo -MD -MP -MF $(DEPDIR)/GaussianDemo.Tpo -c -o GaussianDemo.lo `test -f 'imengine/models/GaussianDemo.cc' || echo '$(srcdir)/'`imengine/models/GaussianDemo.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GaussianDemo.Tpo $(DEPDIR)/GaussianDemo.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/GaussianDemo.cc' object='GaussianDemo.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ImageResponseModel.obj `if test -f 'imengine/ImageResponseModel.cc'; then $(CYGPATH_W) 'imengine/ImageResponseModel.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ImageResponseModel.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GaussianDemo.lo `test -f 'imengine/models/GaussianDemo.cc' || echo '$(srcdir)/'`imengine/models/GaussianDemo.cc
 
-InterpolationData.o: imengine/InterpolationData.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT InterpolationData.o -MD -MP -MF $(DEPDIR)/InterpolationData.Tpo -c -o InterpolationData.o `test -f 'imengine/InterpolationData.cc' || echo '$(srcdir)/'`imengine/InterpolationData.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/InterpolationData.Tpo $(DEPDIR)/InterpolationData.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/InterpolationData.cc' object='InterpolationData.o' libtool=no @AMDEPBACKSLASH@
+SersicDemo.lo: imengine/models/SersicDemo.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SersicDemo.lo -MD -MP -MF $(DEPDIR)/SersicDemo.Tpo -c -o SersicDemo.lo `test -f 'imengine/models/SersicDemo.cc' || echo '$(srcdir)/'`imengine/models/SersicDemo.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SersicDemo.Tpo $(DEPDIR)/SersicDemo.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/SersicDemo.cc' object='SersicDemo.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o InterpolationData.o `test -f 'imengine/InterpolationData.cc' || echo '$(srcdir)/'`imengine/InterpolationData.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SersicDemo.lo `test -f 'imengine/models/SersicDemo.cc' || echo '$(srcdir)/'`imengine/models/SersicDemo.cc
 
-InterpolationData.obj: imengine/InterpolationData.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT InterpolationData.obj -MD -MP -MF $(DEPDIR)/InterpolationData.Tpo -c -o InterpolationData.obj `if test -f 'imengine/InterpolationData.cc'; then $(CYGPATH_W) 'imengine/InterpolationData.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/InterpolationData.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/InterpolationData.Tpo $(DEPDIR)/InterpolationData.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/InterpolationData.cc' object='InterpolationData.obj' libtool=no @AMDEPBACKSLASH@
+GaussianProfile.lo: imengine/models/GaussianProfile.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GaussianProfile.lo -MD -MP -MF $(DEPDIR)/GaussianProfile.Tpo -c -o GaussianProfile.lo `test -f 'imengine/models/GaussianProfile.cc' || echo '$(srcdir)/'`imengine/models/GaussianProfile.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GaussianProfile.Tpo $(DEPDIR)/GaussianProfile.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/GaussianProfile.cc' object='GaussianProfile.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o InterpolationData.obj `if test -f 'imengine/InterpolationData.cc'; then $(CYGPATH_W) 'imengine/InterpolationData.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/InterpolationData.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GaussianProfile.lo `test -f 'imengine/models/GaussianProfile.cc' || echo '$(srcdir)/'`imengine/models/GaussianProfile.cc
 
-MidpointImageEngine.o: imengine/MidpointImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MidpointImageEngine.o -MD -MP -MF $(DEPDIR)/MidpointImageEngine.Tpo -c -o MidpointImageEngine.o `test -f 'imengine/MidpointImageEngine.cc' || echo '$(srcdir)/'`imengine/MidpointImageEngine.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MidpointImageEngine.Tpo $(DEPDIR)/MidpointImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/MidpointImageEngine.cc' object='MidpointImageEngine.o' libtool=no @AMDEPBACKSLASH@
+MoffatProfile.lo: imengine/models/MoffatProfile.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MoffatProfile.lo -MD -MP -MF $(DEPDIR)/MoffatProfile.Tpo -c -o MoffatProfile.lo `test -f 'imengine/models/MoffatProfile.cc' || echo '$(srcdir)/'`imengine/models/MoffatProfile.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MoffatProfile.Tpo $(DEPDIR)/MoffatProfile.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/MoffatProfile.cc' object='MoffatProfile.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MidpointImageEngine.o `test -f 'imengine/MidpointImageEngine.cc' || echo '$(srcdir)/'`imengine/MidpointImageEngine.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MoffatProfile.lo `test -f 'imengine/models/MoffatProfile.cc' || echo '$(srcdir)/'`imengine/models/MoffatProfile.cc
 
-MidpointImageEngine.obj: imengine/MidpointImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MidpointImageEngine.obj -MD -MP -MF $(DEPDIR)/MidpointImageEngine.Tpo -c -o MidpointImageEngine.obj `if test -f 'imengine/MidpointImageEngine.cc'; then $(CYGPATH_W) 'imengine/MidpointImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/MidpointImageEngine.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MidpointImageEngine.Tpo $(DEPDIR)/MidpointImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/MidpointImageEngine.cc' object='MidpointImageEngine.obj' libtool=no @AMDEPBACKSLASH@
+AiryDemo.lo: imengine/models/AiryDemo.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AiryDemo.lo -MD -MP -MF $(DEPDIR)/AiryDemo.Tpo -c -o AiryDemo.lo `test -f 'imengine/models/AiryDemo.cc' || echo '$(srcdir)/'`imengine/models/AiryDemo.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AiryDemo.Tpo $(DEPDIR)/AiryDemo.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/AiryDemo.cc' object='AiryDemo.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MidpointImageEngine.obj `if test -f 'imengine/MidpointImageEngine.cc'; then $(CYGPATH_W) 'imengine/MidpointImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/MidpointImageEngine.cc'; fi`
-
-ModelBuilder.o: imengine/ModelBuilder.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ModelBuilder.o -MD -MP -MF $(DEPDIR)/ModelBuilder.Tpo -c -o ModelBuilder.o `test -f 'imengine/ModelBuilder.cc' || echo '$(srcdir)/'`imengine/ModelBuilder.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ModelBuilder.Tpo $(DEPDIR)/ModelBuilder.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ModelBuilder.cc' object='ModelBuilder.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ModelBuilder.o `test -f 'imengine/ModelBuilder.cc' || echo '$(srcdir)/'`imengine/ModelBuilder.cc
-
-ModelBuilder.obj: imengine/ModelBuilder.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ModelBuilder.obj -MD -MP -MF $(DEPDIR)/ModelBuilder.Tpo -c -o ModelBuilder.obj `if test -f 'imengine/ModelBuilder.cc'; then $(CYGPATH_W) 'imengine/ModelBuilder.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ModelBuilder.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ModelBuilder.Tpo $(DEPDIR)/ModelBuilder.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ModelBuilder.cc' object='ModelBuilder.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ModelBuilder.obj `if test -f 'imengine/ModelBuilder.cc'; then $(CYGPATH_W) 'imengine/ModelBuilder.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ModelBuilder.cc'; fi`
-
-OversamplingImageEngine.o: imengine/OversamplingImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT OversamplingImageEngine.o -MD -MP -MF $(DEPDIR)/OversamplingImageEngine.Tpo -c -o OversamplingImageEngine.o `test -f 'imengine/OversamplingImageEngine.cc' || echo '$(srcdir)/'`imengine/OversamplingImageEngine.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/OversamplingImageEngine.Tpo $(DEPDIR)/OversamplingImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/OversamplingImageEngine.cc' object='OversamplingImageEngine.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o OversamplingImageEngine.o `test -f 'imengine/OversamplingImageEngine.cc' || echo '$(srcdir)/'`imengine/OversamplingImageEngine.cc
-
-OversamplingImageEngine.obj: imengine/OversamplingImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT OversamplingImageEngine.obj -MD -MP -MF $(DEPDIR)/OversamplingImageEngine.Tpo -c -o OversamplingImageEngine.obj `if test -f 'imengine/OversamplingImageEngine.cc'; then $(CYGPATH_W) 'imengine/OversamplingImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/OversamplingImageEngine.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/OversamplingImageEngine.Tpo $(DEPDIR)/OversamplingImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/OversamplingImageEngine.cc' object='OversamplingImageEngine.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o OversamplingImageEngine.obj `if test -f 'imengine/OversamplingImageEngine.cc'; then $(CYGPATH_W) 'imengine/OversamplingImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/OversamplingImageEngine.cc'; fi`
-
-ResizingImageEngine.o: imengine/ResizingImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ResizingImageEngine.o -MD -MP -MF $(DEPDIR)/ResizingImageEngine.Tpo -c -o ResizingImageEngine.o `test -f 'imengine/ResizingImageEngine.cc' || echo '$(srcdir)/'`imengine/ResizingImageEngine.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ResizingImageEngine.Tpo $(DEPDIR)/ResizingImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ResizingImageEngine.cc' object='ResizingImageEngine.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ResizingImageEngine.o `test -f 'imengine/ResizingImageEngine.cc' || echo '$(srcdir)/'`imengine/ResizingImageEngine.cc
-
-ResizingImageEngine.obj: imengine/ResizingImageEngine.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ResizingImageEngine.obj -MD -MP -MF $(DEPDIR)/ResizingImageEngine.Tpo -c -o ResizingImageEngine.obj `if test -f 'imengine/ResizingImageEngine.cc'; then $(CYGPATH_W) 'imengine/ResizingImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ResizingImageEngine.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ResizingImageEngine.Tpo $(DEPDIR)/ResizingImageEngine.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/ResizingImageEngine.cc' object='ResizingImageEngine.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ResizingImageEngine.obj `if test -f 'imengine/ResizingImageEngine.cc'; then $(CYGPATH_W) 'imengine/ResizingImageEngine.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/ResizingImageEngine.cc'; fi`
-
-PngImageWriter.o: imengine/PngImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PngImageWriter.o -MD -MP -MF $(DEPDIR)/PngImageWriter.Tpo -c -o PngImageWriter.o `test -f 'imengine/PngImageWriter.cc' || echo '$(srcdir)/'`imengine/PngImageWriter.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PngImageWriter.Tpo $(DEPDIR)/PngImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PngImageWriter.cc' object='PngImageWriter.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PngImageWriter.o `test -f 'imengine/PngImageWriter.cc' || echo '$(srcdir)/'`imengine/PngImageWriter.cc
-
-PngImageWriter.obj: imengine/PngImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PngImageWriter.obj -MD -MP -MF $(DEPDIR)/PngImageWriter.Tpo -c -o PngImageWriter.obj `if test -f 'imengine/PngImageWriter.cc'; then $(CYGPATH_W) 'imengine/PngImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PngImageWriter.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PngImageWriter.Tpo $(DEPDIR)/PngImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PngImageWriter.cc' object='PngImageWriter.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PngImageWriter.obj `if test -f 'imengine/PngImageWriter.cc'; then $(CYGPATH_W) 'imengine/PngImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PngImageWriter.cc'; fi`
-
-SilentImageWriter.o: imengine/SilentImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SilentImageWriter.o -MD -MP -MF $(DEPDIR)/SilentImageWriter.Tpo -c -o SilentImageWriter.o `test -f 'imengine/SilentImageWriter.cc' || echo '$(srcdir)/'`imengine/SilentImageWriter.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SilentImageWriter.Tpo $(DEPDIR)/SilentImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/SilentImageWriter.cc' object='SilentImageWriter.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SilentImageWriter.o `test -f 'imengine/SilentImageWriter.cc' || echo '$(srcdir)/'`imengine/SilentImageWriter.cc
-
-SilentImageWriter.obj: imengine/SilentImageWriter.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SilentImageWriter.obj -MD -MP -MF $(DEPDIR)/SilentImageWriter.Tpo -c -o SilentImageWriter.obj `if test -f 'imengine/SilentImageWriter.cc'; then $(CYGPATH_W) 'imengine/SilentImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/SilentImageWriter.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SilentImageWriter.Tpo $(DEPDIR)/SilentImageWriter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/SilentImageWriter.cc' object='SilentImageWriter.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SilentImageWriter.obj `if test -f 'imengine/SilentImageWriter.cc'; then $(CYGPATH_W) 'imengine/SilentImageWriter.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/SilentImageWriter.cc'; fi`
-
-SlowTransform.o: imengine/SlowTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SlowTransform.o -MD -MP -MF $(DEPDIR)/SlowTransform.Tpo -c -o SlowTransform.o `test -f 'imengine/SlowTransform.cc' || echo '$(srcdir)/'`imengine/SlowTransform.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SlowTransform.Tpo $(DEPDIR)/SlowTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/SlowTransform.cc' object='SlowTransform.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SlowTransform.o `test -f 'imengine/SlowTransform.cc' || echo '$(srcdir)/'`imengine/SlowTransform.cc
-
-SlowTransform.obj: imengine/SlowTransform.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SlowTransform.obj -MD -MP -MF $(DEPDIR)/SlowTransform.Tpo -c -o SlowTransform.obj `if test -f 'imengine/SlowTransform.cc'; then $(CYGPATH_W) 'imengine/SlowTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/SlowTransform.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SlowTransform.Tpo $(DEPDIR)/SlowTransform.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/SlowTransform.cc' object='SlowTransform.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SlowTransform.obj `if test -f 'imengine/SlowTransform.cc'; then $(CYGPATH_W) 'imengine/SlowTransform.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/SlowTransform.cc'; fi`
-
-TransformData.o: imengine/TransformData.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TransformData.o -MD -MP -MF $(DEPDIR)/TransformData.Tpo -c -o TransformData.o `test -f 'imengine/TransformData.cc' || echo '$(srcdir)/'`imengine/TransformData.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/TransformData.Tpo $(DEPDIR)/TransformData.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/TransformData.cc' object='TransformData.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TransformData.o `test -f 'imengine/TransformData.cc' || echo '$(srcdir)/'`imengine/TransformData.cc
-
-TransformData.obj: imengine/TransformData.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TransformData.obj -MD -MP -MF $(DEPDIR)/TransformData.Tpo -c -o TransformData.obj `if test -f 'imengine/TransformData.cc'; then $(CYGPATH_W) 'imengine/TransformData.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/TransformData.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/TransformData.Tpo $(DEPDIR)/TransformData.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/TransformData.cc' object='TransformData.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TransformData.obj `if test -f 'imengine/TransformData.cc'; then $(CYGPATH_W) 'imengine/TransformData.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/TransformData.cc'; fi`
-
-TransformedProfileFunction.o: imengine/TransformedProfileFunction.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TransformedProfileFunction.o -MD -MP -MF $(DEPDIR)/TransformedProfileFunction.Tpo -c -o TransformedProfileFunction.o `test -f 'imengine/TransformedProfileFunction.cc' || echo '$(srcdir)/'`imengine/TransformedProfileFunction.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/TransformedProfileFunction.Tpo $(DEPDIR)/TransformedProfileFunction.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/TransformedProfileFunction.cc' object='TransformedProfileFunction.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TransformedProfileFunction.o `test -f 'imengine/TransformedProfileFunction.cc' || echo '$(srcdir)/'`imengine/TransformedProfileFunction.cc
-
-TransformedProfileFunction.obj: imengine/TransformedProfileFunction.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT TransformedProfileFunction.obj -MD -MP -MF $(DEPDIR)/TransformedProfileFunction.Tpo -c -o TransformedProfileFunction.obj `if test -f 'imengine/TransformedProfileFunction.cc'; then $(CYGPATH_W) 'imengine/TransformedProfileFunction.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/TransformedProfileFunction.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/TransformedProfileFunction.Tpo $(DEPDIR)/TransformedProfileFunction.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/TransformedProfileFunction.cc' object='TransformedProfileFunction.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o TransformedProfileFunction.obj `if test -f 'imengine/TransformedProfileFunction.cc'; then $(CYGPATH_W) 'imengine/TransformedProfileFunction.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/TransformedProfileFunction.cc'; fi`
-
-RuntimeError.o: imengine/RuntimeError.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT RuntimeError.o -MD -MP -MF $(DEPDIR)/RuntimeError.Tpo -c -o RuntimeError.o `test -f 'imengine/RuntimeError.cc' || echo '$(srcdir)/'`imengine/RuntimeError.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/RuntimeError.Tpo $(DEPDIR)/RuntimeError.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/RuntimeError.cc' object='RuntimeError.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RuntimeError.o `test -f 'imengine/RuntimeError.cc' || echo '$(srcdir)/'`imengine/RuntimeError.cc
-
-RuntimeError.obj: imengine/RuntimeError.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT RuntimeError.obj -MD -MP -MF $(DEPDIR)/RuntimeError.Tpo -c -o RuntimeError.obj `if test -f 'imengine/RuntimeError.cc'; then $(CYGPATH_W) 'imengine/RuntimeError.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/RuntimeError.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/RuntimeError.Tpo $(DEPDIR)/RuntimeError.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/RuntimeError.cc' object='RuntimeError.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RuntimeError.obj `if test -f 'imengine/RuntimeError.cc'; then $(CYGPATH_W) 'imengine/RuntimeError.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/RuntimeError.cc'; fi`
-
-InvalidValue.o: imengine/InvalidValue.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT InvalidValue.o -MD -MP -MF $(DEPDIR)/InvalidValue.Tpo -c -o InvalidValue.o `test -f 'imengine/InvalidValue.cc' || echo '$(srcdir)/'`imengine/InvalidValue.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/InvalidValue.Tpo $(DEPDIR)/InvalidValue.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/InvalidValue.cc' object='InvalidValue.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o InvalidValue.o `test -f 'imengine/InvalidValue.cc' || echo '$(srcdir)/'`imengine/InvalidValue.cc
-
-InvalidValue.obj: imengine/InvalidValue.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT InvalidValue.obj -MD -MP -MF $(DEPDIR)/InvalidValue.Tpo -c -o InvalidValue.obj `if test -f 'imengine/InvalidValue.cc'; then $(CYGPATH_W) 'imengine/InvalidValue.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/InvalidValue.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/InvalidValue.Tpo $(DEPDIR)/InvalidValue.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/InvalidValue.cc' object='InvalidValue.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o InvalidValue.obj `if test -f 'imengine/InvalidValue.cc'; then $(CYGPATH_W) 'imengine/InvalidValue.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/InvalidValue.cc'; fi`
-
-PixelFunctionSum.o: imengine/PixelFunctionSum.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PixelFunctionSum.o -MD -MP -MF $(DEPDIR)/PixelFunctionSum.Tpo -c -o PixelFunctionSum.o `test -f 'imengine/PixelFunctionSum.cc' || echo '$(srcdir)/'`imengine/PixelFunctionSum.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PixelFunctionSum.Tpo $(DEPDIR)/PixelFunctionSum.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PixelFunctionSum.cc' object='PixelFunctionSum.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PixelFunctionSum.o `test -f 'imengine/PixelFunctionSum.cc' || echo '$(srcdir)/'`imengine/PixelFunctionSum.cc
-
-PixelFunctionSum.obj: imengine/PixelFunctionSum.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PixelFunctionSum.obj -MD -MP -MF $(DEPDIR)/PixelFunctionSum.Tpo -c -o PixelFunctionSum.obj `if test -f 'imengine/PixelFunctionSum.cc'; then $(CYGPATH_W) 'imengine/PixelFunctionSum.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PixelFunctionSum.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PixelFunctionSum.Tpo $(DEPDIR)/PixelFunctionSum.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/PixelFunctionSum.cc' object='PixelFunctionSum.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PixelFunctionSum.obj `if test -f 'imengine/PixelFunctionSum.cc'; then $(CYGPATH_W) 'imengine/PixelFunctionSum.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/PixelFunctionSum.cc'; fi`
-
-DeltaFunction.o: imengine/models/DeltaFunction.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DeltaFunction.o -MD -MP -MF $(DEPDIR)/DeltaFunction.Tpo -c -o DeltaFunction.o `test -f 'imengine/models/DeltaFunction.cc' || echo '$(srcdir)/'`imengine/models/DeltaFunction.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DeltaFunction.Tpo $(DEPDIR)/DeltaFunction.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/DeltaFunction.cc' object='DeltaFunction.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DeltaFunction.o `test -f 'imengine/models/DeltaFunction.cc' || echo '$(srcdir)/'`imengine/models/DeltaFunction.cc
-
-DeltaFunction.obj: imengine/models/DeltaFunction.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DeltaFunction.obj -MD -MP -MF $(DEPDIR)/DeltaFunction.Tpo -c -o DeltaFunction.obj `if test -f 'imengine/models/DeltaFunction.cc'; then $(CYGPATH_W) 'imengine/models/DeltaFunction.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/DeltaFunction.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DeltaFunction.Tpo $(DEPDIR)/DeltaFunction.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/DeltaFunction.cc' object='DeltaFunction.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DeltaFunction.obj `if test -f 'imengine/models/DeltaFunction.cc'; then $(CYGPATH_W) 'imengine/models/DeltaFunction.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/DeltaFunction.cc'; fi`
-
-DiskDemo.o: imengine/models/DiskDemo.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DiskDemo.o -MD -MP -MF $(DEPDIR)/DiskDemo.Tpo -c -o DiskDemo.o `test -f 'imengine/models/DiskDemo.cc' || echo '$(srcdir)/'`imengine/models/DiskDemo.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DiskDemo.Tpo $(DEPDIR)/DiskDemo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/DiskDemo.cc' object='DiskDemo.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DiskDemo.o `test -f 'imengine/models/DiskDemo.cc' || echo '$(srcdir)/'`imengine/models/DiskDemo.cc
-
-DiskDemo.obj: imengine/models/DiskDemo.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DiskDemo.obj -MD -MP -MF $(DEPDIR)/DiskDemo.Tpo -c -o DiskDemo.obj `if test -f 'imengine/models/DiskDemo.cc'; then $(CYGPATH_W) 'imengine/models/DiskDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/DiskDemo.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DiskDemo.Tpo $(DEPDIR)/DiskDemo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/DiskDemo.cc' object='DiskDemo.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DiskDemo.obj `if test -f 'imengine/models/DiskDemo.cc'; then $(CYGPATH_W) 'imengine/models/DiskDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/DiskDemo.cc'; fi`
-
-DiskProfile.o: imengine/models/DiskProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DiskProfile.o -MD -MP -MF $(DEPDIR)/DiskProfile.Tpo -c -o DiskProfile.o `test -f 'imengine/models/DiskProfile.cc' || echo '$(srcdir)/'`imengine/models/DiskProfile.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DiskProfile.Tpo $(DEPDIR)/DiskProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/DiskProfile.cc' object='DiskProfile.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DiskProfile.o `test -f 'imengine/models/DiskProfile.cc' || echo '$(srcdir)/'`imengine/models/DiskProfile.cc
-
-DiskProfile.obj: imengine/models/DiskProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT DiskProfile.obj -MD -MP -MF $(DEPDIR)/DiskProfile.Tpo -c -o DiskProfile.obj `if test -f 'imengine/models/DiskProfile.cc'; then $(CYGPATH_W) 'imengine/models/DiskProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/DiskProfile.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/DiskProfile.Tpo $(DEPDIR)/DiskProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/DiskProfile.cc' object='DiskProfile.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o DiskProfile.obj `if test -f 'imengine/models/DiskProfile.cc'; then $(CYGPATH_W) 'imengine/models/DiskProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/DiskProfile.cc'; fi`
-
-ExponentialProfile.o: imengine/models/ExponentialProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ExponentialProfile.o -MD -MP -MF $(DEPDIR)/ExponentialProfile.Tpo -c -o ExponentialProfile.o `test -f 'imengine/models/ExponentialProfile.cc' || echo '$(srcdir)/'`imengine/models/ExponentialProfile.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ExponentialProfile.Tpo $(DEPDIR)/ExponentialProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/ExponentialProfile.cc' object='ExponentialProfile.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ExponentialProfile.o `test -f 'imengine/models/ExponentialProfile.cc' || echo '$(srcdir)/'`imengine/models/ExponentialProfile.cc
-
-ExponentialProfile.obj: imengine/models/ExponentialProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ExponentialProfile.obj -MD -MP -MF $(DEPDIR)/ExponentialProfile.Tpo -c -o ExponentialProfile.obj `if test -f 'imengine/models/ExponentialProfile.cc'; then $(CYGPATH_W) 'imengine/models/ExponentialProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/ExponentialProfile.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ExponentialProfile.Tpo $(DEPDIR)/ExponentialProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/ExponentialProfile.cc' object='ExponentialProfile.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ExponentialProfile.obj `if test -f 'imengine/models/ExponentialProfile.cc'; then $(CYGPATH_W) 'imengine/models/ExponentialProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/ExponentialProfile.cc'; fi`
-
-GaussianDemo.o: imengine/models/GaussianDemo.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GaussianDemo.o -MD -MP -MF $(DEPDIR)/GaussianDemo.Tpo -c -o GaussianDemo.o `test -f 'imengine/models/GaussianDemo.cc' || echo '$(srcdir)/'`imengine/models/GaussianDemo.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GaussianDemo.Tpo $(DEPDIR)/GaussianDemo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/GaussianDemo.cc' object='GaussianDemo.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GaussianDemo.o `test -f 'imengine/models/GaussianDemo.cc' || echo '$(srcdir)/'`imengine/models/GaussianDemo.cc
-
-GaussianDemo.obj: imengine/models/GaussianDemo.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GaussianDemo.obj -MD -MP -MF $(DEPDIR)/GaussianDemo.Tpo -c -o GaussianDemo.obj `if test -f 'imengine/models/GaussianDemo.cc'; then $(CYGPATH_W) 'imengine/models/GaussianDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/GaussianDemo.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GaussianDemo.Tpo $(DEPDIR)/GaussianDemo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/GaussianDemo.cc' object='GaussianDemo.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GaussianDemo.obj `if test -f 'imengine/models/GaussianDemo.cc'; then $(CYGPATH_W) 'imengine/models/GaussianDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/GaussianDemo.cc'; fi`
-
-SersicDemo.o: imengine/models/SersicDemo.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SersicDemo.o -MD -MP -MF $(DEPDIR)/SersicDemo.Tpo -c -o SersicDemo.o `test -f 'imengine/models/SersicDemo.cc' || echo '$(srcdir)/'`imengine/models/SersicDemo.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SersicDemo.Tpo $(DEPDIR)/SersicDemo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/SersicDemo.cc' object='SersicDemo.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SersicDemo.o `test -f 'imengine/models/SersicDemo.cc' || echo '$(srcdir)/'`imengine/models/SersicDemo.cc
-
-SersicDemo.obj: imengine/models/SersicDemo.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT SersicDemo.obj -MD -MP -MF $(DEPDIR)/SersicDemo.Tpo -c -o SersicDemo.obj `if test -f 'imengine/models/SersicDemo.cc'; then $(CYGPATH_W) 'imengine/models/SersicDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/SersicDemo.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/SersicDemo.Tpo $(DEPDIR)/SersicDemo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/SersicDemo.cc' object='SersicDemo.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o SersicDemo.obj `if test -f 'imengine/models/SersicDemo.cc'; then $(CYGPATH_W) 'imengine/models/SersicDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/SersicDemo.cc'; fi`
-
-GaussianProfile.o: imengine/models/GaussianProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GaussianProfile.o -MD -MP -MF $(DEPDIR)/GaussianProfile.Tpo -c -o GaussianProfile.o `test -f 'imengine/models/GaussianProfile.cc' || echo '$(srcdir)/'`imengine/models/GaussianProfile.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GaussianProfile.Tpo $(DEPDIR)/GaussianProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/GaussianProfile.cc' object='GaussianProfile.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GaussianProfile.o `test -f 'imengine/models/GaussianProfile.cc' || echo '$(srcdir)/'`imengine/models/GaussianProfile.cc
-
-GaussianProfile.obj: imengine/models/GaussianProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GaussianProfile.obj -MD -MP -MF $(DEPDIR)/GaussianProfile.Tpo -c -o GaussianProfile.obj `if test -f 'imengine/models/GaussianProfile.cc'; then $(CYGPATH_W) 'imengine/models/GaussianProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/GaussianProfile.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GaussianProfile.Tpo $(DEPDIR)/GaussianProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/GaussianProfile.cc' object='GaussianProfile.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GaussianProfile.obj `if test -f 'imengine/models/GaussianProfile.cc'; then $(CYGPATH_W) 'imengine/models/GaussianProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/GaussianProfile.cc'; fi`
-
-MoffatProfile.o: imengine/models/MoffatProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MoffatProfile.o -MD -MP -MF $(DEPDIR)/MoffatProfile.Tpo -c -o MoffatProfile.o `test -f 'imengine/models/MoffatProfile.cc' || echo '$(srcdir)/'`imengine/models/MoffatProfile.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MoffatProfile.Tpo $(DEPDIR)/MoffatProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/MoffatProfile.cc' object='MoffatProfile.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MoffatProfile.o `test -f 'imengine/models/MoffatProfile.cc' || echo '$(srcdir)/'`imengine/models/MoffatProfile.cc
-
-MoffatProfile.obj: imengine/models/MoffatProfile.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT MoffatProfile.obj -MD -MP -MF $(DEPDIR)/MoffatProfile.Tpo -c -o MoffatProfile.obj `if test -f 'imengine/models/MoffatProfile.cc'; then $(CYGPATH_W) 'imengine/models/MoffatProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/MoffatProfile.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/MoffatProfile.Tpo $(DEPDIR)/MoffatProfile.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/MoffatProfile.cc' object='MoffatProfile.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o MoffatProfile.obj `if test -f 'imengine/models/MoffatProfile.cc'; then $(CYGPATH_W) 'imengine/models/MoffatProfile.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/MoffatProfile.cc'; fi`
-
-AiryDemo.o: imengine/models/AiryDemo.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AiryDemo.o -MD -MP -MF $(DEPDIR)/AiryDemo.Tpo -c -o AiryDemo.o `test -f 'imengine/models/AiryDemo.cc' || echo '$(srcdir)/'`imengine/models/AiryDemo.cc
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AiryDemo.Tpo $(DEPDIR)/AiryDemo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/AiryDemo.cc' object='AiryDemo.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AiryDemo.o `test -f 'imengine/models/AiryDemo.cc' || echo '$(srcdir)/'`imengine/models/AiryDemo.cc
-
-AiryDemo.obj: imengine/models/AiryDemo.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT AiryDemo.obj -MD -MP -MF $(DEPDIR)/AiryDemo.Tpo -c -o AiryDemo.obj `if test -f 'imengine/models/AiryDemo.cc'; then $(CYGPATH_W) 'imengine/models/AiryDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/AiryDemo.cc'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/AiryDemo.Tpo $(DEPDIR)/AiryDemo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='imengine/models/AiryDemo.cc' object='AiryDemo.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AiryDemo.obj `if test -f 'imengine/models/AiryDemo.cc'; then $(CYGPATH_W) 'imengine/models/AiryDemo.cc'; else $(CYGPATH_W) '$(srcdir)/imengine/models/AiryDemo.cc'; fi`
+@am__fastdepCXX_FALSE@	$(LIBTOOL)  --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o AiryDemo.lo `test -f 'imengine/models/AiryDemo.cc' || echo '$(srcdir)/'`imengine/models/AiryDemo.cc
 
 imbenchmark.o: src/imbenchmark.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imbenchmark.o -MD -MP -MF $(DEPDIR)/imbenchmark.Tpo -c -o imbenchmark.o `test -f 'src/imbenchmark.cc' || echo '$(srcdir)/'`src/imbenchmark.cc
@@ -1412,7 +1144,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(LIBRARIES) $(PROGRAMS) $(HEADERS) config.h
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(HEADERS) config.h
+install-binPROGRAMS: install-libLTLIBRARIES
+
 installdirs:
 	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -1444,8 +1178,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic clean-libLIBRARIES \
-	clean-libtool mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
+	clean-libtool clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
@@ -1472,7 +1206,7 @@ install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-binPROGRAMS install-libLIBRARIES
+install-exec-am: install-binPROGRAMS install-libLTLIBRARIES
 
 install-html: install-html-am
 
@@ -1514,29 +1248,30 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-libLIBRARIES \
+uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES \
 	uninstall-nobase_includeHEADERS
 
 .MAKE: all install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am am--refresh check check-am clean \
-	clean-binPROGRAMS clean-generic clean-libLIBRARIES \
-	clean-libtool ctags dist dist-all dist-bzip2 dist-gzip \
-	dist-lzma dist-shar dist-tarZ dist-xz dist-zip distcheck \
-	distclean distclean-compile distclean-generic distclean-hdr \
-	distclean-libtool distclean-tags distcleancheck distdir \
-	distuninstallcheck dvi dvi-am html html-am info info-am \
-	install install-am install-binPROGRAMS install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libLIBRARIES install-man \
+	clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
+	clean-libtool clean-noinstPROGRAMS ctags dist dist-all \
+	dist-bzip2 dist-gzip dist-lzma dist-shar dist-tarZ dist-xz \
+	dist-zip distcheck distclean distclean-compile \
+	distclean-generic distclean-hdr distclean-libtool \
+	distclean-tags distcleancheck distdir distuninstallcheck dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-binPROGRAMS install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am \
+	install-libLTLIBRARIES install-man \
 	install-nobase_includeHEADERS install-pdf install-pdf-am \
 	install-ps install-ps-am install-strip installcheck \
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags uninstall uninstall-am uninstall-binPROGRAMS \
-	uninstall-libLIBRARIES uninstall-nobase_includeHEADERS
+	uninstall-libLTLIBRARIES uninstall-nobase_includeHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
