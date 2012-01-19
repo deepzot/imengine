@@ -37,10 +37,11 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = imbenchmark$(EXEEXT) imgenerate$(EXEEXT) \
-	imdemo$(EXEEXT)
-noinst_PROGRAMS = imbenchmark$(EXEEXT) imdemo$(EXEEXT)
+	imdemo$(EXEEXT) imextend$(EXEEXT)
+noinst_PROGRAMS = imbenchmark$(EXEEXT) imdemo$(EXEEXT) \
+	imextend$(EXEEXT)
 subdir = .
-DIST_COMMON = $(am__configure_deps) $(nobase_include_HEADERS) \
+DIST_COMMON = README $(am__configure_deps) $(nobase_include_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in $(top_srcdir)/configure TODO \
 	config.guess config.sub depcomp install-sh ltmain.sh missing
@@ -100,6 +101,8 @@ am_imbenchmark_OBJECTS = imbenchmark.$(OBJEXT)
 imbenchmark_OBJECTS = $(am_imbenchmark_OBJECTS)
 am_imdemo_OBJECTS = imdemo.$(OBJEXT)
 imdemo_OBJECTS = $(am_imdemo_OBJECTS)
+am_imextend_OBJECTS = imextend.$(OBJEXT)
+imextend_OBJECTS = $(am_imextend_OBJECTS)
 am_imgenerate_OBJECTS = imgenerate.$(OBJEXT)
 imgenerate_OBJECTS = $(am_imgenerate_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
@@ -116,9 +119,9 @@ CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(libimengine_la_SOURCES) $(imbenchmark_SOURCES) \
-	$(imdemo_SOURCES) $(imgenerate_SOURCES)
+	$(imdemo_SOURCES) $(imextend_SOURCES) $(imgenerate_SOURCES)
 DIST_SOURCES = $(libimengine_la_SOURCES) $(imbenchmark_SOURCES) \
-	$(imdemo_SOURCES) $(imgenerate_SOURCES)
+	$(imdemo_SOURCES) $(imextend_SOURCES) $(imgenerate_SOURCES)
 HEADERS = $(nobase_include_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -272,6 +275,9 @@ imbenchmark_LDADD = -L. -limengine
 imdemo_SOURCES = src/imdemo.cc
 imdemo_DEPENDENCIES = $(lib_LIBRARIES)
 imdemo_LDADD = -L. -limengine
+imextend_SOURCES = src/imextend.cc
+imextend_DEPENDENCIES = $(lib_LIBRARIES)
+imextend_LDADD = -L. -limengine
 
 # instructions for building the library
 libimengine_la_SOURCES = \
@@ -515,6 +521,9 @@ imbenchmark$(EXEEXT): $(imbenchmark_OBJECTS) $(imbenchmark_DEPENDENCIES)
 imdemo$(EXEEXT): $(imdemo_OBJECTS) $(imdemo_DEPENDENCIES) 
 	@rm -f imdemo$(EXEEXT)
 	$(CXXLINK) $(imdemo_OBJECTS) $(imdemo_LDADD) $(LIBS)
+imextend$(EXEEXT): $(imextend_OBJECTS) $(imextend_DEPENDENCIES) 
+	@rm -f imextend$(EXEEXT)
+	$(CXXLINK) $(imextend_OBJECTS) $(imextend_LDADD) $(LIBS)
 imgenerate$(EXEEXT): $(imgenerate_OBJECTS) $(imgenerate_DEPENDENCIES) 
 	@rm -f imgenerate$(EXEEXT)
 	$(CXXLINK) $(imgenerate_OBJECTS) $(imgenerate_LDADD) $(LIBS)
@@ -567,6 +576,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TransformedProfileFunction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imbenchmark.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imdemo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imextend.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imgenerate.Po@am__quote@
 
 .cc.o:
@@ -897,6 +907,20 @@ imdemo.obj: src/imdemo.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imdemo.cc' object='imdemo.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imdemo.obj `if test -f 'src/imdemo.cc'; then $(CYGPATH_W) 'src/imdemo.cc'; else $(CYGPATH_W) '$(srcdir)/src/imdemo.cc'; fi`
+
+imextend.o: src/imextend.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imextend.o -MD -MP -MF $(DEPDIR)/imextend.Tpo -c -o imextend.o `test -f 'src/imextend.cc' || echo '$(srcdir)/'`src/imextend.cc
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/imextend.Tpo $(DEPDIR)/imextend.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imextend.cc' object='imextend.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imextend.o `test -f 'src/imextend.cc' || echo '$(srcdir)/'`src/imextend.cc
+
+imextend.obj: src/imextend.cc
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imextend.obj -MD -MP -MF $(DEPDIR)/imextend.Tpo -c -o imextend.obj `if test -f 'src/imextend.cc'; then $(CYGPATH_W) 'src/imextend.cc'; else $(CYGPATH_W) '$(srcdir)/src/imextend.cc'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/imextend.Tpo $(DEPDIR)/imextend.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/imextend.cc' object='imextend.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o imextend.obj `if test -f 'src/imextend.cc'; then $(CYGPATH_W) 'src/imextend.cc'; else $(CYGPATH_W) '$(srcdir)/src/imextend.cc'; fi`
 
 imgenerate.o: src/imgenerate.cc
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT imgenerate.o -MD -MP -MF $(DEPDIR)/imgenerate.Tpo -c -o imgenerate.o `test -f 'src/imgenerate.cc' || echo '$(srcdir)/'`src/imgenerate.cc

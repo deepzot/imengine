@@ -3,10 +3,10 @@ AM_CPPFLAGS = $(BOOST_CPPFLAGS)
 
 # targets to build and install
 lib_LTLIBRARIES = libimengine.la
-bin_PROGRAMS = imbenchmark imgenerate imdemo
+bin_PROGRAMS = imbenchmark imgenerate imdemo imextend
 
 # extra targets that should be built locally but not installed
-noinst_PROGRAMS = imbenchmark imdemo
+noinst_PROGRAMS = imbenchmark imdemo imextend
 
 # instructions for building each program
 
@@ -21,6 +21,10 @@ imbenchmark_LDADD = -L. -limengine
 imdemo_SOURCES = src/imdemo.cc
 imdemo_DEPENDENCIES = $(lib_LIBRARIES)
 imdemo_LDADD = -L. -limengine
+
+imextend_SOURCES = src/imextend.cc
+imextend_DEPENDENCIES = $(lib_LIBRARIES)
+imextend_LDADD = -L. -limengine
 
 # instructions for building the library
 
