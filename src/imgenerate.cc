@@ -45,16 +45,16 @@ int main(int argc, char **argv) {
         ("offset",po::value<double>(&offset)->default_value(0.),
             "Amount to offset generated pixel values by.")
         ("gain",po::value<double>(&gain)->default_value(0.),
-            "Signal size per pixel to use for generating Poisson fluctuations.")
+            "Signal size per photon to use for generating Poisson fluctuations.")
         ("noiseRMS",po::value<double>(&noiseRMS)->default_value(0.),
             "RMS of uncorrelated Gaussian noise to add to each pixel.")
         ("seed",po::value<uint32_t>(&seed)->default_value(0),
             "Random seed to use for generating noise (uses time of day if zero).")
         ("printsum","Prints the pixel sum of the generated image.")
         ("src",po::value<std::string>(&srcString)->default_value("delta"),
-            "Source module to use.")
+            "Source model to use.")
         ("psf",po::value<std::string>(&psfString)->default_value("delta"),
-            "PSF module to use.")
+            "PSF model to use.")
         ;
 
     // do the command line parsing now
